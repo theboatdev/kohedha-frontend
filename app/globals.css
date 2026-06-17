@@ -1,0 +1,279 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Updated color tokens to match ko|HEDHA branding with Deep Forest Green, Misty Sage, Golden Accents, and Light Cream */
+  --background: oklch(1 0 0); /* Light cream background */
+  --foreground: oklch(0.145 0 0); /* Deep forest green for text */
+  --card: oklch(1 0 0); /* Slightly off-white for cards */
+  --card-foreground: oklch(0.145 0 0); /* Deep forest green text on cards */
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.145 0 0);
+  --primary: oklch(0.205 0 0); /* Deep Forest Green primary */
+  --primary-foreground: oklch(0.985 0 0); /* Light cream text on primary */
+  --secondary: oklch(0.97 0 0); /* Golden accent secondary */
+  --secondary-foreground: oklch(0.205 0 0); /* Dark text on golden */
+  --muted: oklch(0.97 0 0); /* Misty sage muted */
+  --muted-foreground: oklch(0.556 0 0); /* Darker sage for muted text */
+  --accent: oklch(0.97 0 0); /* Golden accent */
+  --accent-foreground: oklch(0.205 0 0); /* Dark text on accent */
+  --destructive: oklch(0.577 0.245 27.325);
+  --destructive-foreground: oklch(0.577 0.245 27.325);
+  --border: oklch(0.922 0 0); /* Misty sage borders */
+  --input: oklch(1 0 0);
+  --ring: oklch(0.708 0 0); /* Golden ring focus */
+  --chart-1: oklch(0.646 0.222 41.116); /* Golden */
+  --chart-2: oklch(0.6 0.118 184.704); /* Deep forest green */
+  --chart-3: oklch(0.398 0.07 227.392); /* Misty sage */
+  --chart-4: oklch(0.828 0.189 84.429); /* Light cream */
+  --chart-5: oklch(0.769 0.188 70.08); /* Darker sage */
+  --radius: 0.625rem;
+  --sidebar: oklch(1 0 0);
+  --sidebar-foreground: oklch(0.145 0 0);
+  --sidebar-primary: oklch(0.205 0 0); /* Deep Forest Green primary */
+  --sidebar-primary-foreground: oklch(
+    0.985 0 0
+  ); /* Light cream text on primary */
+  --sidebar-accent: oklch(0.97 0 0); /* Golden accent */
+  --sidebar-accent-foreground: oklch(0.205 0 0); /* Dark text on accent */
+  --sidebar-border: oklch(0.922 0 0); /* Misty sage borders */
+  --sidebar-ring: oklch(0.708 0 0); /* Golden ring focus */
+}
+
+.dark {
+  /* Updated dark mode colors to maintain brand consistency */
+  --background: oklch(0.145 0 0); /* Dark forest background */
+  --foreground: oklch(0.985 0 0); /* Light cream text */
+  --card: oklch(0.145 0 0); /* Slightly lighter dark cards */
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.145 0 0);
+  --popover-foreground: oklch(0.985 0 0);
+  --primary: oklch(0.985 0 0); /* Golden primary in dark mode */
+  --primary-foreground: oklch(0.205 0 0); /* Dark text on golden */
+  --secondary: oklch(0.269 0 0); /* Forest green secondary */
+  --secondary-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.269 0 0); /* Darker muted */
+  --muted-foreground: oklch(0.708 0 0); /* Lighter muted text */
+  --accent: oklch(0.269 0 0); /* Golden accent */
+  --accent-foreground: oklch(0.985 0 0);
+  --destructive: oklch(0.396 0.141 25.723);
+  --destructive-foreground: oklch(0.637 0.237 25.331);
+  --border: oklch(0.269 0 0);
+  --input: oklch(0.269 0 0);
+  --ring: oklch(0.439 0 0);
+  --chart-1: oklch(0.488 0.243 264.376);
+  --chart-2: oklch(0.696 0.17 162.48);
+  --chart-3: oklch(0.769 0.188 70.08);
+  --chart-4: oklch(0.627 0.265 303.9);
+  --chart-5: oklch(0.645 0.246 16.439);
+  --sidebar: oklch(0.205 0 0);
+  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar-primary: oklch(
+    0.488 0.243 264.376
+  ); /* Golden primary in dark mode */
+  --sidebar-primary-foreground: oklch(
+    0.985 0 0
+  ); /* Light cream text on primary */
+  --sidebar-accent: oklch(0.269 0 0); /* Golden accent */
+  --sidebar-accent-foreground: oklch(0.985 0 0); /* Dark text on accent */
+  --sidebar-border: oklch(0.269 0 0); /* Misty sage borders */
+  --sidebar-ring: oklch(0.439 0 0); /* Golden ring focus */
+}
+
+@theme inline {
+  /* Added custom font family variables */
+  --font-bebas: "Bebas Neue", sans-serif;
+  --font-playfair: "Playfair Display", serif;
+  --font-poppins: "Poppins", sans-serif;
+  /* optional: --font-sans, --font-serif, --font-mono if they are applied in the layout.tsx */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  /* Added custom font utility classes */
+  .font-bebas {
+    font-family: var(--font-bebas);
+  }
+  .font-playfair {
+    font-family: var(--font-playfair);
+  }
+  .font-poppins {
+    font-family: var(--font-poppins);
+  }
+  .font-dm-sans {
+    font-family: var(--font-dm-sans), "DM Sans", sans-serif;
+  }
+  .font-dm-serif {
+    font-family: var(--font-dm-serif), "DM Serif Display", serif;
+  }
+}
+
+/* Landing page color palette */
+:root {
+  --lp-bg: #e8e4da;
+  --lp-bg2: #ddd9ce;
+  --lp-bg3: #d4cfc3;
+  --lp-text: #2a2620;
+  --lp-muted: #7a7368;
+  --lp-accent: #c4724a;
+  --lp-accent2: #b85e38;
+  --lp-cream: #f2eee6;
+  --lp-dark: #1e1b17;
+}
+
+/* Dark form input placeholders */
+.vendor-form-input::placeholder {
+  color: rgba(232, 228, 218, 0.3);
+}
+
+/* Deals ticker */
+@keyframes ticker {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+.lp-ticker {
+  animation: ticker 28s linear infinite;
+}
+
+/* Fade-up animation for landing page */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.lp-fade-up {
+  animation: fadeUp 0.6s ease forwards;
+}
+
+/* ── Scroll-triggered reveal system ── */
+[data-reveal] {
+  opacity: 0;
+  transition:
+    opacity 0.65s ease,
+    transform 0.65s ease;
+}
+[data-reveal="up"] {
+  transform: translateY(40px);
+}
+[data-reveal="left"] {
+  transform: translateX(-50px);
+}
+[data-reveal="right"] {
+  transform: translateX(50px);
+}
+[data-reveal="scale"] {
+  transform: scale(0.88);
+}
+
+[data-reveal].is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+[data-delay="1"].is-visible {
+  transition-delay: 0.1s;
+}
+[data-delay="2"].is-visible {
+  transition-delay: 0.2s;
+}
+[data-delay="3"].is-visible {
+  transition-delay: 0.3s;
+}
+[data-delay="4"].is-visible {
+  transition-delay: 0.4s;
+}
+[data-delay="5"].is-visible {
+  transition-delay: 0.5s;
+}
+[data-delay="6"].is-visible {
+  transition-delay: 0.6s;
+}
+
+/* Spin animation for loading states */
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Pop-in animation for map pins */
+@keyframes popIn {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0);
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.15);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+/* Pulse animation for center dot */
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(196, 114, 74, 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 12px rgba(196, 114, 74, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(196, 114, 74, 0);
+  }
+}

@@ -1,0 +1,5 @@
+Contact: mailto:security@kohedha.lk
+Expires: 2025-12-31T23:59:59.000Z
+Preferred-Languages: en
+Canonical: https://kohedha.lk/.well-known/security.txt
+Policy: https://kohedha.lk/security-policy
