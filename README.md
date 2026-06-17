@@ -1,218 +1,149 @@
-# Kohedha - Sri Lanka's Restaurant & Event Discovery App
+# Kohedha Frontend
 
-A Next.js application with Sanity CMS integration for managing and displaying blog content about Sri Lanka's food and event scene.
+Next.js web app for the Kohedha platform — Sri Lanka's restaurant and event discovery experience. The public site helps users browse places, events, and deals, make reservations, and join the waitlist. Vendors manage menus, bookings, events, and deals through a web dashboard backed by the Kohedha REST API.
+
+Built with **Next.js 15**, **React 19**, **TypeScript**, and **Tailwind CSS**.
 
 ## Features
 
-- **Next.js 15** with App Router
-- **Sanity CMS** for content management
-- **TypeScript** for type safety
-- **Tailwind CSS** for styling
-- **Framer Motion** for animations
-- **Portable Text** for rich content rendering
+- **Public discovery** — places, events, deals, and blog content
+- **Public booking** — customer reservations via shareable booking links
+- **Waitlist** — sign-up flow for early access
+- **Vendor dashboard** — registration, login (email/password and Google OAuth), venue profile, menus, floor plan, booking slots, reservations, events, and deals
+- **Google Maps** — location picker during vendor registration
+- **SEO & PWA** — structured data, sitemap, and web app manifest
 
-## Getting Started
+## Prerequisites
 
-### Prerequisites
+- Node.js 18+ (20+ recommended)
+- npm
+- Kohedha [backend](../backend/README.md) running locally for vendor and booking features
 
-- Node.js 18+ (20+ recommended for best compatibility)
-- npm or pnpm
+## Getting started
 
-### Installation
+### 1. Install dependencies
 
-1. **Clone the repository**
-   ```bash
-   git clone <repository-url>
-   cd kohedha-public
-   ```
+```bash
+cd frontend
+npm install
+```
 
-2. **Install dependencies**
-   ```bash
-   npm install --legacy-peer-deps
-   ```
+### 2. Configure environment variables
 
-3. **Set up environment variables**
-   
-   Create a `.env.local` file in the root directory:
-   ```env
-   # Sanity Configuration
-   NEXT_PUBLIC_SANITY_PROJECT_ID=your_project_id_here
-   NEXT_PUBLIC_SANITY_DATASET=production
-   NEXT_PUBLIC_SANITY_API_VERSION=2025-06-01
-   ```
+Create a `.env.local` file in the `frontend` directory:
 
-   To get your Sanity project details:
-   1. Go to [sanity.io/manage](https://sanity.io/manage)
-   2. Create a new project or select an existing one
-   3. Copy the Project ID from the project settings
-   4. Update the `.env.local` file with your details
+```env
+# Backend API
+NEXT_PUBLIC_API_URL=http://localhost:5002/api
 
-4. **Run the development server**
-   ```bash
-   npm run dev
-   ```
+# Google Maps (vendor location picker)
+NEXT_PUBLIC_GOOGLE_MAPS_API_KEY=
 
-5. **Access the application**
-   - Main app: http://localhost:3000
-   - Sanity Studio: http://localhost:3000/studio
+# reCAPTCHA (public booking flow)
+NEXT_PUBLIC_RECAPTCHA_SITE_KEY=
+```
 
-## Blog System
+See [GOOGLE-MAPS-SETUP.md](./GOOGLE-MAPS-SETUP.md) for Google Maps API setup.
 
-### Creating Content
+### 3. Run the development server
 
-1. **Access Sanity Studio**
-   - Navigate to http://localhost:3000/studio
-   - Sign in with your Sanity account
+```bash
+npm run dev
+```
 
-2. **Create Content Types**
-   - **Authors**: Create author profiles with name, image, and bio
-   - **Categories**: Create categories for organizing posts
-   - **Posts**: Create blog posts with title, content, author, and categories
+Open [http://localhost:3000](http://localhost:3000).
 
-3. **Content Structure**
-   - **Posts** include: title, slug, author, main image, categories, published date, and body content
-   - **Authors** include: name, slug, image, and bio
-   - **Categories** include: title, slug, and description
+For vendor dashboard and booking flows, start the backend on port **5002** first (see [backend/README.md](../backend/README.md)).
 
-### Frontend Integration
-
-The blog system automatically:
-- Fetches posts from Sanity CMS
-- Displays them on the blog listing page (`/blog`)
-- Shows individual blog posts (`/blog/[slug]`)
-- Displays related posts
-- Shows latest posts on the home page
-
-### File Structure
+## Project structure
 
 ```
+frontend/
 ├── app/
-│   ├── blog/
-│   │   ├── page.tsx              # Blog listing page
-│   │   └── [slug]/page.tsx       # Individual blog post page
-│   └── studio/[[...tool]]/page.tsx # Sanity Studio
-├── components/
-│   └── latest-posts.tsx          # Latest posts component for home page
-├── lib/
-│   └── sanity.ts                 # Sanity utilities and queries
-├── sanity/
-│   ├── lib/
-│   │   ├── client.ts             # Sanity client configuration
-│   │   └── image.ts              # Image URL builder
-│   ├── schemaTypes/
-│   │   ├── postType.ts           # Blog post schema
-│   │   ├── authorType.ts         # Author schema
-│   │   ├── categoryType.ts       # Category schema
-│   │   └── blockContentType.ts   # Rich text content schema
-│   └── env.ts                    # Environment variables
-└── .env.local                    # Environment configuration
+│   ├── page.tsx                    # Home page
+│   ├── places/                     # Venue discovery
+│   ├── events/                     # Events listing and detail
+│   ├── deals/                      # Deals listing and detail
+│   ├── blog/                       # Blog listing and posts
+│   ├── book/[token]/               # Public customer booking
+│   ├── wait-list/                  # Waitlist sign-up
+│   └── vendors/                    # Vendor landing and dashboard
+├── components/                     # Shared UI and feature components
+├── hooks/                          # React hooks
+├── lib/                            # API clients and utilities
+│   ├── auth.ts                     # Vendor auth
+│   ├── venue.ts                    # Venue profile
+│   ├── menu.ts                     # Menu management
+│   ├── bookingSlots.ts             # Booking slots and reservations
+│   ├── events.ts                   # Vendor events API
+│   ├── deals.ts                    # Vendor deals API
+│   └── publicBooking.ts            # Public booking API
+└── public/                         # Static assets, PWA manifest, service worker
 ```
 
-## Available Scripts
+## Scripts
 
-- `npm run dev` - Start development server
-- `npm run build` - Build for production
-- `npm run start` - Start production server
-- `npm run lint` - Run ESLint
+| Command | Description |
+|---------|-------------|
+| `npm run dev` | Start development server |
+| `npm run build` | Build for production |
+| `npm start` | Start production server |
+| `npm run lint` | Run ESLint |
 
-## Content Management
+## Main routes
 
-### Adding New Blog Posts
+| Route | Description |
+|-------|-------------|
+| `/` | Marketing home page |
+| `/places` | Browse venues |
+| `/events` | Browse events |
+| `/deals` | Browse deals and offers |
+| `/blog` | Blog and guides |
+| `/book/[token]` | Customer booking via vendor link |
+| `/wait-list` | Waitlist sign-up |
+| `/vendors` | Vendor landing page |
+| `/vendors/login` | Vendor login |
+| `/vendors/register` | Vendor registration |
+| `/vendors/dashboard` | Vendor dashboard |
+| `/vendors/reservation-portal/*` | Booking slots, guest list, floor arrangements |
 
-1. Go to http://localhost:3000/studio
-2. Click "Create new" → "Post"
-3. Fill in the required fields:
-   - **Title**: The blog post title
-   - **Slug**: Auto-generated from title (or customize)
-   - **Author**: Select from existing authors
-   - **Main Image**: Upload or select an image
-   - **Categories**: Select relevant categories
-   - **Published At**: Set the publication date
-   - **Body**: Write your content using the rich text editor
-4. Click "Publish"
+## Backend integration
 
-### Managing Authors
+The frontend talks to the Kohedha backend via `NEXT_PUBLIC_API_URL`. Vendor routes use JWT auth (httpOnly cookie or Bearer token). Public booking and waitlist endpoints do not require authentication.
 
-1. Go to http://localhost:3000/studio
-2. Click "Create new" → "Author"
-3. Add author details:
-   - **Name**: Author's full name
-   - **Image**: Author's profile picture
-   - **Bio**: Author's biography
-
-### Managing Categories
-
-1. Go to http://localhost:3000/studio
-2. Click "Create new" → "Category"
-3. Add category details:
-   - **Title**: Category name (e.g., "Restaurants", "Events")
-   - **Description**: Brief description of the category
-
-## Customization
-
-### Styling
-
-The blog uses Tailwind CSS for styling. You can customize:
-- Colors and themes in `tailwind.config.ts`
-- Component styles in the respective component files
-- Global styles in `app/globals.css`
-
-### Content Schema
-
-To modify the content structure:
-1. Edit the schema files in `sanity/schemaTypes/`
-2. Add new fields or modify existing ones
-3. Restart the development server
-
-### Queries
-
-The Sanity queries are defined in `lib/sanity.ts`. You can:
-- Modify existing queries to fetch different data
-- Add new queries for additional functionality
-- Customize the data transformation logic
+Ensure the backend `FRONTEND_URL` matches this app's origin (default `http://localhost:3000`) so CORS and OAuth redirects work correctly.
 
 ## Deployment
 
-1. **Build the application**
+1. Build the application:
+
    ```bash
    npm run build
    ```
 
-2. **Deploy to your preferred platform**
-   - Vercel (recommended for Next.js)
-   - Netlify
-   - AWS
-   - Other platforms
+2. Deploy to your preferred platform (Vercel is recommended for Next.js).
 
-3. **Set environment variables**
-   - Ensure all Sanity environment variables are set in your deployment platform
-   - Update CORS settings in your Sanity project if needed
+3. Set all `NEXT_PUBLIC_*` environment variables in your deployment environment.
+
+4. Point `NEXT_PUBLIC_API_URL` at your production backend API.
 
 ## Troubleshooting
 
-### Common Issues
+**API requests failing locally**
+- Confirm the backend is running on port 5002 (or update `NEXT_PUBLIC_API_URL`).
+- Check that `FRONTEND_URL` in the backend `.env` matches `http://localhost:3000`.
 
-1. **Environment Variables Not Working**
-   - Ensure `.env.local` is in the root directory
-   - Restart the development server after adding environment variables
-   - Check that variable names match exactly
+**Vendor login or Google OAuth not working**
+- Verify `NEXT_PUBLIC_API_URL` is set and reachable from the browser.
+- Confirm Google OAuth credentials and callback URLs are configured in the backend.
 
-2. **Sanity Studio Not Loading**
-   - Verify your project ID and dataset are correct
-   - Check that your Sanity project is accessible
-   - Ensure you're signed in to the correct Sanity account
+**Google Maps not loading on vendor registration**
+- Ensure `NEXT_PUBLIC_GOOGLE_MAPS_API_KEY` is set and the required Google Cloud APIs are enabled (see [GOOGLE-MAPS-SETUP.md](./GOOGLE-MAPS-SETUP.md)).
 
-3. **Images Not Displaying**
-   - Check that image URLs are being generated correctly
-   - Verify image assets are uploaded to Sanity
-   - Ensure CORS settings allow your domain
-
-### Getting Help
-
-- Check the [Sanity documentation](https://www.sanity.io/docs)
-- Review the [Next.js documentation](https://nextjs.org/docs)
-- Check the console for error messages
+**Environment variables not applied**
+- Variables must be prefixed with `NEXT_PUBLIC_` to be available in the browser.
+- Restart the dev server after changing `.env.local`.
 
 ## License
 
-This project is licensed under the MIT License. 
+This project is licensed under the MIT License.
