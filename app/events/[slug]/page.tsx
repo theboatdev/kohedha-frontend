@@ -6,12 +6,7 @@ import { PortableText } from "@portabletext/react"
 import { notFound } from "next/navigation"
 import { Metadata } from "next"
 import StructuredData from "@/components/structured-data"
-
-const C = {
-  bg: "#E8E4DA", bg2: "#DDD9CE", text: "#2A2620",
-  muted: "#7A7368", accent: "#C4724A", accent2: "#B85E38",
-  cream: "#F2EEE6", dark: "#1E1B17",
-}
+import { C } from "@/lib/brand-theme"
 
 interface EventPageProps {
   params: { slug: string }
@@ -66,7 +61,7 @@ export default async function EventPage({ params }: EventPageProps) {
       <StructuredData type="event" data={event} />
 
       {/* Breadcrumb */}
-      <div style={{ background: C.bg2, borderBottom: "1px solid rgba(42,38,32,0.08)", padding: "14px 48px" }}>
+      <div style={{ background: C.bg2, borderBottom: "1px solid rgba(13,13,13,0.08)", padding: "14px 48px" }}>
         <div style={{ maxWidth: "1100px", margin: "0 auto" }}>
           <Link href="/events" style={{ display: "inline-flex", alignItems: "center", gap: "6px", fontSize: "13px", color: C.muted, textDecoration: "none", fontWeight: 500 }}>
             <ArrowLeft size={14} />
@@ -84,7 +79,7 @@ export default async function EventPage({ params }: EventPageProps) {
             <div style={{ background: C.accent, color: "white", borderRadius: "40px", padding: "5px 14px", fontSize: "12px", fontWeight: 500, display: "inline-block", marginBottom: "14px" }}>
               {event.category}
             </div>
-            <h1 className="font-dm-serif" style={{ color: "white", fontSize: "clamp(28px,4vw,48px)", lineHeight: 1.15, marginBottom: "16px" }}>
+            <h1 className="font-display" style={{ color: "white", fontSize: "clamp(28px,4vw,48px)", lineHeight: 1.15, marginBottom: "16px" }}>
               {event.title}
             </h1>
             <div style={{ display: "flex", flexWrap: "wrap", gap: "16px", fontSize: "14px", color: "rgba(255,255,255,0.85)" }}>
@@ -103,13 +98,13 @@ export default async function EventPage({ params }: EventPageProps) {
           {/* Main */}
           <div>
             <div style={{ marginBottom: "36px" }}>
-              <h2 className="font-dm-serif" style={{ fontSize: "26px", color: C.text, marginBottom: "16px" }}>About This Event</h2>
+              <h2 className="font-display" style={{ fontSize: "26px", color: C.text, marginBottom: "16px" }}>About This Event</h2>
               <p style={{ fontSize: "16px", color: C.muted, lineHeight: 1.8 }}>{event.description}</p>
             </div>
 
             {event.body && (
               <div style={{ marginBottom: "36px" }}>
-                <h2 className="font-dm-serif" style={{ fontSize: "26px", color: C.text, marginBottom: "16px" }}>Event Details</h2>
+                <h2 className="font-display" style={{ fontSize: "26px", color: C.text, marginBottom: "16px" }}>Event Details</h2>
                 <div className="prose prose-lg max-w-none" style={{ color: C.muted }}>
                   <PortableText value={event.body} />
                 </div>
@@ -117,8 +112,8 @@ export default async function EventPage({ params }: EventPageProps) {
             )}
 
             {/* Info card */}
-            <div style={{ background: C.cream, borderRadius: "16px", border: "1px solid rgba(42,38,32,0.08)", padding: "28px" }}>
-              <h3 className="font-dm-serif" style={{ fontSize: "22px", color: C.text, marginBottom: "20px" }}>Event Information</h3>
+            <div style={{ background: C.cream, borderRadius: "16px", border: "1px solid rgba(13,13,13,0.08)", padding: "28px" }}>
+              <h3 className="font-display" style={{ fontSize: "22px", color: C.text, marginBottom: "20px" }}>Event Information</h3>
               <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
                 <div style={{ display: "flex", alignItems: "flex-start", gap: "14px" }}>
                   <div style={{ width: "36px", height: "36px", background: C.bg2, borderRadius: "10px", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
@@ -157,7 +152,7 @@ export default async function EventPage({ params }: EventPageProps) {
                 )}
 
                 <div style={{ display: "flex", alignItems: "flex-start", gap: "14px" }}>
-                  <div style={{ width: "36px", height: "36px", background: "rgba(196,114,74,0.12)", borderRadius: "10px", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                  <div style={{ width: "36px", height: "36px", background: "rgba(245,230,66,0.12)", borderRadius: "10px", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
                     <span style={{ fontSize: "16px", color: C.accent }}>₨</span>
                   </div>
                   <div>
@@ -174,7 +169,7 @@ export default async function EventPage({ params }: EventPageProps) {
 
             {/* Ticket */}
             <div style={{ background: C.dark, borderRadius: "16px", padding: "28px", color: "white" }}>
-              <h3 className="font-dm-serif" style={{ fontSize: "22px", marginBottom: "12px" }}>Get Tickets</h3>
+              <h3 className="font-display" style={{ fontSize: "22px", marginBottom: "12px" }}>Get Tickets</h3>
               <p style={{ fontSize: "28px", fontWeight: 700, color: C.accent, marginBottom: "20px" }}>{event.price}</p>
               <button style={{ width: "100%", background: C.accent, color: "white", border: "none", borderRadius: "40px", padding: "14px", fontSize: "15px", fontWeight: 600, cursor: "pointer" }}>
                 Book Now
@@ -183,8 +178,8 @@ export default async function EventPage({ params }: EventPageProps) {
 
             {/* Organizer contact */}
             {event.organizer && (
-              <div style={{ background: C.cream, borderRadius: "16px", border: "1px solid rgba(42,38,32,0.08)", padding: "24px" }}>
-                <h3 className="font-dm-serif" style={{ fontSize: "20px", color: C.text, marginBottom: "16px" }}>Contact Organizer</h3>
+              <div style={{ background: C.cream, borderRadius: "16px", border: "1px solid rgba(13,13,13,0.08)", padding: "24px" }}>
+                <h3 className="font-display" style={{ fontSize: "20px", color: C.text, marginBottom: "16px" }}>Contact Organizer</h3>
                 <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
                   <div style={{ display: "flex", alignItems: "center", gap: "8px", fontSize: "13px", color: C.muted }}>
                     <User size={14} /><span>{event.organizer}</span>
@@ -212,11 +207,11 @@ export default async function EventPage({ params }: EventPageProps) {
             )}
 
             {/* Share */}
-            <div style={{ background: C.cream, borderRadius: "16px", border: "1px solid rgba(42,38,32,0.08)", padding: "24px" }}>
-              <h3 className="font-dm-serif" style={{ fontSize: "20px", color: C.text, marginBottom: "16px" }}>Share Event</h3>
+            <div style={{ background: C.cream, borderRadius: "16px", border: "1px solid rgba(13,13,13,0.08)", padding: "24px" }}>
+              <h3 className="font-display" style={{ fontSize: "20px", color: C.text, marginBottom: "16px" }}>Share Event</h3>
               <div style={{ display: "flex", gap: "10px" }}>
                 {[Facebook, Twitter, Instagram].map((Icon, i) => (
-                  <div key={i} style={{ width: "36px", height: "36px", border: "1px solid rgba(42,38,32,0.15)", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer" }}>
+                  <div key={i} style={{ width: "36px", height: "36px", border: "1px solid rgba(13,13,13,0.15)", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer" }}>
                     <Icon size={15} style={{ color: C.muted }} />
                   </div>
                 ))}

@@ -3,12 +3,7 @@ import Image from "next/image"
 import { Star, MapPin, ArrowRight } from "lucide-react"
 import { getPlaces } from "@/lib/sanity-places"
 import StructuredData from "@/components/structured-data"
-
-const C = {
-  bg: "#E8E4DA", bg2: "#DDD9CE", text: "#2A2620",
-  muted: "#7A7368", accent: "#C4724A", accent2: "#B85E38",
-  cream: "#F2EEE6", dark: "#1E1B17",
-}
+import { C } from "@/lib/brand-theme"
 
 interface Place {
   id: string
@@ -60,7 +55,7 @@ export default async function PlacesPage() {
           <p style={{ fontSize: "11px", fontWeight: 500, letterSpacing: "0.15em", textTransform: "uppercase", color: C.accent, marginBottom: "16px" }}>
             Explore
           </p>
-          <h1 className="font-dm-serif" style={{ fontSize: "clamp(36px,5vw,60px)", letterSpacing: "-0.02em", marginBottom: "20px", lineHeight: 1.15 }}>
+          <h1 className="font-display" style={{ fontSize: "clamp(36px,5vw,60px)", letterSpacing: "-0.02em", marginBottom: "20px", lineHeight: 1.15 }}>
             Places & Venues
           </h1>
           <p style={{ fontSize: "17px", color: "rgba(255,255,255,0.65)", maxWidth: "520px", margin: "0 auto", lineHeight: 1.7 }}>
@@ -87,7 +82,7 @@ export default async function PlacesPage() {
                 <p style={{ fontSize: "11px", fontWeight: 500, letterSpacing: "0.15em", textTransform: "uppercase", color: C.accent, marginBottom: "8px" }}>
                   Editor's picks
                 </p>
-                <h2 className="font-dm-serif" style={{ fontSize: "34px", letterSpacing: "-0.02em", color: C.text }}>
+                <h2 className="font-display" style={{ fontSize: "34px", letterSpacing: "-0.02em", color: C.text }}>
                   Featured Places
                 </h2>
               </div>
@@ -111,7 +106,7 @@ export default async function PlacesPage() {
               <p style={{ fontSize: "11px", fontWeight: 500, letterSpacing: "0.15em", textTransform: "uppercase", color: C.accent, marginBottom: "8px" }}>
                 Discover
               </p>
-              <h2 className="font-dm-serif" style={{ fontSize: "34px", letterSpacing: "-0.02em", color: C.text }}>
+              <h2 className="font-display" style={{ fontSize: "34px", letterSpacing: "-0.02em", color: C.text }}>
                 All Places
               </h2>
             </div>
@@ -121,7 +116,7 @@ export default async function PlacesPage() {
           {allPlaces.length === 0 ? (
             <div style={{ textAlign: "center", padding: "80px 0" }}>
               <MapPin size={48} style={{ color: C.muted, margin: "0 auto 16px" }} />
-              <h3 className="font-dm-serif" style={{ fontSize: "26px", color: C.text, marginBottom: "12px" }}>
+              <h3 className="font-display" style={{ fontSize: "26px", color: C.text, marginBottom: "12px" }}>
                 No places available yet
               </h3>
               <p style={{ color: C.muted, marginBottom: "28px" }}>Check back soon for amazing restaurants and cafes.</p>
@@ -161,7 +156,7 @@ function PlaceCard({ place, featured }: { place: Place; featured: boolean }) {
         background: C.cream,
         borderRadius: "16px",
         overflow: "hidden",
-        border: featured ? `2px solid ${C.accent}` : "1px solid rgba(42,38,32,0.08)",
+        border: featured ? `2px solid ${C.accent}` : "1px solid rgba(13,13,13,0.08)",
         transition: "box-shadow 0.2s, transform 0.2s",
       }}
     >
@@ -191,7 +186,7 @@ function PlaceCard({ place, featured }: { place: Place; featured: boolean }) {
 
       <div style={{ padding: "20px 22px 22px" }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "8px" }}>
-          <h3 className="font-dm-serif" style={{ fontSize: "20px", color: C.text, lineHeight: 1.2 }}>{place.name}</h3>
+          <h3 className="font-display" style={{ fontSize: "20px", color: C.text, lineHeight: 1.2 }}>{place.name}</h3>
           {place.rating && (
             <div style={{ display: "flex", alignItems: "center", gap: "4px", flexShrink: 0, marginLeft: "8px" }}>
               <Star size={14} style={{ fill: "#F59E0B", color: "#F59E0B" }} />
@@ -233,7 +228,7 @@ function PlaceCard({ place, featured }: { place: Place; featured: boolean }) {
           </div>
         )}
 
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "flex-end", borderTop: "1px solid rgba(42,38,32,0.08)", paddingTop: "14px" }}>
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "flex-end", borderTop: "1px solid rgba(13,13,13,0.08)", paddingTop: "14px" }}>
           <Link
             href={`/places/${place.id}`}
             style={{ display: "flex", alignItems: "center", gap: "4px", fontSize: "13px", fontWeight: 600, color: C.accent, textDecoration: "none" }}

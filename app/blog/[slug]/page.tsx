@@ -6,12 +6,7 @@ import { PortableText } from "@portabletext/react"
 import { notFound } from "next/navigation"
 import { Metadata } from "next"
 import StructuredData from "@/components/structured-data"
-
-const C = {
-  bg: "#E8E4DA", bg2: "#DDD9CE", text: "#2A2620",
-  muted: "#7A7368", accent: "#C4724A", accent2: "#B85E38",
-  cream: "#F2EEE6", dark: "#1E1B17",
-}
+import { C } from "@/lib/brand-theme"
 
 interface BlogPostPageProps {
   params: { slug: string }
@@ -79,7 +74,7 @@ export default async function BlogPost({ params }: BlogPostPageProps) {
       <StructuredData type="article" data={post} />
 
       {/* Breadcrumb */}
-      <div style={{ background: C.bg2, borderBottom: "1px solid rgba(42,38,32,0.08)", padding: "14px 48px" }}>
+      <div style={{ background: C.bg2, borderBottom: "1px solid rgba(13,13,13,0.08)", padding: "14px 48px" }}>
         <div style={{ maxWidth: "800px", margin: "0 auto" }}>
           <Link href="/blog" style={{ display: "inline-flex", alignItems: "center", gap: "6px", fontSize: "13px", color: C.muted, textDecoration: "none", fontWeight: 500 }}>
             <ArrowLeft size={14} />
@@ -97,7 +92,7 @@ export default async function BlogPost({ params }: BlogPostPageProps) {
             <div style={{ background: C.accent, color: "white", borderRadius: "40px", padding: "5px 14px", fontSize: "12px", fontWeight: 500, display: "inline-block", marginBottom: "14px" }}>
               {post.category}
             </div>
-            <h1 className="font-dm-serif" style={{ color: "white", fontSize: "clamp(26px,4vw,44px)", lineHeight: 1.2, marginBottom: "16px" }}>
+            <h1 className="font-display" style={{ color: "white", fontSize: "clamp(26px,4vw,44px)", lineHeight: 1.2, marginBottom: "16px" }}>
               {post.title}
             </h1>
             <div style={{ display: "flex", flexWrap: "wrap", gap: "14px", fontSize: "13px", color: "rgba(255,255,255,0.8)" }}>
@@ -113,7 +108,7 @@ export default async function BlogPost({ params }: BlogPostPageProps) {
       <div style={{ maxWidth: "800px", margin: "0 auto", padding: "56px 48px" }}>
 
         {/* Author bar */}
-        <div style={{ display: "flex", alignItems: "center", gap: "16px", paddingBottom: "28px", borderBottom: "1px solid rgba(42,38,32,0.1)", marginBottom: "36px" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "16px", paddingBottom: "28px", borderBottom: "1px solid rgba(13,13,13,0.1)", marginBottom: "36px" }}>
           <Image
             src={post.authorImage || "/placeholder.svg"}
             alt={post.author}
@@ -127,7 +122,7 @@ export default async function BlogPost({ params }: BlogPostPageProps) {
           </div>
           <div style={{ display: "flex", gap: "8px" }}>
             {[Facebook, Twitter, Instagram].map((Icon, i) => (
-              <div key={i} style={{ width: "32px", height: "32px", border: "1px solid rgba(42,38,32,0.15)", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer" }}>
+              <div key={i} style={{ width: "32px", height: "32px", border: "1px solid rgba(13,13,13,0.15)", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer" }}>
                 <Icon size={13} style={{ color: C.muted }} />
               </div>
             ))}
@@ -135,7 +130,7 @@ export default async function BlogPost({ params }: BlogPostPageProps) {
         </div>
 
         {/* Body */}
-        <article className="prose prose-lg max-w-none prose-headings:font-dm-serif prose-a:text-[#C4724A]">
+        <article className="prose prose-lg max-w-none prose-headings:font-display prose-a:text-[#C8281A]">
           {post.body && <PortableText value={post.body} />}
         </article>
 
@@ -145,7 +140,7 @@ export default async function BlogPost({ params }: BlogPostPageProps) {
             <Image src="/placeholder.svg?height=800&width=450" alt="Kohedha App" fill className="object-cover" />
           </div>
           <div>
-            <h3 className="font-dm-serif" style={{ fontSize: "24px", marginBottom: "10px" }}>Discover More with Kohedha</h3>
+            <h3 className="font-display" style={{ fontSize: "24px", marginBottom: "10px" }}>Discover More with Kohedha</h3>
             <p style={{ fontSize: "14px", color: "rgba(255,255,255,0.6)", lineHeight: 1.7, marginBottom: "20px" }}>
               Find the best restaurants and events in Sri Lanka with our mobile app.
             </p>
@@ -163,14 +158,14 @@ export default async function BlogPost({ params }: BlogPostPageProps) {
         {/* Related Posts */}
         {relatedPosts.length > 0 && (
           <div>
-            <h2 className="font-dm-serif" style={{ fontSize: "28px", color: C.text, marginBottom: "24px" }}>Related Articles</h2>
+            <h2 className="font-display" style={{ fontSize: "28px", color: C.text, marginBottom: "24px" }}>Related Articles</h2>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: "20px" }}>
               {relatedPosts.map((relatedPost: RelatedPost) => (
                 <Link
                   key={relatedPost.id}
                   href={`/blog/${relatedPost.id}`}
                   className="group"
-                  style={{ background: C.cream, borderRadius: "16px", overflow: "hidden", textDecoration: "none", border: "1px solid rgba(42,38,32,0.08)" }}
+                  style={{ background: C.cream, borderRadius: "16px", overflow: "hidden", textDecoration: "none", border: "1px solid rgba(13,13,13,0.08)" }}
                 >
                   <div style={{ position: "relative", height: "160px", overflow: "hidden" }}>
                     <Image
@@ -181,7 +176,7 @@ export default async function BlogPost({ params }: BlogPostPageProps) {
                     />
                   </div>
                   <div style={{ padding: "16px 18px" }}>
-                    <h3 className="font-dm-serif" style={{ fontSize: "16px", color: C.text, lineHeight: 1.3 }}>{relatedPost.title}</h3>
+                    <h3 className="font-display" style={{ fontSize: "16px", color: C.text, lineHeight: 1.3 }}>{relatedPost.title}</h3>
                   </div>
                 </Link>
               ))}

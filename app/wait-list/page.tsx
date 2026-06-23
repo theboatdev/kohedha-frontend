@@ -19,17 +19,7 @@ import {
   Store,
   User,
 } from "lucide-react";
-
-const C = {
-  bg: "#ffffff",
-  bg2: "#DDD9CE",
-  text: "#2A2620",
-  muted: "#7A7368",
-  accent: "#C4724A",
-  accent2: "#B85E38",
-  cream: "#F2EEE6",
-  dark: "#1E1B17",
-};
+import { C } from "@/lib/brand-theme";
 
 const benefits = [
   {
@@ -132,7 +122,7 @@ export default function WaitListPage() {
   };
 
   const inputStyle = (field: string) => ({
-    borderColor: errors[field] ? "#ef4444" : "#D4CFC3",
+    borderColor: errors[field] ? "#ef4444" : "#E8E8E4",
     background: C.cream,
     color: C.text,
     fontSize: "15px",
@@ -162,7 +152,7 @@ export default function WaitListPage() {
       >
         <div
           className="text-center max-w-md w-full px-8 py-12 rounded-2xl"
-          style={{ background: C.bg, boxShadow: "0 8px 40px rgba(42,38,32,0.08)" }}
+          style={{ background: C.bg, boxShadow: "0 8px 40px rgba(13,13,13,0.08)" }}
         >
           <div
             className="mx-auto mb-6 flex items-center justify-center rounded-full"
@@ -175,7 +165,7 @@ export default function WaitListPage() {
             <CheckCircle2 size={36} style={{ color: C.accent }} />
           </div>
           <h1
-            className="font-dm-serif mb-3"
+            className="font-display mb-3"
             style={{ fontSize: "32px", color: C.text, letterSpacing: "-0.02em" }}
           >
             You&apos;re on the list!
@@ -219,7 +209,7 @@ export default function WaitListPage() {
             Early access
           </p>
           <h1
-            className="font-dm-serif mb-5"
+            className="font-display mb-5"
             style={{
               fontSize: "clamp(32px, 4vw, 48px)",
               color: "#ffffff",
@@ -279,7 +269,7 @@ export default function WaitListPage() {
         <div className="flex flex-col justify-center px-6 py-16 lg:px-12 lg:py-24 lg:w-[55%]">
           <div style={{ maxWidth: "480px", margin: "0 auto", width: "100%" }}>
             <h2
-              className="font-dm-serif mb-2"
+              className="font-display mb-2"
               style={{ fontSize: "28px", letterSpacing: "-0.02em", color: C.text }}
             >
               Join the Waitlist
@@ -313,7 +303,7 @@ export default function WaitListPage() {
                     setFormData({ ...formData, name: e.target.value })
                   }
                   style={inputStyle("name")}
-                  className="focus-visible:ring-[#C4724A] focus-visible:border-[#C4724A]"
+                  className="focus-visible:ring-[#F5E642] focus-visible:border-[#F5E642]"
                 />
                 {errors.name && <p style={errorStyle}>{errors.name}</p>}
               </div>
@@ -332,7 +322,7 @@ export default function WaitListPage() {
                     setFormData({ ...formData, email: e.target.value })
                   }
                   style={inputStyle("email")}
-                  className="focus-visible:ring-[#C4724A] focus-visible:border-[#C4724A]"
+                  className="focus-visible:ring-[#F5E642] focus-visible:border-[#F5E642]"
                 />
                 {errors.email && <p style={errorStyle}>{errors.email}</p>}
               </div>
@@ -351,7 +341,7 @@ export default function WaitListPage() {
                     setFormData({ ...formData, mobile: e.target.value })
                   }
                   style={inputStyle("mobile")}
-                  className="focus-visible:ring-[#C4724A] focus-visible:border-[#C4724A]"
+                  className="focus-visible:ring-[#F5E642] focus-visible:border-[#F5E642]"
                 />
                 {errors.mobile && <p style={errorStyle}>{errors.mobile}</p>}
               </div>
@@ -383,7 +373,7 @@ export default function WaitListPage() {
                         }
                         className="flex flex-col items-center gap-2 py-4 rounded-xl border-2 transition-all duration-200 cursor-pointer"
                         style={{
-                          borderColor: selected ? C.accent : "#D4CFC3",
+                          borderColor: selected ? C.accent : "#E8E8E4",
                           background: selected ? `${C.accent}10` : C.cream,
                           color: selected ? C.accent2 : C.muted,
                         }}
@@ -418,7 +408,7 @@ export default function WaitListPage() {
                       setFormData({ ...formData, businessName: e.target.value })
                     }
                     style={inputStyle("businessName")}
-                    className="focus-visible:ring-[#C4724A] focus-visible:border-[#C4724A]"
+                    className="focus-visible:ring-[#F5E642] focus-visible:border-[#F5E642]"
                     tabIndex={formData.userType === "restaurant" ? 0 : -1}
                   />
                   {errors.businessName && <p style={errorStyle}>{errors.businessName}</p>}
@@ -440,7 +430,7 @@ export default function WaitListPage() {
                       setFormData({ ...formData, city: e.target.value })
                     }
                     style={inputStyle("city")}
-                    className="focus-visible:ring-[#C4724A] focus-visible:border-[#C4724A]"
+                    className="focus-visible:ring-[#F5E642] focus-visible:border-[#F5E642]"
                     tabIndex={formData.userType === "restaurant" ? 0 : -1}
                   />
                   {errors.city && <p style={errorStyle}>{errors.city}</p>}

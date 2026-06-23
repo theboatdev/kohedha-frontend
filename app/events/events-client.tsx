@@ -3,18 +3,7 @@
 import { useState } from "react"
 import Link from "next/link"
 import type { SanityEvent } from "./page"
-
-const C = {
-  bg: "#fff", //E8E4DA
-  bg2: "#DDD9CE",
-  bg3: "#D4CFC3",
-  text: "#2A2620",
-  muted: "#7A7368",
-  accent: "#C4724A",
-  accent2: "#B85E38",
-  cream: "#F2EEE6",
-  dark: "#1E1B17",
-}
+import { C } from "@/lib/brand-theme"
 
 interface ModalData {
   title: string
@@ -153,7 +142,7 @@ export default function EventsPageClient({ events }: { events: SanityEvent[] }) 
     fontSize: "13px",
     padding: "7px 16px",
     borderRadius: "40px",
-    border: "1px solid rgba(42,38,32,0.15)",
+    border: "1px solid rgba(13,13,13,0.15)",
     color: C.muted,
     cursor: "pointer",
     transition: "all 0.15s",
@@ -174,7 +163,7 @@ export default function EventsPageClient({ events }: { events: SanityEvent[] }) 
       {/* ── HERO ── */}
       <div style={{ paddingTop: "64px", position: "relative", overflow: "hidden" }}>
         <span
-          className="font-dm-serif"
+          className="font-display"
           style={{
             position: "absolute",
             bottom: "-40px",
@@ -182,7 +171,7 @@ export default function EventsPageClient({ events }: { events: SanityEvent[] }) 
             fontSize: "clamp(100px,18vw,200px)",
             fontWeight: 600,
             letterSpacing: "-0.04em",
-            color: "rgba(196,114,74,0.07)",
+            color: "rgba(245,230,66,0.07)",
             pointerEvents: "none",
             userSelect: "none",
             whiteSpace: "nowrap",
@@ -195,7 +184,7 @@ export default function EventsPageClient({ events }: { events: SanityEvent[] }) 
             Happening near you
           </p>
           <h1
-            className="font-dm-serif"
+            className="font-display"
             style={{ fontSize: "clamp(52px,7vw,88px)", lineHeight: 1.0, letterSpacing: "-0.03em", color: C.text, marginBottom: "20px" }}
           >
             Nights worth
@@ -212,7 +201,7 @@ export default function EventsPageClient({ events }: { events: SanityEvent[] }) 
       <div
         style={{
           background: C.cream,
-          borderBottom: "1px solid rgba(42,38,32,0.08)",
+          borderBottom: "1px solid rgba(13,13,13,0.08)",
           padding: "16px 48px",
           position: "sticky",
           top: "64px",
@@ -230,14 +219,14 @@ export default function EventsPageClient({ events }: { events: SanityEvent[] }) 
             {f}
           </button>
         ))}
-        <div style={{ width: "1px", height: "24px", background: "rgba(42,38,32,0.1)", margin: "0 4px", flexShrink: 0 }} />
+        <div style={{ width: "1px", height: "24px", background: "rgba(13,13,13,0.1)", margin: "0 4px", flexShrink: 0 }} />
         <span style={{ fontSize: "12px", color: C.muted, fontWeight: 500, marginRight: "4px", whiteSpace: "nowrap" }}>When</span>
         {whenFilters.map((f) => (
           <button key={f} onClick={() => setActiveWhen(activeWhen === f ? null : f)} style={activeWhen === f ? pillActive : pillBase}>
             {f}
           </button>
         ))}
-        <div style={{ width: "1px", height: "24px", background: "rgba(42,38,32,0.1)", margin: "0 4px", flexShrink: 0 }} />
+        <div style={{ width: "1px", height: "24px", background: "rgba(13,13,13,0.1)", margin: "0 4px", flexShrink: 0 }} />
         <span style={{ fontSize: "12px", color: C.muted, fontWeight: 500, marginRight: "4px", whiteSpace: "nowrap" }}>Price</span>
         {priceFilters.map((f) => (
           <button key={f} onClick={() => setActivePrice(activePrice === f ? null : f)} style={activePrice === f ? pillActive : pillBase}>
@@ -269,7 +258,7 @@ export default function EventsPageClient({ events }: { events: SanityEvent[] }) 
                 display: "inline-flex",
                 alignItems: "center",
                 gap: "6px",
-                background: "rgba(196,114,74,0.2)",
+                background: "rgba(245,230,66,0.2)",
                 color: C.accent,
                 fontSize: "11px",
                 fontWeight: 500,
@@ -284,10 +273,10 @@ export default function EventsPageClient({ events }: { events: SanityEvent[] }) 
               <span style={{ width: "6px", height: "6px", borderRadius: "50%", background: C.accent, display: "inline-block" }} />
               Live tonight
             </span>
-            <h2 className="font-dm-serif" style={{ fontSize: "42px", color: C.cream, lineHeight: 1.1, letterSpacing: "-0.02em", marginBottom: "16px" }}>
+            <h2 className="font-display" style={{ fontSize: "42px", color: C.cream, lineHeight: 1.1, letterSpacing: "-0.02em", marginBottom: "16px" }}>
               Rooftop Jazz &amp; Sunset Sessions
             </h2>
-            <p style={{ fontSize: "14px", color: "rgba(232,228,218,0.5)", marginBottom: "28px" }}>
+            <p style={{ fontSize: "14px", color: "rgba(255,255,255,0.5)", marginBottom: "28px" }}>
               Harbour Lights · Colombo 1
             </p>
             <div style={{ display: "flex", flexDirection: "column", gap: "10px", marginBottom: "36px" }}>
@@ -297,8 +286,8 @@ export default function EventsPageClient({ events }: { events: SanityEvent[] }) 
                 { icon: "◈", text: "LKR 2,500 per person · Includes welcome drink" },
                 { icon: "♪", text: "Live jazz · DJ set from 9 PM" },
               ].map((row) => (
-                <div key={row.text} style={{ display: "flex", alignItems: "center", gap: "10px", fontSize: "14px", color: "rgba(232,228,218,0.65)" }}>
-                  <div style={{ width: "28px", height: "28px", borderRadius: "6px", background: "rgba(232,228,218,0.06)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "12px", flexShrink: 0, color: "rgba(232,228,218,0.5)" }}>
+                <div key={row.text} style={{ display: "flex", alignItems: "center", gap: "10px", fontSize: "14px", color: "rgba(255,255,255,0.65)" }}>
+                  <div style={{ width: "28px", height: "28px", borderRadius: "6px", background: "rgba(255,255,255,0.06)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "12px", flexShrink: 0, color: "rgba(255,255,255,0.5)" }}>
                     {row.icon}
                   </div>
                   {row.text}
@@ -315,19 +304,19 @@ export default function EventsPageClient({ events }: { events: SanityEvent[] }) 
                 Get tickets
               </button>
               <button
-                style={{ background: "rgba(232,228,218,0.08)", color: "rgba(232,228,218,0.7)", fontSize: "14px", padding: "13px 28px", borderRadius: "40px", border: "1px solid rgba(232,228,218,0.1)", cursor: "pointer", fontFamily: "inherit", transition: "background 0.2s" }}
-                onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(232,228,218,0.12)")}
-                onMouseLeave={(e) => (e.currentTarget.style.background = "rgba(232,228,218,0.08)")}
+                style={{ background: "rgba(255,255,255,0.08)", color: "rgba(255,255,255,0.7)", fontSize: "14px", padding: "13px 28px", borderRadius: "40px", border: "1px solid rgba(255,255,255,0.1)", cursor: "pointer", fontFamily: "inherit", transition: "background 0.2s" }}
+                onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(255,255,255,0.12)")}
+                onMouseLeave={(e) => (e.currentTarget.style.background = "rgba(255,255,255,0.08)")}
               >
                 Learn more
               </button>
             </div>
           </div>
           <div style={{ background: C.bg3, position: "relative", overflow: "hidden", minHeight: "400px" }}>
-            <div style={{ position: "absolute", inset: 0, background: "repeating-linear-gradient(45deg, rgba(42,38,32,0.04) 0, rgba(42,38,32,0.04) 1px, transparent 1px, transparent 20px)" }} />
+            <div style={{ position: "absolute", inset: 0, background: "repeating-linear-gradient(45deg, rgba(13,13,13,0.04) 0, rgba(13,13,13,0.04) 1px, transparent 1px, transparent 20px)" }} />
             <div style={{ position: "absolute", bottom: "20px", right: "20px", background: "rgba(30,27,23,0.85)", color: C.cream, fontSize: "13px", padding: "10px 16px", borderRadius: "12px", backdropFilter: "blur(8px)" }}>
-              <div className="font-dm-serif" style={{ fontSize: "24px", color: C.accent, lineHeight: 1 }}>12</div>
-              <div style={{ fontSize: "11px", color: "rgba(232,228,218,0.5)" }}>spots left</div>
+              <div className="font-display" style={{ fontSize: "24px", color: C.accent, lineHeight: 1 }}>12</div>
+              <div style={{ fontSize: "11px", color: "rgba(255,255,255,0.5)" }}>spots left</div>
             </div>
           </div>
         </div>
@@ -336,7 +325,7 @@ export default function EventsPageClient({ events }: { events: SanityEvent[] }) 
       {/* ── EVENTS GRID ── */}
       <div style={{ padding: "0 48px 80px", maxWidth: "1200px", margin: "0 auto" }}>
         <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", marginBottom: "28px" }}>
-          <h2 className="font-dm-serif" style={{ fontSize: "28px", color: C.text, letterSpacing: "-0.02em" }}>
+          <h2 className="font-display" style={{ fontSize: "28px", color: C.text, letterSpacing: "-0.02em" }}>
             All events
           </h2>
           <span style={{ fontSize: "13px", color: C.muted }}>{filteredEvents.length} events this week</span>
@@ -344,7 +333,7 @@ export default function EventsPageClient({ events }: { events: SanityEvent[] }) 
 
         {filteredEvents.length === 0 ? (
           <div style={{ textAlign: "center", padding: "80px 0" }}>
-            <p className="font-dm-serif" style={{ fontSize: "24px", color: C.text, marginBottom: "12px" }}>No events found</p>
+            <p className="font-display" style={{ fontSize: "24px", color: C.text, marginBottom: "12px" }}>No events found</p>
             <p style={{ fontSize: "15px", color: C.muted }}>Try a different filter or check back soon.</p>
           </div>
         ) : (
@@ -359,7 +348,7 @@ export default function EventsPageClient({ events }: { events: SanityEvent[] }) 
               return (
                 <div
                   key={event.id}
-                  style={{ background: C.cream, borderRadius: "18px", overflow: "hidden", border: "1px solid rgba(42,38,32,0.06)", transition: "transform 0.2s", cursor: "pointer" }}
+                  style={{ background: C.cream, borderRadius: "18px", overflow: "hidden", border: "1px solid rgba(13,13,13,0.06)", transition: "transform 0.2s", cursor: "pointer" }}
                   onMouseEnter={(e) => ((e.currentTarget as HTMLDivElement).style.transform = "translateY(-4px)")}
                   onMouseLeave={(e) => ((e.currentTarget as HTMLDivElement).style.transform = "translateY(0)")}
                   onClick={() => setModal({ title: event.title, venue: `${event.location?.name ?? ""} · ${event.location?.city ?? ""}`, date: `${event.date} · ${event.time}`, price: event.price || "Free", vibe: event.category || "" })}
@@ -368,11 +357,11 @@ export default function EventsPageClient({ events }: { events: SanityEvent[] }) 
                     {event.image ? (
                       <img src={event.image} alt={event.title} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
                     ) : (
-                      <div style={{ position: "absolute", inset: 0, background: "repeating-linear-gradient(-45deg, rgba(42,38,32,0.04) 0, rgba(42,38,32,0.04) 1px, transparent 1px, transparent 16px)" }} />
+                      <div style={{ position: "absolute", inset: 0, background: "repeating-linear-gradient(-45deg, rgba(13,13,13,0.04) 0, rgba(13,13,13,0.04) 1px, transparent 1px, transparent 16px)" }} />
                     )}
                     <div style={{ position: "absolute", top: "14px", left: "14px", background: C.dark, color: C.cream, borderRadius: "10px", padding: "8px 12px", textAlign: "center", minWidth: "48px" }}>
-                      <div className="font-dm-serif" style={{ fontSize: "22px", lineHeight: 1 }}>{day}</div>
-                      <div style={{ fontSize: "10px", letterSpacing: "0.1em", textTransform: "uppercase", color: "rgba(232,228,218,0.5)" }}>{month}</div>
+                      <div className="font-display" style={{ fontSize: "22px", lineHeight: 1 }}>{day}</div>
+                      <div style={{ fontSize: "10px", letterSpacing: "0.1em", textTransform: "uppercase", color: "rgba(255,255,255,0.5)" }}>{month}</div>
                     </div>
                     <span style={{ position: "absolute", bottom: "12px", left: "12px", background: vibeColor, color: "white", fontSize: "11px", fontWeight: 500, padding: "3px 10px", borderRadius: "20px" }}>
                       {event.category || "Event"}
@@ -407,14 +396,14 @@ export default function EventsPageClient({ events }: { events: SanityEvent[] }) 
       {/* ── TIMELINE ── */}
       <div style={{ background: "black", padding: "80px 48px", position: "relative", overflow: "hidden" }}>
         <div className="lp-fade-up" style={{ maxWidth: "1100px", margin: "0 auto" }}>
-          <h2 className="font-dm-serif" style={{ fontSize: "36px", color: "white", letterSpacing: "-0.02em", marginBottom: "48px" }}>
+          <h2 className="font-display" style={{ fontSize: "36px", color: "white", letterSpacing: "-0.02em", marginBottom: "48px" }}>
             This week at a glance
           </h2>
           <div>
             {timeline.map((day) => (
               <div
                 key={day.day}
-                style={{ display: "grid", gridTemplateColumns: "120px 1fr", borderTop: "1px solid rgba(42,38,32,0.08)" }}
+                style={{ display: "grid", gridTemplateColumns: "120px 1fr", borderTop: "1px solid rgba(13,13,13,0.08)" }}
               >
                 <div style={{ padding: "20px 0" }}>
                   <div style={{ fontSize: "14px", fontWeight: 500, color: "white" }}>{day.day}</div>
@@ -427,9 +416,9 @@ export default function EventsPageClient({ events }: { events: SanityEvent[] }) 
                     day.events.map((ev) => (
                       <div
                         key={ev.name}
-                        style={{ background: C.cream, border: "1px solid rgba(42,38,32,0.08)", borderRadius: "10px", padding: "10px 14px", cursor: "pointer", transition: "border-color 0.15s" }}
+                        style={{ background: C.cream, border: "1px solid rgba(13,13,13,0.08)", borderRadius: "10px", padding: "10px 14px", cursor: "pointer", transition: "border-color 0.15s" }}
                         onMouseEnter={(e) => ((e.currentTarget as HTMLDivElement).style.borderColor = C.accent)}
-                        onMouseLeave={(e) => ((e.currentTarget as HTMLDivElement).style.borderColor = "rgba(42,38,32,0.08)")}
+                        onMouseLeave={(e) => ((e.currentTarget as HTMLDivElement).style.borderColor = "rgba(13,13,13,0.08)")}
                       >
                         <div style={{ fontSize: "13px", fontWeight: 500, color: C.text, marginBottom: "2px" }}>{ev.name}</div>
                         <div style={{ fontSize: "11px", color: C.muted }}>{ev.meta}</div>
@@ -440,7 +429,7 @@ export default function EventsPageClient({ events }: { events: SanityEvent[] }) 
                 </div>
               </div>
             ))}
-            <div style={{ borderTop: "1px solid rgba(42,38,32,0.08)", borderBottom: "1px solid rgba(42,38,32,0.08)", height: "1px" }} />
+            <div style={{ borderTop: "1px solid rgba(13,13,13,0.08)", borderBottom: "1px solid rgba(13,13,13,0.08)", height: "1px" }} />
           </div>
         </div>
       </div>
@@ -450,7 +439,7 @@ export default function EventsPageClient({ events }: { events: SanityEvent[] }) 
         <p style={{ fontSize: "11px", fontWeight: 500, letterSpacing: "0.15em", textTransform: "uppercase", color: C.muted, marginBottom: "24px" }}>
           Active venues
         </p>
-        <h2 className="font-dm-serif" style={{ fontSize: "32px", letterSpacing: "-0.02em", color: C.text, marginBottom: "8px" }}>
+        <h2 className="font-display" style={{ fontSize: "32px", letterSpacing: "-0.02em", color: C.text, marginBottom: "8px" }}>
           Venues with upcoming events
         </h2>
         <p style={{ fontSize: "15px", color: C.muted, marginBottom: "32px" }}>Tap any venue to see their full schedule</p>
@@ -458,12 +447,12 @@ export default function EventsPageClient({ events }: { events: SanityEvent[] }) 
           {activeVenues.map((venue) => (
             <div
               key={venue.name}
-              style={{ background: C.cream, borderRadius: "18px", padding: "28px", border: "1px solid rgba(42,38,32,0.06)", display: "flex", gap: "20px", alignItems: "flex-start", transition: "transform 0.2s", cursor: "pointer" }}
+              style={{ background: C.cream, borderRadius: "18px", padding: "28px", border: "1px solid rgba(13,13,13,0.06)", display: "flex", gap: "20px", alignItems: "flex-start", transition: "transform 0.2s", cursor: "pointer" }}
               onMouseEnter={(e) => ((e.currentTarget as HTMLDivElement).style.transform = "translateY(-2px)")}
               onMouseLeave={(e) => ((e.currentTarget as HTMLDivElement).style.transform = "translateY(0)")}
             >
-              <div style={{ width: "56px", height: "56px", borderRadius: "14px", background: C.bg2, flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center", border: "1px solid rgba(42,38,32,0.08)" }}>
-                <span className="font-dm-serif" style={{ fontSize: "22px", color: C.muted }}>{venue.initial}</span>
+              <div style={{ width: "56px", height: "56px", borderRadius: "14px", background: C.bg2, flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center", border: "1px solid rgba(13,13,13,0.08)" }}>
+                <span className="font-display" style={{ fontSize: "22px", color: C.muted }}>{venue.initial}</span>
               </div>
               <div style={{ flex: 1 }}>
                 <div style={{ fontSize: "16px", fontWeight: 500, color: C.text, marginBottom: "4px" }}>{venue.name}</div>
@@ -485,21 +474,21 @@ export default function EventsPageClient({ events }: { events: SanityEvent[] }) 
 
       {/* ── APP CTA ── */}
       <div style={{ background: C.dark, padding: "80px 48px", textAlign: "center", position: "relative", overflow: "hidden" }}>
-        <span className="font-dm-serif" style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%,-50%)", fontSize: "clamp(100px,18vw,200px)", fontWeight: 600, letterSpacing: "-0.04em", color: "rgba(196,114,74,0.06)", pointerEvents: "none", userSelect: "none", whiteSpace: "nowrap" }}>
+        <span className="font-display" style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%,-50%)", fontSize: "clamp(100px,18vw,200px)", fontWeight: 600, letterSpacing: "-0.04em", color: "rgba(245,230,66,0.06)", pointerEvents: "none", userSelect: "none", whiteSpace: "nowrap" }}>
           NIGHTS
         </span>
         <div style={{ position: "relative", zIndex: 1 }}>
-          <h2 className="font-dm-serif" style={{ fontSize: "clamp(36px,5vw,60px)", color: C.cream, lineHeight: 1.1, marginBottom: "16px" }}>
+          <h2 className="font-display" style={{ fontSize: "clamp(36px,5vw,60px)", color: C.cream, lineHeight: 1.1, marginBottom: "16px" }}>
             Never miss a<br /><em style={{ fontStyle: "italic", color: C.accent }}>night worth going to</em>
           </h2>
-          <p style={{ fontSize: "15px", color: "rgba(232,228,218,0.5)", maxWidth: "400px", margin: "0 auto 36px", lineHeight: 1.7 }}>
+          <p style={{ fontSize: "15px", color: "rgba(255,255,255,0.5)", maxWidth: "400px", margin: "0 auto 36px", lineHeight: 1.7 }}>
             Get push alerts when venues you follow publish new events. Reserve your seat before it sells out.
           </p>
           <div style={{ display: "flex", gap: "12px", justifyContent: "center", flexWrap: "wrap" }}>
             {[{ label: "Download on the", strong: "App Store" }, { label: "Get it on", strong: "Google Play" }].map((b) => (
-              <a key={b.strong} href="#" style={{ display: "flex", alignItems: "center", gap: "10px", background: "rgba(232,228,218,0.08)", color: C.cream, padding: "12px 24px", borderRadius: "12px", textDecoration: "none", fontSize: "13px", border: "1px solid rgba(232,228,218,0.1)", transition: "background 0.2s" }}
-                onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(232,228,218,0.12)")}
-                onMouseLeave={(e) => (e.currentTarget.style.background = "rgba(232,228,218,0.08)")}
+              <a key={b.strong} href="#" style={{ display: "flex", alignItems: "center", gap: "10px", background: "rgba(255,255,255,0.08)", color: C.cream, padding: "12px 24px", borderRadius: "12px", textDecoration: "none", fontSize: "13px", border: "1px solid rgba(255,255,255,0.1)", transition: "background 0.2s" }}
+                onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(255,255,255,0.12)")}
+                onMouseLeave={(e) => (e.currentTarget.style.background = "rgba(255,255,255,0.08)")}
               >
                 <div>
                   <span style={{ fontSize: "11px", opacity: 0.6, display: "block" }}>{b.label}</span>
@@ -521,10 +510,10 @@ export default function EventsPageClient({ events }: { events: SanityEvent[] }) 
             <button onClick={() => setModal(null)} style={{ position: "absolute", top: "16px", right: "16px", background: C.bg2, border: "none", borderRadius: "50%", width: "32px", height: "32px", cursor: "pointer", fontSize: "16px", color: C.muted, display: "flex", alignItems: "center", justifyContent: "center" }}>
               ✕
             </button>
-            <span style={{ display: "inline-flex", gap: "6px", alignItems: "center", background: "rgba(196,114,74,0.12)", color: C.accent, fontSize: "11px", fontWeight: 500, letterSpacing: "0.08em", textTransform: "uppercase", padding: "4px 12px", borderRadius: "20px", marginBottom: "16px" }}>
+            <span style={{ display: "inline-flex", gap: "6px", alignItems: "center", background: "rgba(245,230,66,0.12)", color: C.accent, fontSize: "11px", fontWeight: 500, letterSpacing: "0.08em", textTransform: "uppercase", padding: "4px 12px", borderRadius: "20px", marginBottom: "16px" }}>
               Live tonight
             </span>
-            <h2 className="font-dm-serif" style={{ fontSize: "28px", color: C.text, marginBottom: "8px", lineHeight: 1.2 }}>{modal.title}</h2>
+            <h2 className="font-display" style={{ fontSize: "28px", color: C.text, marginBottom: "8px", lineHeight: 1.2 }}>{modal.title}</h2>
             <p style={{ fontSize: "14px", color: C.muted, marginBottom: "20px" }}>{modal.venue}</p>
             <div style={{ display: "flex", flexDirection: "column", gap: "8px", marginBottom: "24px", padding: "16px", background: C.bg, borderRadius: "12px" }}>
               <div style={{ display: "flex", gap: "10px", fontSize: "13px", color: C.muted, alignItems: "center" }}>

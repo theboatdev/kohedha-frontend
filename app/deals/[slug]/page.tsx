@@ -7,12 +7,7 @@ import { notFound } from "next/navigation"
 import { Metadata } from "next"
 import StructuredData from "@/components/structured-data"
 import { CouponCard } from "./coupon-card"
-
-const C = {
-  bg: "#E8E4DA", bg2: "#DDD9CE", text: "#2A2620",
-  muted: "#7A7368", accent: "#C4724A", accent2: "#B85E38",
-  cream: "#F2EEE6", dark: "#1E1B17",
-}
+import { C } from "@/lib/brand-theme"
 
 interface DealPageProps {
   params: { slug: string }
@@ -52,8 +47,8 @@ const statusLabel: { [key: string]: { label: string; color: string } } = {
   active:       { label: "Active Deal",  color: "#4CAF50" },
   expired:      { label: "Expired",      color: "#E53935" },
   "coming-soon":{ label: "Coming Soon",  color: "#FB8C00" },
-  "sold-out":   { label: "Sold Out",     color: "#7A7368" },
-  paused:       { label: "Paused",       color: "#7A7368" },
+  "sold-out":   { label: "Sold Out",     color: "#6B6B6B" },
+  paused:       { label: "Paused",       color: "#6B6B6B" },
 }
 
 export default async function DealPage({ params }: DealPageProps) {
@@ -70,7 +65,7 @@ export default async function DealPage({ params }: DealPageProps) {
       <StructuredData type="organization" data={deal} />
 
       {/* Breadcrumb */}
-      <div style={{ background: C.bg2, borderBottom: "1px solid rgba(42,38,32,0.08)", padding: "14px 48px" }}>
+      <div style={{ background: C.bg2, borderBottom: "1px solid rgba(13,13,13,0.08)", padding: "14px 48px" }}>
         <div style={{ maxWidth: "1100px", margin: "0 auto" }}>
           <Link href="/deals" style={{ display: "inline-flex", alignItems: "center", gap: "6px", fontSize: "13px", color: C.muted, textDecoration: "none", fontWeight: 500 }}>
             <ArrowLeft size={14} />
@@ -98,7 +93,7 @@ export default async function DealPage({ params }: DealPageProps) {
                 {status.label}
               </span>
             </div>
-            <h1 className="font-dm-serif" style={{ color: "white", fontSize: "clamp(28px,4vw,48px)", lineHeight: 1.15, marginBottom: "14px" }}>
+            <h1 className="font-display" style={{ color: "white", fontSize: "clamp(28px,4vw,48px)", lineHeight: 1.15, marginBottom: "14px" }}>
               {deal.name}
             </h1>
             <div style={{ display: "flex", flexWrap: "wrap", gap: "16px", fontSize: "14px", color: "rgba(255,255,255,0.85)" }}>
@@ -138,13 +133,13 @@ export default async function DealPage({ params }: DealPageProps) {
             )}
 
             <div style={{ marginBottom: "36px" }}>
-              <h2 className="font-dm-serif" style={{ fontSize: "26px", color: C.text, marginBottom: "16px" }}>About This Deal</h2>
+              <h2 className="font-display" style={{ fontSize: "26px", color: C.text, marginBottom: "16px" }}>About This Deal</h2>
               <p style={{ fontSize: "16px", color: C.muted, lineHeight: 1.85 }}>{deal.description}</p>
             </div>
 
             {deal.validCoupons && deal.validCoupons.length > 0 && (
               <div style={{ marginBottom: "36px" }}>
-                <h2 className="font-dm-serif" style={{ fontSize: "26px", color: C.text, marginBottom: "20px" }}>Available Offers</h2>
+                <h2 className="font-display" style={{ fontSize: "26px", color: C.text, marginBottom: "20px" }}>Available Offers</h2>
                 <div style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
                   {deal.validCoupons.map((coupon: any, index: number) => (
                     <CouponCard key={index} coupon={coupon} />
@@ -155,7 +150,7 @@ export default async function DealPage({ params }: DealPageProps) {
 
             {deal.notes && (
               <div style={{ marginBottom: "36px" }}>
-                <h2 className="font-dm-serif" style={{ fontSize: "26px", color: C.text, marginBottom: "16px" }}>Terms & Conditions</h2>
+                <h2 className="font-display" style={{ fontSize: "26px", color: C.text, marginBottom: "16px" }}>Terms & Conditions</h2>
                 <div className="prose prose-lg max-w-none" style={{ color: C.muted }}>
                   <PortableText value={deal.notes} />
                 </div>
@@ -164,7 +159,7 @@ export default async function DealPage({ params }: DealPageProps) {
 
             {deal.images && deal.images.length > 0 && (
               <div style={{ marginBottom: "36px" }}>
-                <h2 className="font-dm-serif" style={{ fontSize: "26px", color: C.text, marginBottom: "16px" }}>Gallery</h2>
+                <h2 className="font-display" style={{ fontSize: "26px", color: C.text, marginBottom: "16px" }}>Gallery</h2>
                 <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "10px" }}>
                   {deal.images.map((image: any, index: number) => (
                     <div key={index} style={{ position: "relative", height: "120px", borderRadius: "12px", overflow: "hidden" }}>
@@ -185,9 +180,9 @@ export default async function DealPage({ params }: DealPageProps) {
           <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
 
             {/* Deal info */}
-            <div style={{ background: C.cream, borderRadius: "16px", border: "1px solid rgba(42,38,32,0.08)", overflow: "hidden" }}>
+            <div style={{ background: C.cream, borderRadius: "16px", border: "1px solid rgba(13,13,13,0.08)", overflow: "hidden" }}>
               <div style={{ background: C.dark, padding: "18px 22px" }}>
-                <h3 className="font-dm-serif" style={{ fontSize: "20px", color: "white", display: "flex", alignItems: "center", gap: "8px" }}>
+                <h3 className="font-display" style={{ fontSize: "20px", color: "white", display: "flex", alignItems: "center", gap: "8px" }}>
                   <Tag size={18} />Deal Information
                 </h3>
               </div>
@@ -220,7 +215,7 @@ export default async function DealPage({ params }: DealPageProps) {
 
                 {deal.couponValidityInfo && (
                   <>
-                    <div style={{ height: "1px", background: "rgba(42,38,32,0.08)" }} />
+                    <div style={{ height: "1px", background: "rgba(13,13,13,0.08)" }} />
                     <div>
                       <p style={{ fontSize: "11px", textTransform: "uppercase", letterSpacing: "0.1em", color: C.accent, marginBottom: "8px", fontWeight: 500, display: "flex", alignItems: "center", gap: "5px" }}>
                         <Clock size={11} />Validity
@@ -237,7 +232,7 @@ export default async function DealPage({ params }: DealPageProps) {
 
                 {deal.tags && deal.tags.length > 0 && (
                   <>
-                    <div style={{ height: "1px", background: "rgba(42,38,32,0.08)" }} />
+                    <div style={{ height: "1px", background: "rgba(13,13,13,0.08)" }} />
                     <div>
                       <p style={{ fontSize: "11px", textTransform: "uppercase", letterSpacing: "0.1em", color: C.accent, marginBottom: "8px", fontWeight: 500 }}>Tags</p>
                       <div style={{ display: "flex", flexWrap: "wrap", gap: "6px" }}>
@@ -255,8 +250,8 @@ export default async function DealPage({ params }: DealPageProps) {
 
             {/* Contact */}
             {deal.contactInfo && (
-              <div style={{ background: C.cream, borderRadius: "16px", border: "1px solid rgba(42,38,32,0.08)", padding: "20px 22px" }}>
-                <h3 className="font-dm-serif" style={{ fontSize: "20px", color: C.text, marginBottom: "16px" }}>Contact</h3>
+              <div style={{ background: C.cream, borderRadius: "16px", border: "1px solid rgba(13,13,13,0.08)", padding: "20px 22px" }}>
+                <h3 className="font-display" style={{ fontSize: "20px", color: C.text, marginBottom: "16px" }}>Contact</h3>
                 <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
                   {deal.contactInfo.phone && (
                     <div style={{ display: "flex", alignItems: "center", gap: "8px", fontSize: "13px" }}>
@@ -282,16 +277,16 @@ export default async function DealPage({ params }: DealPageProps) {
 
             {/* Social */}
             {deal.socialLinks && (
-              <div style={{ background: C.cream, borderRadius: "16px", border: "1px solid rgba(42,38,32,0.08)", padding: "20px 22px" }}>
-                <h3 className="font-dm-serif" style={{ fontSize: "20px", color: C.text, marginBottom: "16px" }}>Follow & Share</h3>
+              <div style={{ background: C.cream, borderRadius: "16px", border: "1px solid rgba(13,13,13,0.08)", padding: "20px 22px" }}>
+                <h3 className="font-display" style={{ fontSize: "20px", color: C.text, marginBottom: "16px" }}>Follow & Share</h3>
                 <div style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
                   {deal.socialLinks.facebook && (
-                    <a href={deal.socialLinks.facebook} target="_blank" rel="noopener noreferrer" style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "13px", color: C.muted, textDecoration: "none", border: "1px solid rgba(42,38,32,0.15)", borderRadius: "40px", padding: "6px 14px" }}>
+                    <a href={deal.socialLinks.facebook} target="_blank" rel="noopener noreferrer" style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "13px", color: C.muted, textDecoration: "none", border: "1px solid rgba(13,13,13,0.15)", borderRadius: "40px", padding: "6px 14px" }}>
                       <Facebook size={13} />Facebook
                     </a>
                   )}
                   {deal.socialLinks.instagram && (
-                    <a href={deal.socialLinks.instagram} target="_blank" rel="noopener noreferrer" style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "13px", color: C.muted, textDecoration: "none", border: "1px solid rgba(42,38,32,0.15)", borderRadius: "40px", padding: "6px 14px" }}>
+                    <a href={deal.socialLinks.instagram} target="_blank" rel="noopener noreferrer" style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "13px", color: C.muted, textDecoration: "none", border: "1px solid rgba(13,13,13,0.15)", borderRadius: "40px", padding: "6px 14px" }}>
                       <Globe size={13} />Website
                     </a>
                   )}

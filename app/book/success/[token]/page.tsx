@@ -31,12 +31,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-
-const C = {
-  bg: "#E8E4DA", bg2: "#DDD9CE", text: "#2A2620",
-  muted: "#7A7368", accent: "#C4724A",
-  cream: "#F2EEE6", dark: "#1E1B17",
-};
+import { C } from "@/lib/brand-theme";
 
 export default function BookingSuccessPage() {
   const params = useParams();
@@ -100,11 +95,11 @@ export default function BookingSuccessPage() {
   if (error || !reservation) {
     return (
       <div className="font-dm-sans" style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", background: C.bg, padding: "24px" }}>
-        <div style={{ maxWidth: "420px", width: "100%", background: C.cream, borderRadius: "20px", padding: "40px", textAlign: "center", border: "1px solid rgba(42,38,32,0.1)" }}>
+        <div style={{ maxWidth: "420px", width: "100%", background: C.cream, borderRadius: "20px", padding: "40px", textAlign: "center", border: "1px solid rgba(13,13,13,0.1)" }}>
           <div style={{ width: "64px", height: "64px", background: "rgba(229,57,53,0.1)", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 20px" }}>
             <XCircle style={{ width: 32, height: 32, color: "#E53935" }} />
           </div>
-          <h1 className="font-dm-serif" style={{ fontSize: "26px", color: C.text, marginBottom: "10px" }}>Reservation Not Found</h1>
+          <h1 className="font-display" style={{ fontSize: "26px", color: C.text, marginBottom: "10px" }}>Reservation Not Found</h1>
           <p style={{ color: C.muted, marginBottom: "28px", lineHeight: 1.7 }}>{error || "This reservation link is invalid or has expired."}</p>
           <button
             onClick={() => router.push("/")}
@@ -126,14 +121,14 @@ export default function BookingSuccessPage() {
 
         {/* Status header */}
         {!cancelled ? (
-          <div style={{ background: C.cream, borderRadius: "20px", border: "1px solid rgba(42,38,32,0.08)", padding: "40px", textAlign: "center", marginBottom: "20px" }}>
+          <div style={{ background: C.cream, borderRadius: "20px", border: "1px solid rgba(13,13,13,0.08)", padding: "40px", textAlign: "center", marginBottom: "20px" }}>
             <div style={{
               width: "72px", height: "72px", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 20px",
               background: isConfirmed ? "rgba(76,175,80,0.12)" : "rgba(251,140,0,0.12)",
             }}>
               <CheckCircle2 style={{ width: 40, height: 40, color: isConfirmed ? "#4CAF50" : "#FB8C00" }} />
             </div>
-            <h1 className="font-dm-serif" style={{ fontSize: "32px", color: C.text, marginBottom: "8px" }}>
+            <h1 className="font-display" style={{ fontSize: "32px", color: C.text, marginBottom: "8px" }}>
               {isConfirmed ? "Reservation Confirmed!" : "Reservation Received!"}
             </h1>
             <p style={{ color: C.muted, fontSize: "15px", lineHeight: 1.7, marginBottom: "20px" }}>
@@ -155,20 +150,20 @@ export default function BookingSuccessPage() {
             )}
           </div>
         ) : (
-          <div style={{ background: C.cream, borderRadius: "20px", border: "1px solid rgba(42,38,32,0.08)", padding: "40px", textAlign: "center", marginBottom: "20px" }}>
+          <div style={{ background: C.cream, borderRadius: "20px", border: "1px solid rgba(13,13,13,0.08)", padding: "40px", textAlign: "center", marginBottom: "20px" }}>
             <div style={{ width: "72px", height: "72px", background: "rgba(229,57,53,0.1)", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 20px" }}>
               <XCircle style={{ width: 40, height: 40, color: "#E53935" }} />
             </div>
-            <h1 className="font-dm-serif" style={{ fontSize: "32px", color: C.text, marginBottom: "8px" }}>Reservation Cancelled</h1>
+            <h1 className="font-display" style={{ fontSize: "32px", color: C.text, marginBottom: "8px" }}>Reservation Cancelled</h1>
             <p style={{ color: C.muted, fontSize: "15px" }}>This reservation has been cancelled.</p>
           </div>
         )}
 
         {/* Reservation details */}
-        <div style={{ background: C.cream, borderRadius: "20px", border: "1px solid rgba(42,38,32,0.08)", overflow: "hidden", marginBottom: "20px" }}>
+        <div style={{ background: C.cream, borderRadius: "20px", border: "1px solid rgba(13,13,13,0.08)", overflow: "hidden", marginBottom: "20px" }}>
           {/* Venue */}
-          <div style={{ background: C.bg2, padding: "22px 28px", borderBottom: "1px solid rgba(42,38,32,0.08)" }}>
-            <h2 className="font-dm-serif" style={{ fontSize: "24px", color: C.text, marginBottom: "8px" }}>
+          <div style={{ background: C.bg2, padding: "22px 28px", borderBottom: "1px solid rgba(13,13,13,0.08)" }}>
+            <h2 className="font-display" style={{ fontSize: "24px", color: C.text, marginBottom: "8px" }}>
               {reservation.vendorId?.companyName || reservation.vendorId?.location?.businessName || "Restaurant"}
             </h2>
             <div style={{ display: "flex", alignItems: "center", gap: "6px", color: C.muted, fontSize: "13px" }}>
@@ -224,7 +219,7 @@ export default function BookingSuccessPage() {
           </div>
 
           {/* Guest info */}
-          <div style={{ background: C.bg2, padding: "20px 28px", borderTop: "1px solid rgba(42,38,32,0.08)" }}>
+          <div style={{ background: C.bg2, padding: "20px 28px", borderTop: "1px solid rgba(13,13,13,0.08)" }}>
             <h3 style={{ fontWeight: 600, color: C.text, fontSize: "14px", marginBottom: "12px" }}>Guest Information</h3>
             <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
               <div style={{ display: "flex", alignItems: "center", gap: "8px", fontSize: "13px", color: C.muted }}>
@@ -240,8 +235,8 @@ export default function BookingSuccessPage() {
         {/* Info notice */}
         <div style={{
           borderRadius: "16px", padding: "20px 24px", marginBottom: "24px",
-          background: isPending ? "rgba(251,140,0,0.08)" : "rgba(196,114,74,0.08)",
-          border: `1px solid ${isPending ? "rgba(251,140,0,0.2)" : "rgba(196,114,74,0.2)"}`,
+          background: isPending ? "rgba(251,140,0,0.08)" : "rgba(245,230,66,0.08)",
+          border: `1px solid ${isPending ? "rgba(251,140,0,0.2)" : "rgba(245,230,66,0.2)"}`,
         }}>
           <div style={{ display: "flex", alignItems: "flex-start", gap: "12px" }}>
             <AlertCircle style={{ width: 18, height: 18, flexShrink: 0, marginTop: "2px", color: isPending ? "#FB8C00" : C.accent }} />
@@ -274,7 +269,7 @@ export default function BookingSuccessPage() {
         <div style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
           <button
             onClick={() => router.push("/")}
-            style={{ flex: 1, minWidth: "160px", background: "transparent", color: C.text, border: `1px solid rgba(42,38,32,0.2)`, borderRadius: "40px", padding: "14px 24px", fontSize: "14px", fontWeight: 600, cursor: "pointer" }}
+            style={{ flex: 1, minWidth: "160px", background: "transparent", color: C.text, border: `1px solid rgba(13,13,13,0.2)`, borderRadius: "40px", padding: "14px 24px", fontSize: "14px", fontWeight: 600, cursor: "pointer" }}
           >
             Back to Home
           </button>
@@ -288,7 +283,7 @@ export default function BookingSuccessPage() {
               </AlertDialogTrigger>
               <AlertDialogContent>
                 <AlertDialogHeader>
-                  <AlertDialogTitle className="font-dm-serif">Cancel Reservation?</AlertDialogTitle>
+                  <AlertDialogTitle className="font-display">Cancel Reservation?</AlertDialogTitle>
                   <AlertDialogDescription>
                     Are you sure you want to cancel this reservation? This action cannot be undone. Please contact the restaurant if you need to make changes instead.
                   </AlertDialogDescription>

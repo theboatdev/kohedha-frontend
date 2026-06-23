@@ -1,6 +1,6 @@
 import type React from "react"
 import type { Metadata, Viewport } from "next"
-import { League_Spartan, DM_Sans, DM_Serif_Display } from "next/font/google"
+import { League_Spartan, DM_Sans, DM_Serif_Display, Poppins } from "next/font/google"
 import Script from "next/script"
 import "./globals.css"
 import StructuredData from "@/components/structured-data"
@@ -23,6 +23,12 @@ const dmSerifDisplay = DM_Serif_Display({
   variable: "--font-dm-serif",
   weight: "400",
   style: ["normal", "italic"],
+})
+
+const poppins = Poppins({
+  subsets: ["latin"],
+  variable: "--font-poppins",
+  weight: ["500", "600", "700", "800"],
 })
 
 export const metadata: Metadata = {
@@ -159,7 +165,7 @@ export default function RootLayout({
           `}
         </Script>
       </head>
-      <body className={`${leagueSpartan.variable} ${dmSans.variable} ${dmSerifDisplay.variable} font-sans`}>
+      <body className={`${leagueSpartan.variable} ${dmSans.variable} ${dmSerifDisplay.variable} ${poppins.variable} font-sans`}>
         <StructuredData type="organization" data={{}} />
         <ConditionalLayout>
           {children}

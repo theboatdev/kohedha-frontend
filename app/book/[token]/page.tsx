@@ -10,16 +10,7 @@ import {
   type BookingSlotDetails,
 } from "@/lib/publicBooking";
 import { Loader2 } from "lucide-react";
-
-const C = {
-  bg: "#E8E4DA",
-  bg2: "#DDD9CE",
-  text: "#2A2620",
-  muted: "#7A7368",
-  accent: "#C4724A",
-  cream: "#F2EEE6",
-  dark: "#1E1B17",
-};
+import { C } from "@/lib/brand-theme";
 
 export default function PublicBookingPage() {
   const params = useParams();
@@ -113,7 +104,7 @@ export default function PublicBookingPage() {
             borderRadius: "20px",
             padding: "40px",
             textAlign: "center",
-            border: "1px solid rgba(42,38,32,0.1)",
+            border: "1px solid rgba(13,13,13,0.1)",
           }}
         >
           <div
@@ -144,7 +135,7 @@ export default function PublicBookingPage() {
             </svg>
           </div>
           <h1
-            className="font-dm-serif"
+            className="font-display"
             style={{ fontSize: "26px", color: C.text, marginBottom: "10px" }}
           >
             Booking Not Found
@@ -185,13 +176,13 @@ export default function PublicBookingPage() {
           style={{
             background: C.cream,
             borderRadius: "16px",
-            border: "1px solid rgba(42,38,32,0.08)",
+            border: "1px solid rgba(13,13,13,0.08)",
             padding: "24px 28px",
             marginBottom: "20px",
           }}
         >
           <h1
-            className="font-dm-serif"
+            className="font-display"
             style={{ fontSize: "28px", color: C.text, marginBottom: "6px" }}
           >
             {bookingSlot.vendor.name}
@@ -206,7 +197,7 @@ export default function PublicBookingPage() {
           style={{
             background: C.cream,
             borderRadius: "16px",
-            border: "1px solid rgba(42,38,32,0.08)",
+            border: "1px solid rgba(13,13,13,0.08)",
             padding: "24px 28px",
             marginBottom: "20px",
           }}
@@ -275,7 +266,7 @@ export default function PublicBookingPage() {
           style={{
             background: C.cream,
             borderRadius: "16px",
-            border: "1px solid rgba(42,38,32,0.08)",
+            border: "1px solid rgba(13,13,13,0.08)",
             padding: "28px",
           }}
         >

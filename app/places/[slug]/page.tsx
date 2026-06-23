@@ -6,12 +6,7 @@ import { PortableText } from "@portabletext/react"
 import { notFound } from "next/navigation"
 import { Metadata } from "next"
 import StructuredData from "@/components/structured-data"
-
-const C = {
-  bg: "#E8E4DA", bg2: "#DDD9CE", text: "#2A2620",
-  muted: "#7A7368", accent: "#C4724A", accent2: "#B85E38",
-  cream: "#F2EEE6", dark: "#1E1B17",
-}
+import { C } from "@/lib/brand-theme"
 
 interface PlacePageProps {
   params: { slug: string }
@@ -70,7 +65,7 @@ export default async function PlacePage({ params }: PlacePageProps) {
       <StructuredData type="organization" data={place} />
 
       {/* Breadcrumb */}
-      <div style={{ background: C.bg2, borderBottom: "1px solid rgba(42,38,32,0.08)", padding: "14px 48px" }}>
+      <div style={{ background: C.bg2, borderBottom: "1px solid rgba(13,13,13,0.08)", padding: "14px 48px" }}>
         <div style={{ maxWidth: "1100px", margin: "0 auto" }}>
           <Link href="/places" style={{ display: "inline-flex", alignItems: "center", gap: "6px", fontSize: "13px", color: C.muted, textDecoration: "none", fontWeight: 500 }}>
             <ArrowLeft size={14} />
@@ -100,7 +95,7 @@ export default async function PlacePage({ params }: PlacePageProps) {
                 </span>
               )}
             </div>
-            <h1 className="font-dm-serif" style={{ color: "white", fontSize: "clamp(28px,4vw,48px)", lineHeight: 1.15, marginBottom: "14px" }}>
+            <h1 className="font-display" style={{ color: "white", fontSize: "clamp(28px,4vw,48px)", lineHeight: 1.15, marginBottom: "14px" }}>
               {place.name}
             </h1>
             <div style={{ display: "flex", flexWrap: "wrap", gap: "16px", fontSize: "14px", color: "rgba(255,255,255,0.85)" }}>
@@ -127,13 +122,13 @@ export default async function PlacePage({ params }: PlacePageProps) {
           {/* Main */}
           <div>
             <div style={{ marginBottom: "36px" }}>
-              <h2 className="font-dm-serif" style={{ fontSize: "26px", color: C.text, marginBottom: "16px" }}>About This Place</h2>
+              <h2 className="font-display" style={{ fontSize: "26px", color: C.text, marginBottom: "16px" }}>About This Place</h2>
               <p style={{ fontSize: "16px", color: C.muted, lineHeight: 1.85 }}>{place.description}</p>
             </div>
 
             {place.body && (
               <div style={{ marginBottom: "36px" }}>
-                <h2 className="font-dm-serif" style={{ fontSize: "26px", color: C.text, marginBottom: "16px" }}>More Details</h2>
+                <h2 className="font-display" style={{ fontSize: "26px", color: C.text, marginBottom: "16px" }}>More Details</h2>
                 <div className="prose prose-lg max-w-none" style={{ color: C.muted }}>
                   <PortableText value={place.body} />
                 </div>
@@ -142,10 +137,10 @@ export default async function PlacePage({ params }: PlacePageProps) {
 
             {place.cuisine && place.cuisine.length > 0 && (
               <div style={{ marginBottom: "36px" }}>
-                <h2 className="font-dm-serif" style={{ fontSize: "26px", color: C.text, marginBottom: "16px" }}>Cuisine</h2>
+                <h2 className="font-display" style={{ fontSize: "26px", color: C.text, marginBottom: "16px" }}>Cuisine</h2>
                 <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
                   {place.cuisine.map((cuisine: string, index: number) => (
-                    <span key={index} style={{ background: C.cream, border: "1px solid rgba(42,38,32,0.12)", borderRadius: "40px", padding: "6px 14px", fontSize: "13px", color: C.text }}>
+                    <span key={index} style={{ background: C.cream, border: "1px solid rgba(13,13,13,0.12)", borderRadius: "40px", padding: "6px 14px", fontSize: "13px", color: C.text }}>
                       {cuisine}
                     </span>
                   ))}
@@ -155,7 +150,7 @@ export default async function PlacePage({ params }: PlacePageProps) {
 
             {place.features && place.features.length > 0 && (
               <div style={{ marginBottom: "36px" }}>
-                <h2 className="font-dm-serif" style={{ fontSize: "26px", color: C.text, marginBottom: "16px" }}>Features & Amenities</h2>
+                <h2 className="font-display" style={{ fontSize: "26px", color: C.text, marginBottom: "16px" }}>Features & Amenities</h2>
                 <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(180px, 1fr))", gap: "10px" }}>
                   {place.features.map((feature: string, index: number) => (
                     <div key={index} style={{ display: "flex", alignItems: "center", gap: "8px", fontSize: "13px", color: C.muted }}>
@@ -170,10 +165,10 @@ export default async function PlacePage({ params }: PlacePageProps) {
             {/* Vibe */}
             {place.vibe && place.vibe.length > 0 && (
               <div style={{ marginBottom: "36px" }}>
-                <h2 className="font-dm-serif" style={{ fontSize: "26px", color: C.text, marginBottom: "16px" }}>Vibe & Atmosphere</h2>
+                <h2 className="font-display" style={{ fontSize: "26px", color: C.text, marginBottom: "16px" }}>Vibe & Atmosphere</h2>
                 <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
                   {place.vibe.map((vibe: string, index: number) => (
-                    <span key={index} style={{ background: C.bg2, border: "1px solid rgba(42,38,32,0.12)", borderRadius: "40px", padding: "6px 14px", fontSize: "13px", color: C.muted }}>
+                    <span key={index} style={{ background: C.bg2, border: "1px solid rgba(13,13,13,0.12)", borderRadius: "40px", padding: "6px 14px", fontSize: "13px", color: C.muted }}>
                       {vibe.replace(/-/g, " ")}
                     </span>
                   ))}
@@ -183,7 +178,7 @@ export default async function PlacePage({ params }: PlacePageProps) {
 
             {place.images && place.images.length > 0 && (
               <div style={{ marginBottom: "36px" }}>
-                <h2 className="font-dm-serif" style={{ fontSize: "26px", color: C.text, marginBottom: "16px" }}>Gallery</h2>
+                <h2 className="font-display" style={{ fontSize: "26px", color: C.text, marginBottom: "16px" }}>Gallery</h2>
                 <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "10px" }}>
                   {place.images.map((image: any, index: number) => (
                     <div key={index} style={{ position: "relative", height: "120px", borderRadius: "12px", overflow: "hidden" }}>
@@ -204,9 +199,9 @@ export default async function PlacePage({ params }: PlacePageProps) {
           <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
 
             {/* Info card */}
-            <div style={{ background: C.cream, borderRadius: "16px", border: "1px solid rgba(42,38,32,0.08)", overflow: "hidden" }}>
+            <div style={{ background: C.cream, borderRadius: "16px", border: "1px solid rgba(13,13,13,0.08)", overflow: "hidden" }}>
               <div style={{ background: C.dark, padding: "18px 22px" }}>
-                <h3 className="font-dm-serif" style={{ fontSize: "20px", color: "white", display: "flex", alignItems: "center", gap: "8px" }}>
+                <h3 className="font-display" style={{ fontSize: "20px", color: "white", display: "flex", alignItems: "center", gap: "8px" }}>
                   <MapPin size={18} />Place Information
                 </h3>
               </div>
@@ -226,7 +221,7 @@ export default async function PlacePage({ params }: PlacePageProps) {
 
                 {place.openingHours && (
                   <>
-                    <div style={{ height: "1px", background: "rgba(42,38,32,0.08)" }} />
+                    <div style={{ height: "1px", background: "rgba(13,13,13,0.08)" }} />
                     <div>
                       <p style={{ fontSize: "11px", textTransform: "uppercase", letterSpacing: "0.1em", color: C.accent, marginBottom: "8px", fontWeight: 500, display: "flex", alignItems: "center", gap: "5px" }}>
                         <Clock size={11} />Opening Hours
@@ -245,7 +240,7 @@ export default async function PlacePage({ params }: PlacePageProps) {
 
                 {place.priceRange && (
                   <>
-                    <div style={{ height: "1px", background: "rgba(42,38,32,0.08)" }} />
+                    <div style={{ height: "1px", background: "rgba(13,13,13,0.08)" }} />
                     <div>
                       <p style={{ fontSize: "11px", textTransform: "uppercase", letterSpacing: "0.1em", color: C.accent, marginBottom: "6px", fontWeight: 500 }}>Price Range</p>
                       <p style={{ fontSize: "13px", color: C.text, fontWeight: 600 }}>{getPriceRangeLabel(place.priceRange)}</p>
@@ -255,7 +250,7 @@ export default async function PlacePage({ params }: PlacePageProps) {
 
                 {place.rating && (
                   <>
-                    <div style={{ height: "1px", background: "rgba(42,38,32,0.08)" }} />
+                    <div style={{ height: "1px", background: "rgba(13,13,13,0.08)" }} />
                     <div>
                       <p style={{ fontSize: "11px", textTransform: "uppercase", letterSpacing: "0.1em", color: C.accent, marginBottom: "6px", fontWeight: 500 }}>Rating</p>
                       <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
@@ -268,7 +263,7 @@ export default async function PlacePage({ params }: PlacePageProps) {
 
                 {place.tags && place.tags.length > 0 && (
                   <>
-                    <div style={{ height: "1px", background: "rgba(42,38,32,0.08)" }} />
+                    <div style={{ height: "1px", background: "rgba(13,13,13,0.08)" }} />
                     <div>
                       <p style={{ fontSize: "11px", textTransform: "uppercase", letterSpacing: "0.1em", color: C.accent, marginBottom: "8px", fontWeight: 500 }}>Tags</p>
                       <div style={{ display: "flex", flexWrap: "wrap", gap: "6px" }}>
@@ -286,8 +281,8 @@ export default async function PlacePage({ params }: PlacePageProps) {
 
             {/* Contact */}
             {place.contactInfo && (
-              <div style={{ background: C.cream, borderRadius: "16px", border: "1px solid rgba(42,38,32,0.08)", padding: "20px 22px" }}>
-                <h3 className="font-dm-serif" style={{ fontSize: "20px", color: C.text, marginBottom: "16px" }}>Contact</h3>
+              <div style={{ background: C.cream, borderRadius: "16px", border: "1px solid rgba(13,13,13,0.08)", padding: "20px 22px" }}>
+                <h3 className="font-display" style={{ fontSize: "20px", color: C.text, marginBottom: "16px" }}>Contact</h3>
                 <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
                   {place.contactInfo.phone && (
                     <div style={{ display: "flex", alignItems: "center", gap: "8px", fontSize: "13px" }}>
@@ -319,21 +314,21 @@ export default async function PlacePage({ params }: PlacePageProps) {
 
             {/* Social */}
             {place.socialLinks && (
-              <div style={{ background: C.cream, borderRadius: "16px", border: "1px solid rgba(42,38,32,0.08)", padding: "20px 22px" }}>
-                <h3 className="font-dm-serif" style={{ fontSize: "20px", color: C.text, marginBottom: "16px" }}>Follow & Share</h3>
+              <div style={{ background: C.cream, borderRadius: "16px", border: "1px solid rgba(13,13,13,0.08)", padding: "20px 22px" }}>
+                <h3 className="font-display" style={{ fontSize: "20px", color: C.text, marginBottom: "16px" }}>Follow & Share</h3>
                 <div style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
                   {place.socialLinks.facebook && (
-                    <a href={place.socialLinks.facebook} target="_blank" rel="noopener noreferrer" style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "13px", color: C.muted, textDecoration: "none", border: "1px solid rgba(42,38,32,0.15)", borderRadius: "40px", padding: "6px 14px" }}>
+                    <a href={place.socialLinks.facebook} target="_blank" rel="noopener noreferrer" style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "13px", color: C.muted, textDecoration: "none", border: "1px solid rgba(13,13,13,0.15)", borderRadius: "40px", padding: "6px 14px" }}>
                       <Facebook size={13} />Facebook
                     </a>
                   )}
                   {place.socialLinks.instagram && (
-                    <a href={place.socialLinks.instagram} target="_blank" rel="noopener noreferrer" style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "13px", color: C.muted, textDecoration: "none", border: "1px solid rgba(42,38,32,0.15)", borderRadius: "40px", padding: "6px 14px" }}>
+                    <a href={place.socialLinks.instagram} target="_blank" rel="noopener noreferrer" style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "13px", color: C.muted, textDecoration: "none", border: "1px solid rgba(13,13,13,0.15)", borderRadius: "40px", padding: "6px 14px" }}>
                       <Instagram size={13} />Instagram
                     </a>
                   )}
                   {place.socialLinks.twitter && (
-                    <a href={place.socialLinks.twitter} target="_blank" rel="noopener noreferrer" style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "13px", color: C.muted, textDecoration: "none", border: "1px solid rgba(42,38,32,0.15)", borderRadius: "40px", padding: "6px 14px" }}>
+                    <a href={place.socialLinks.twitter} target="_blank" rel="noopener noreferrer" style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "13px", color: C.muted, textDecoration: "none", border: "1px solid rgba(13,13,13,0.15)", borderRadius: "40px", padding: "6px 14px" }}>
                       <Twitter size={13} />Twitter
                     </a>
                   )}
