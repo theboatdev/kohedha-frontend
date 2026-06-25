@@ -9,12 +9,14 @@ import { loginVendor } from "@/lib/auth";
 import { Mail, Lock } from "lucide-react";
 
 const C = {
-  bg: "#FFFFFF",
-  text: "#2A2620",
-  muted: "#7A7368",
-  accent: "#C4724A",
-  cream: "#FFFFFF",
-  dark: "#1E1B17",
+  bg: "#0D0D0D",
+  text: "#FFFFFF",
+  muted: "rgba(255,255,255,0.48)",
+  accent: "#F5E642",
+  accentHover: "#E8D800",
+  card: "#1A1A1A",
+  inputBg: "#262626",
+  rule: "rgba(255,255,255,0.09)",
 };
 
 export default function VendorLoginPage() {
@@ -85,13 +87,13 @@ export default function VendorLoginPage() {
         {/* Header */}
         <div style={{ textAlign: "center", marginBottom: "36px" }}>
           <div
-            className="font-dm-serif"
-            style={{ fontSize: "28px", color: C.dark, marginBottom: "6px" }}
-          >
-            kohedha<span style={{ color: C.accent }}>.</span>
-          </div>
-          <h1
-            className="font-dm-serif"
+          className="font-poppins"
+          style={{ fontSize: "28px", fontWeight: 700, color: C.text, marginBottom: "6px", letterSpacing: "-0.02em" }}
+        >
+          kohedha<span style={{ color: "#C8281A" }}>.</span>
+        </div>
+        <h1
+          className="font-poppins"
             style={{
               fontSize: "36px",
               color: C.text,
@@ -109,14 +111,14 @@ export default function VendorLoginPage() {
         {/* Card */}
         <div
           style={{
-            background: C.cream,
+            background: C.card,
             borderRadius: "20px",
-            border: "1px solid rgba(42,38,32,0.1)",
+            border: `1px solid ${C.rule}`,
             padding: "36px",
           }}
         >
           <div style={{ marginBottom: "24px" }}>
-            <GoogleSignInButton text="Continue with Google" />
+            <GoogleSignInButton text="Continue with Google" dark />
           </div>
 
           <div
@@ -132,7 +134,7 @@ export default function VendorLoginPage() {
               style={{
                 flex: 1,
                 height: "1px",
-                background: "rgba(42,38,32,0.12)",
+                background: C.rule,
               }}
             />
             <span
@@ -144,7 +146,7 @@ export default function VendorLoginPage() {
               style={{
                 flex: 1,
                 height: "1px",
-                background: "rgba(42,38,32,0.12)",
+                background: C.rule,
               }}
             />
           </div>
@@ -185,10 +187,11 @@ export default function VendorLoginPage() {
                   className="pl-10 h-11"
                   style={{
                     paddingLeft: "36px",
-                    background: C.bg,
-                    border: "1px solid rgba(42,38,32,0.15)",
+                    background: C.inputBg,
+                    border: `1px solid ${C.rule}`,
                     borderRadius: "10px",
                     fontSize: "14px",
+                    color: C.text,
                   }}
                   required
                 />
@@ -227,10 +230,11 @@ export default function VendorLoginPage() {
                   className="pl-10 h-11"
                   style={{
                     paddingLeft: "36px",
-                    background: C.bg,
-                    border: "1px solid rgba(42,38,32,0.15)",
+                    background: C.inputBg,
+                    border: `1px solid ${C.rule}`,
                     borderRadius: "10px",
                     fontSize: "14px",
+                    color: C.text,
                   }}
                   required
                 />
@@ -256,8 +260,8 @@ export default function VendorLoginPage() {
               style={{
                 width: "100%",
                 height: "44px",
-                background: isSubmitting ? C.muted : C.accent,
-                color: "white",
+                background: isSubmitting ? "rgba(255,255,255,0.12)" : C.accent,
+                color: isSubmitting ? C.muted : "#0D0D0D",
                 border: "none",
                 borderRadius: "40px",
                 fontSize: "14px",
@@ -267,7 +271,7 @@ export default function VendorLoginPage() {
               }}
               onMouseEnter={(e) => {
                 if (!isSubmitting) {
-                  e.currentTarget.style.background = "#b85e38";
+                  e.currentTarget.style.background = C.accentHover;
                 }
               }}
               onMouseLeave={(e) => {
@@ -294,7 +298,8 @@ export default function VendorLoginPage() {
               style={{
                 color: C.accent,
                 fontWeight: 600,
-                textDecoration: "none",
+                textDecoration: "underline",
+                textUnderlineOffset: "2px",
               }}
             >
               Create an account

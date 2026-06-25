@@ -124,7 +124,7 @@ function DealCard({ deal, onClick }: { deal: SanityDeal; onClick: () => void }) 
             href={deal.redirectLink}
             target="_blank"
             rel="noopener noreferrer"
-            style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "6px", width: "100%", background: C.accent, color: C.cream, fontSize: "13px", fontWeight: 500, padding: "10px", borderRadius: "10px", textDecoration: "none", transition: "background 0.2s" }}
+            style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "6px", width: "100%", background: C.accent, color: C.text, fontSize: "13px", fontWeight: 500, padding: "10px", borderRadius: "10px", textDecoration: "none", transition: "background 0.2s" }}
             onMouseEnter={(e) => (e.currentTarget.style.background = C.accent2)}
             onMouseLeave={(e) => (e.currentTarget.style.background = C.accent)}
           >
@@ -153,7 +153,7 @@ export default function DealsPageClient({ allDeals, featuredDeals, regularDeals 
     whiteSpace: "nowrap",
     fontFamily: "inherit",
   }
-  const pillActive: React.CSSProperties = { ...pillBase, background: C.accent, color: C.cream, borderColor: C.accent }
+  const pillActive: React.CSSProperties = { ...pillBase, background: C.accent, color: C.text, borderColor: C.accent }
 
   const filteredDeals = allDeals.filter((d) => {
     if (activeFilter === "Active now") return d.status === "active"
@@ -293,7 +293,7 @@ export default function DealsPageClient({ allDeals, featuredDeals, regularDeals 
               <div style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
                 <button
                   onClick={() => openDealModal(topFeatured)}
-                  style={{ background: C.accent, color: C.cream, fontSize: "14px", fontWeight: 500, padding: "13px 28px", borderRadius: "40px", border: "none", cursor: "pointer", transition: "background 0.2s", fontFamily: "inherit" }}
+                  style={{ background: C.accent, color: C.text, fontSize: "14px", fontWeight: 500, padding: "13px 28px", borderRadius: "40px", border: "none", cursor: "pointer", transition: "background 0.2s", fontFamily: "inherit" }}
                   onMouseEnter={(e) => (e.currentTarget.style.background = C.accent2)}
                   onMouseLeave={(e) => (e.currentTarget.style.background = C.accent)}
                 >
@@ -362,7 +362,7 @@ export default function DealsPageClient({ allDeals, featuredDeals, regularDeals 
           <div style={{ textAlign: "center", padding: "80px 0" }}>
             <p className="font-display" style={{ fontSize: "28px", color: C.text, marginBottom: "12px" }}>No deals right now</p>
             <p style={{ fontSize: "15px", color: C.muted, marginBottom: "32px" }}>Check back soon — venues drop new offers daily.</p>
-            <Link href="/" style={{ display: "inline-block", background: C.accent, color: C.cream, fontSize: "14px", fontWeight: 500, padding: "13px 28px", borderRadius: "40px", textDecoration: "none" }}>
+            <Link href="/" style={{ display: "inline-block", background: C.accent, color: C.text, fontSize: "14px", fontWeight: 500, padding: "13px 28px", borderRadius: "40px", textDecoration: "none" }}>
               Explore venues
             </Link>
           </div>
@@ -444,7 +444,7 @@ export default function DealsPageClient({ allDeals, featuredDeals, regularDeals 
               Redeem this deal on the Kohedha app for exclusive offers and push alerts.
             </div>
             <div style={{ display: "flex", gap: "10px" }}>
-              <button onClick={() => setModal(null)} style={{ flex: 1, padding: "13px", borderRadius: "40px", fontSize: "14px", fontWeight: 500, cursor: "pointer", border: "none", background: C.accent, color: C.cream, fontFamily: "inherit" }}>
+              <button onClick={() => setModal(null)} style={{ flex: 1, padding: "13px", borderRadius: "40px", fontSize: "14px", fontWeight: 500, cursor: "pointer", border: "none", background: C.accent, color: C.text, fontFamily: "inherit" }}>
                 Redeem deal →
               </button>
               <button onClick={() => setModal(null)} style={{ flex: 1, padding: "13px", borderRadius: "40px", fontSize: "14px", fontWeight: 500, cursor: "pointer", border: "none", background: C.bg2, color: C.text, fontFamily: "inherit" }}>

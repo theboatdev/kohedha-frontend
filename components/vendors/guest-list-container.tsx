@@ -86,14 +86,14 @@ export function GuestListContainer({
       <div className="text-center py-16">
         <Users
           className="h-12 w-12 mx-auto mb-4"
-          style={{ color: "#DDD9CE" }}
+          style={{ color: "rgba(255,255,255,0.3)" }}
         />
-        <h3 className="font-bebas text-xl mb-2" style={{ color: "#2A2620" }}>
+        <h3 className="font-poppins font-bold text-xl mb-2" style={{ color: "#0D0D0D" }}>
           No Reservations Yet
         </h3>
         <p
           className="font-poppins text-sm max-w-sm mx-auto"
-          style={{ color: "#7A7368" }}
+          style={{ color: "rgba(13,13,13,0.48)" }}
         >
           Reservations from your public booking link will appear here. Share
           your booking link to start receiving reservations.
@@ -119,14 +119,14 @@ export function GuestListContainer({
           className="text-center py-12 rounded-lg"
           style={{
             background: "#ffffff",
-            border: "1px solid rgba(42,38,32,0.1)",
+            border: "1px solid rgba(13,13,13,0.1)",
           }}
         >
           <Users
             className="h-10 w-10 mx-auto mb-3"
-            style={{ color: "#DDD9CE" }}
+            style={{ color: "rgba(255,255,255,0.3)" }}
           />
-          <p className="font-poppins" style={{ color: "#7A7368" }}>
+          <p className="font-poppins" style={{ color: "rgba(13,13,13,0.48)" }}>
             No guests match your filters
           </p>
         </div>
@@ -141,27 +141,27 @@ export function GuestListContainer({
               <div
                 key={col.key}
                 className="rounded-xl overflow-hidden"
-                style={{ border: "1px solid rgba(42,38,32,0.12)" }}
+                style={{ border: "1px solid rgba(13,13,13,0.12)" }}
               >
                 {/* Column header */}
                 <div
                   className="flex items-center justify-between px-4 py-3"
                   style={{
                     background: "#ffffff",
-                    borderBottom: "1px solid rgba(42,38,32,0.08)",
+                    borderBottom: "1px solid rgba(13,13,13,0.08)",
                   }}
                 >
                   <span
-                    className="font-bebas text-base tracking-wide"
-                    style={{ color: "#2A2620" }}
+                    className="font-poppins font-bold text-base tracking-wide"
+                    style={{ color: "#0D0D0D" }}
                   >
                     {col.label}
                   </span>
                   <span
                     className="font-poppins text-xs font-medium px-2 py-0.5 rounded-full"
                     style={{
-                      background: "rgba(42,38,32,0.08)",
-                      color: "#7A7368",
+                      background: "rgba(13,13,13,0.08)",
+                      color: "rgba(13,13,13,0.48)",
                     }}
                   >
                     {cards.length}
@@ -171,12 +171,12 @@ export function GuestListContainer({
                 {/* Cards */}
                 <div
                   className="p-3 space-y-3"
-                  style={{ background: "#F5F5F5", minHeight: "120px" }}
+                  style={{ background: "#F0F0EE", minHeight: "120px" }}
                 >
                   {cards.length === 0 ? (
                     <p
                       className="text-center py-6 font-poppins text-xs"
-                      style={{ color: "#7A7368" }}
+                      style={{ color: "rgba(13,13,13,0.48)" }}
                     >
                       No {col.label.toLowerCase()} reservations
                     </p>

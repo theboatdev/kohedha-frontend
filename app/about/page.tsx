@@ -164,7 +164,7 @@ export default function AboutPage() {
 
           <Link
             href="/vendors"
-            style={{ display: "inline-block", background: C.accent, color: C.cream, fontSize: "14px", fontWeight: 500, padding: "13px 32px", borderRadius: "40px", textDecoration: "none", transition: "background 0.2s" }}
+            style={{ display: "inline-block", background: C.accent, color: C.text, fontSize: "14px", fontWeight: 500, padding: "13px 32px", borderRadius: "40px", textDecoration: "none", transition: "background 0.2s" }}
             onMouseEnter={(e) => (e.currentTarget.style.background = C.accent2)}
             onMouseLeave={(e) => (e.currentTarget.style.background = C.accent)}
           >

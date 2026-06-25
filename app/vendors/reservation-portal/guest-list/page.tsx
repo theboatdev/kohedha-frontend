@@ -160,7 +160,7 @@ export default function GuestListPage() {
     <ReservationPortalLayout pageTitle="Guest List">
       <div
         className="max-w-7xl mx-auto px-3 sm:px-6 py-8 sm:py-12"
-        style={{ background: "#F5F5F5" }}
+        style={{ background: "#F0F0EE" }}
       >
         {/* Header */}
         <div className="mb-8 flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
@@ -168,7 +168,7 @@ export default function GuestListPage() {
             
             <p
               className="font-poppins text-sm sm:text-base"
-              style={{ color: "#7A7368" }}
+              style={{ color: "rgba(13,13,13,0.48)" }}
             >
               Select a slot and manage your reservations
             </p>
@@ -179,14 +179,14 @@ export default function GuestListPage() {
             style={
               showToday
                 ? {
-                    background: "#2A2620",
+                    background: "#0D0D0D",
                     color: "#ffffff",
-                    borderColor: "#2A2620",
+                    borderColor: "#0D0D0D",
                   }
                 : {
                     background: "#ffffff",
-                    color: "#2A2620",
-                    borderColor: "rgba(42,38,32,0.3)",
+                    color: "#0D0D0D",
+                    borderColor: "rgba(13,13,13,0.3)",
                   }
             }
           >
@@ -200,10 +200,10 @@ export default function GuestListPage() {
             className="rounded-lg p-4 mb-6"
             style={{
               background: "#ffffff",
-              border: "1px solid rgba(196,114,74,0.3)",
+              border: "1px solid rgba(245,230,66,0.3)",
             }}
           >
-            <p className="font-poppins text-sm" style={{ color: "#C4724A" }}>
+            <p className="font-poppins text-sm" style={{ color: "#0D0D0D" }}>
               {slotsError}
             </p>
           </div>
@@ -230,12 +230,12 @@ export default function GuestListPage() {
                 className="rounded-lg p-4"
                 style={{
                   background: "#ffffff",
-                  border: "1px solid rgba(196,114,74,0.3)",
+                  border: "1px solid rgba(245,230,66,0.3)",
                 }}
               >
                 <p
                   className="font-poppins text-sm"
-                  style={{ color: "#C4724A" }}
+                  style={{ color: "#0D0D0D" }}
                 >
                   {reservationsError}
                 </p>
@@ -262,10 +262,10 @@ export default function GuestListPage() {
               className="text-center py-16 rounded-lg"
               style={{
                 background: "#ffffff",
-                border: "1px solid rgba(42,38,32,0.1)",
+                border: "1px solid rgba(13,13,13,0.09)",
               }}
             >
-              <p className="font-poppins" style={{ color: "#7A7368" }}>
+              <p className="font-poppins" style={{ color: "rgba(13,13,13,0.48)" }}>
                 Select a booking slot above to view and manage its guests
               </p>
             </div>

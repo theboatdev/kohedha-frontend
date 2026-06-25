@@ -103,7 +103,7 @@ export default function BookingSuccessPage() {
           <p style={{ color: C.muted, marginBottom: "28px", lineHeight: 1.7 }}>{error || "This reservation link is invalid or has expired."}</p>
           <button
             onClick={() => router.push("/")}
-            style={{ background: C.accent, color: "white", border: "none", borderRadius: "40px", padding: "12px 28px", fontSize: "14px", fontWeight: 600, cursor: "pointer" }}
+            style={{ background: C.accent, color: C.text, border: "none", borderRadius: "40px", padding: "12px 28px", fontSize: "14px", fontWeight: 600, cursor: "pointer" }}
           >
             Go to Homepage
           </button>

@@ -81,7 +81,7 @@ export default async function PlacePage({ params }: PlacePageProps) {
         <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "flex-end", padding: "40px 48px" }}>
           <div style={{ maxWidth: "800px" }}>
             <div style={{ display: "flex", gap: "8px", marginBottom: "14px", flexWrap: "wrap" }}>
-              <span style={{ background: C.accent, color: "white", borderRadius: "40px", padding: "5px 14px", fontSize: "12px", fontWeight: 500 }}>
+              <span style={{ background: C.accent, color: C.text, borderRadius: "40px", padding: "5px 14px", fontSize: "12px", fontWeight: 500 }}>
                 {place.category}
               </span>
               {place.featured && (

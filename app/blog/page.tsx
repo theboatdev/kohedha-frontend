@@ -41,7 +41,7 @@ export default async function BlogPage() {
           <div style={{ textAlign: "center", padding: "80px 0" }}>
             <h2 className="font-display" style={{ fontSize: "28px", color: C.text, marginBottom: "14px" }}>No posts yet</h2>
             <p style={{ color: C.muted, marginBottom: "28px" }}>Check back soon for the latest articles.</p>
-            <Link href="/studio" style={{ background: C.accent, color: C.cream, padding: "12px 28px", borderRadius: "40px", textDecoration: "none", fontSize: "14px", fontWeight: 500 }}>
+            <Link href="/studio" style={{ background: C.accent, color: C.text, padding: "12px 28px", borderRadius: "40px", textDecoration: "none", fontSize: "14px", fontWeight: 500 }}>
               Create Your First Post
             </Link>
           </div>
@@ -113,7 +113,7 @@ export default async function BlogPage() {
               placeholder="Enter your email"
               style={{ flex: 1, minWidth: "200px", background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.2)", borderRadius: "40px", padding: "12px 20px", color: "white", fontSize: "14px", outline: "none" }}
             />
-            <button style={{ background: C.accent, color: "white", border: "none", borderRadius: "40px", padding: "12px 24px", fontSize: "14px", fontWeight: 500, cursor: "pointer", whiteSpace: "nowrap" }}>
+            <button style={{ background: C.accent, color: C.text, border: "none", borderRadius: "40px", padding: "12px 24px", fontSize: "14px", fontWeight: 500, cursor: "pointer", whiteSpace: "nowrap" }}>
               Subscribe
             </button>
           </div>

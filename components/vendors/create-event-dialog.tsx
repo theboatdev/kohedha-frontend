@@ -179,7 +179,7 @@ export function CreateEventDialog({
     <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto bg-white">
         <DialogHeader>
-          <DialogTitle className="font-bebas text-2xl tracking-tight">
+          <DialogTitle className="font-poppins font-bold text-2xl tracking-tight">
             {isEditing ? "Edit Event" : "Create New Event"}
           </DialogTitle>
           <DialogDescription className="font-poppins text-sm">

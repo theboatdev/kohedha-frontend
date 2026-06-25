@@ -76,7 +76,7 @@ export default async function EventPage({ params }: EventPageProps) {
         <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to bottom, rgba(0,0,0,0.2), rgba(0,0,0,0.6))" }} />
         <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "flex-end", padding: "40px 48px" }}>
           <div style={{ maxWidth: "800px" }}>
-            <div style={{ background: C.accent, color: "white", borderRadius: "40px", padding: "5px 14px", fontSize: "12px", fontWeight: 500, display: "inline-block", marginBottom: "14px" }}>
+            <div style={{ background: C.accent, color: C.text, borderRadius: "40px", padding: "5px 14px", fontSize: "12px", fontWeight: 500, display: "inline-block", marginBottom: "14px" }}>
               {event.category}
             </div>
             <h1 className="font-display" style={{ color: "white", fontSize: "clamp(28px,4vw,48px)", lineHeight: 1.15, marginBottom: "16px" }}>
@@ -171,7 +171,7 @@ export default async function EventPage({ params }: EventPageProps) {
             <div style={{ background: C.dark, borderRadius: "16px", padding: "28px", color: "white" }}>
               <h3 className="font-display" style={{ fontSize: "22px", marginBottom: "12px" }}>Get Tickets</h3>
               <p style={{ fontSize: "28px", fontWeight: 700, color: C.accent, marginBottom: "20px" }}>{event.price}</p>
-              <button style={{ width: "100%", background: C.accent, color: "white", border: "none", borderRadius: "40px", padding: "14px", fontSize: "15px", fontWeight: 600, cursor: "pointer" }}>
+              <button style={{ width: "100%", background: C.accent, color: C.text, border: "none", borderRadius: "40px", padding: "14px", fontSize: "15px", fontWeight: 600, cursor: "pointer" }}>
                 Book Now
               </button>
             </div>

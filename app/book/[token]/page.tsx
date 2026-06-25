@@ -147,7 +147,7 @@ export default function PublicBookingPage() {
             onClick={() => router.push("/")}
             style={{
               background: C.accent,
-              color: "white",
+              color: C.text,
               border: "none",
               borderRadius: "40px",
               padding: "12px 28px",
@@ -228,7 +228,7 @@ export default function PublicBookingPage() {
                       fontSize: "15px",
                       transition: "all 0.2s",
                       background: currentStep >= step ? C.accent : C.bg2,
-                      color: currentStep >= step ? "white" : C.muted,
+                      color: currentStep >= step ? C.text : C.muted,
                     }}
                   >
                     {step}

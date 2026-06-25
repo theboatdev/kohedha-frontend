@@ -565,7 +565,7 @@ export default function CreateBookingSlotPage() {
       <ReservationPortalLayout pageTitle="Create Booking Slot">
         <div
           className="max-w-4xl mx-auto px-6 py-12"
-          style={{ background: "#F5F5F5" }}
+          style={{ background: "#F0F0EE" }}
         >
           <div className="bg-white rounded-xl shadow-lg border border-gray-100 p-12">
             <div className="flex items-center justify-center">
@@ -581,7 +581,7 @@ export default function CreateBookingSlotPage() {
     <ReservationPortalLayout pageTitle="Create Booking Slot">
       <div
         className="max-w-4xl mx-auto px-6 py-12"
-        style={{ background: "#F5F5F5" }}
+        style={{ background: "#F0F0EE" }}
       >
         <div className="bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden">
           <div className="p-6 border-b border-gray-100">
@@ -598,7 +598,7 @@ export default function CreateBookingSlotPage() {
                 Back
               </Button>
             </div>
-            <h2 className="font-bebas text-2xl tracking-tight text-gray-900 mb-2">
+            <h2 className="font-poppins font-bold text-2xl tracking-tight text-gray-900 mb-2">
               Create Booking Slot
             </h2>
             <p className="font-poppins text-sm text-gray-500">

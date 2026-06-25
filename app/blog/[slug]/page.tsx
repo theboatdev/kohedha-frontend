@@ -89,7 +89,7 @@ export default async function BlogPost({ params }: BlogPostPageProps) {
         <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to bottom, rgba(0,0,0,0.15), rgba(0,0,0,0.65))" }} />
         <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "flex-end", padding: "40px 48px" }}>
           <div style={{ maxWidth: "720px" }}>
-            <div style={{ background: C.accent, color: "white", borderRadius: "40px", padding: "5px 14px", fontSize: "12px", fontWeight: 500, display: "inline-block", marginBottom: "14px" }}>
+            <div style={{ background: C.accent, color: C.text, borderRadius: "40px", padding: "5px 14px", fontSize: "12px", fontWeight: 500, display: "inline-block", marginBottom: "14px" }}>
               {post.category}
             </div>
             <h1 className="font-display" style={{ color: "white", fontSize: "clamp(26px,4vw,44px)", lineHeight: 1.2, marginBottom: "16px" }}>

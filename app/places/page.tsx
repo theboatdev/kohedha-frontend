@@ -120,7 +120,7 @@ export default async function PlacesPage() {
                 No places available yet
               </h3>
               <p style={{ color: C.muted, marginBottom: "28px" }}>Check back soon for amazing restaurants and cafes.</p>
-              <Link href="/blog" style={{ background: C.accent, color: C.cream, padding: "12px 28px", borderRadius: "40px", textDecoration: "none", fontSize: "14px", fontWeight: 500 }}>
+              <Link href="/blog" style={{ background: C.accent, color: C.text, padding: "12px 28px", borderRadius: "40px", textDecoration: "none", fontSize: "14px", fontWeight: 500 }}>
                 Read Our Blog
               </Link>
             </div>
@@ -172,7 +172,7 @@ function PlaceCard({ place, featured }: { place: Place; featured: boolean }) {
           {place.category}
         </div>
         {featured && (
-          <div style={{ position: "absolute", top: "14px", right: "14px", background: C.accent, color: "white", borderRadius: "40px", padding: "4px 12px", fontSize: "11px", fontWeight: 500, display: "flex", alignItems: "center", gap: "4px" }}>
+          <div style={{ position: "absolute", top: "14px", right: "14px", background: C.accent, color: C.text, borderRadius: "40px", padding: "4px 12px", fontSize: "11px", fontWeight: 500, display: "flex", alignItems: "center", gap: "4px" }}>
             <Star size={10} />
             Featured
           </div>

@@ -24,33 +24,33 @@ const getSectionTypeColor = (type: string) => {
   switch (type) {
     case "indoor":
       return {
-        background: "#EEEEEE",
-        color: "#2A2620",
-        border: "rgba(42,38,32,0.15)",
+        background: "#E8E8E4",
+        color: "#0D0D0D",
+        border: "rgba(13,13,13,0.15)",
       };
     case "outdoor":
       return {
         background: "#E5E7EB",
-        color: "#2A2620",
-        border: "rgba(42,38,32,0.15)",
+        color: "#0D0D0D",
+        border: "rgba(13,13,13,0.15)",
       };
     case "vip":
       return {
-        background: "rgba(196,114,74,0.15)",
-        color: "#C4724A",
-        border: "rgba(196,114,74,0.3)",
+        background: "rgba(245,230,66,0.15)",
+        color: "#F5E642",
+        border: "rgba(245,230,66,0.3)",
       };
     case "rooftop":
       return {
         background: "#D4CFC3",
-        color: "#2A2620",
-        border: "rgba(42,38,32,0.15)",
+        color: "#0D0D0D",
+        border: "rgba(13,13,13,0.15)",
       };
     default:
       return {
-        background: "#EEEEEE",
-        color: "#7A7368",
-        border: "rgba(42,38,32,0.15)",
+        background: "#E8E8E4",
+        color: "rgba(13,13,13,0.48)",
+        border: "rgba(13,13,13,0.15)",
       };
   }
 };
@@ -86,8 +86,8 @@ export function SectionCard({
       <div
         className="rounded-lg p-6 transition-all duration-200 hover:shadow-md"
         style={{
-          border: `1px solid rgba(42,38,32,0.15)`,
-          background: section.isActive ? "#ffffff" : "#EEEEEE",
+          border: `1px solid rgba(13,13,13,0.15)`,
+          background: section.isActive ? "#ffffff" : "#E8E8E4",
           opacity: section.isActive ? 1 : 0.85,
         }}
       >
@@ -98,7 +98,7 @@ export function SectionCard({
                 <div className="flex items-center gap-3 mb-2 flex-wrap">
                   <h3
                     className="font-poppins font-semibold text-lg"
-                    style={{ color: "#2A2620" }}
+                    style={{ color: "#0D0D0D" }}
                   >
                     {section.sectionName}
                   </h3>
@@ -119,12 +119,12 @@ export function SectionCard({
                     className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium font-poppins"
                     style={{
                       background: section.isActive
-                        ? "rgba(196,114,74,0.15)"
-                        : "#DDD9CE",
-                      color: section.isActive ? "#C4724A" : "#7A7368",
+                        ? "rgba(245,230,66,0.15)"
+                        : "rgba(255,255,255,0.3)",
+                      color: section.isActive ? "#F5E642" : "rgba(13,13,13,0.48)",
                       border: section.isActive
-                        ? "1px solid rgba(196,114,74,0.3)"
-                        : "1px solid rgba(42,38,32,0.15)",
+                        ? "1px solid rgba(245,230,66,0.3)"
+                        : "1px solid rgba(13,13,13,0.15)",
                     }}
                   >
                     {section.isActive ? (
@@ -139,7 +139,7 @@ export function SectionCard({
             </div>
 
             {section.description && (
-              <p className="font-poppins text-sm" style={{ color: "#7A7368" }}>
+              <p className="font-poppins text-sm" style={{ color: "rgba(13,13,13,0.48)" }}>
                 {section.description}
               </p>
             )}
@@ -151,7 +151,7 @@ export function SectionCard({
               variant="outline"
               size="sm"
               className="w-full lg:w-32 font-poppins text-sm"
-              style={{ borderColor: "rgba(42,38,32,0.2)", color: "#2A2620" }}
+              style={{ borderColor: "rgba(13,13,13,0.2)", color: "#0D0D0D" }}
               disabled={isLoading}
             >
               <Edit className="h-4 w-4 mr-2" />
@@ -164,14 +164,14 @@ export function SectionCard({
               size="sm"
               className="w-full lg:w-32 font-poppins text-sm"
               style={{
-                borderColor: "rgba(42,38,32,0.2)",
-                color: section.isActive ? "#7A7368" : "#C4724A",
+                borderColor: "rgba(13,13,13,0.2)",
+                color: section.isActive ? "rgba(13,13,13,0.48)" : "#F5E642",
                 background: "transparent",
               }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.background = section.isActive
-                  ? "#DDD9CE"
-                  : "rgba(196,114,74,0.1)";
+                  ? "rgba(255,255,255,0.3)"
+                  : "rgba(245,230,66,0.1)";
               }}
               onMouseLeave={(e) => {
                 e.currentTarget.style.background = "transparent";
@@ -197,12 +197,12 @@ export function SectionCard({
               size="sm"
               className="w-full lg:w-32 font-poppins text-sm"
               style={{
-                borderColor: "rgba(196,114,74,0.3)",
-                color: "#C4724A",
+                borderColor: "rgba(245,230,66,0.3)",
+                color: "#F5E642",
                 background: "transparent",
               }}
               onMouseEnter={(e) =>
-                (e.currentTarget.style.background = "rgba(196,114,74,0.1)")
+                (e.currentTarget.style.background = "rgba(245,230,66,0.1)")
               }
               onMouseLeave={(e) =>
                 (e.currentTarget.style.background = "transparent")

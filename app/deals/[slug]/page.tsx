@@ -81,7 +81,7 @@ export default async function DealPage({ params }: DealPageProps) {
         <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "flex-end", padding: "40px 48px" }}>
           <div style={{ maxWidth: "780px" }}>
             <div style={{ display: "flex", gap: "8px", marginBottom: "14px", flexWrap: "wrap" }}>
-              <span style={{ background: C.accent, color: "white", borderRadius: "40px", padding: "5px 14px", fontSize: "12px", fontWeight: 500 }}>
+              <span style={{ background: C.accent, color: C.text, borderRadius: "40px", padding: "5px 14px", fontSize: "12px", fontWeight: 500 }}>
                 {deal.category}
               </span>
               {deal.featured && (
@@ -123,7 +123,7 @@ export default async function DealPage({ params }: DealPageProps) {
                   href={deal.redirectLink}
                   target="_blank"
                   rel="noopener noreferrer"
-                  style={{ display: "inline-flex", alignItems: "center", gap: "8px", background: C.accent, color: "white", borderRadius: "40px", padding: "14px 32px", fontSize: "16px", fontWeight: 600, textDecoration: "none" }}
+                  style={{ display: "inline-flex", alignItems: "center", gap: "8px", background: C.accent, color: C.text, borderRadius: "40px", padding: "14px 32px", fontSize: "16px", fontWeight: 600, textDecoration: "none" }}
                 >
                   <ExternalLink size={18} />
                   Redeem Now
@@ -193,7 +193,7 @@ export default async function DealPage({ params }: DealPageProps) {
                     href={deal.redirectLink}
                     target="_blank"
                     rel="noopener noreferrer"
-                    style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "6px", background: C.accent, color: "white", borderRadius: "40px", padding: "12px", fontSize: "14px", fontWeight: 600, textDecoration: "none" }}
+                    style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "6px", background: C.accent, color: C.text, borderRadius: "40px", padding: "12px", fontSize: "14px", fontWeight: 600, textDecoration: "none" }}
                   >
                     <ExternalLink size={14} />Redeem Now
                   </a>

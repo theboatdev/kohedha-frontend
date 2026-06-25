@@ -48,28 +48,28 @@ export function GuestCard({
   return (
     <div
       className="rounded-lg p-4 transition-all duration-200 hover:shadow-md"
-      style={{ background: "#ffffff", border: "2px solid rgba(42,38,32,0.2)" }}
+      style={{ background: "#ffffff", border: "2px solid rgba(13,13,13,0.2)" }}
     >
       <div className="space-y-3">
         {/* Header: Name and Status */}
         <div className="flex items-start justify-between gap-3">
           <div className="flex-1 min-w-0">
             <h3
-              className="font-bebas text-lg tracking-tight truncate"
-              style={{ color: "#2A2620" }}
+              className="font-poppins font-bold text-lg tracking-tight truncate"
+              style={{ color: "#0D0D0D" }}
             >
               {reservation.customerName}
             </h3>
             <p
               className="font-poppins text-xs truncate"
-              style={{ color: "#7A7368" }}
+              style={{ color: "rgba(13,13,13,0.48)" }}
             >
               {reservation.customerPhone}
             </p>
           </div>
           <div
             className="flex items-center gap-1 px-2 py-1 rounded text-xs font-medium font-poppins flex-shrink-0 whitespace-nowrap"
-            style={{ background: "rgba(42,38,32,0.06)", color: "#7A7368" }}
+            style={{ background: "rgba(13,13,13,0.06)", color: "rgba(13,13,13,0.48)" }}
           >
             {getStatusIcon(reservation.status)}
             <span className="hidden sm:inline">
@@ -80,53 +80,53 @@ export function GuestCard({
         </div>
 
         {/* Divider */}
-        <div className="h-px" style={{ background: "rgba(42,38,32,0.1)" }} />
+        <div className="h-px" style={{ background: "rgba(13,13,13,0.1)" }} />
 
         {/* Info Grid */}
         <div className="grid grid-cols-2 gap-3 text-xs">
           <div>
-            <p className="font-poppins mb-0.5" style={{ color: "#7A7368" }}>
+            <p className="font-poppins mb-0.5" style={{ color: "rgba(13,13,13,0.48)" }}>
               Date
             </p>
             <p
               className="font-poppins font-semibold"
-              style={{ color: "#2A2620" }}
+              style={{ color: "#0D0D0D" }}
             >
               {formattedDate}
             </p>
           </div>
 
           <div>
-            <p className="font-poppins mb-0.5" style={{ color: "#7A7368" }}>
+            <p className="font-poppins mb-0.5" style={{ color: "rgba(13,13,13,0.48)" }}>
               Time
             </p>
             <p
               className="font-poppins font-semibold"
-              style={{ color: "#2A2620" }}
+              style={{ color: "#0D0D0D" }}
             >
               {reservation.startTime}
             </p>
           </div>
 
           <div>
-            <p className="font-poppins mb-0.5" style={{ color: "#7A7368" }}>
+            <p className="font-poppins mb-0.5" style={{ color: "rgba(13,13,13,0.48)" }}>
               Guests
             </p>
             <p
               className="font-poppins font-semibold"
-              style={{ color: "#2A2620" }}
+              style={{ color: "#0D0D0D" }}
             >
               {reservation.numberOfGuests}
             </p>
           </div>
 
           <div>
-            <p className="font-poppins mb-0.5" style={{ color: "#7A7368" }}>
+            <p className="font-poppins mb-0.5" style={{ color: "rgba(13,13,13,0.48)" }}>
               Table
             </p>
             <p
               className="font-poppins font-semibold"
-              style={{ color: "#2A2620" }}
+              style={{ color: "#0D0D0D" }}
             >
               #{reservation.tableId.tableNumber}
             </p>
@@ -134,16 +134,16 @@ export function GuestCard({
         </div>
 
         {/* Divider */}
-        <div className="h-px" style={{ background: "rgba(42,38,32,0.1)" }} />
+        <div className="h-px" style={{ background: "rgba(13,13,13,0.1)" }} />
 
         {/* Section badge */}
         <div className="flex justify-end">
           <div
             className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium font-poppins flex-shrink-0"
             style={{
-              background: "#EEEEEE",
-              color: "#2A2620",
-              border: "1px solid rgba(42,38,32,0.15)",
+              background: "#E8E8E4",
+              color: "#0D0D0D",
+              border: "1px solid rgba(13,13,13,0.15)",
             }}
           >
             {reservation.sectionId.sectionName}
@@ -156,15 +156,15 @@ export function GuestCard({
             <>
               <div
                 className="h-px"
-                style={{ background: "rgba(42,38,32,0.1)" }}
+                style={{ background: "rgba(13,13,13,0.1)" }}
               />
               <div className="text-xs">
-                <p className="font-poppins mb-0.5" style={{ color: "#7A7368" }}>
+                <p className="font-poppins mb-0.5" style={{ color: "rgba(13,13,13,0.48)" }}>
                   Cancellation Reason
                 </p>
                 <p
                   className="font-poppins line-clamp-2"
-                  style={{ color: "#2A2620" }}
+                  style={{ color: "#0D0D0D" }}
                 >
                   {reservation.cancellationReason}
                 </p>
@@ -177,19 +177,19 @@ export function GuestCard({
           <>
             <div
               className="h-px"
-              style={{ background: "rgba(42,38,32,0.1)" }}
+              style={{ background: "rgba(13,13,13,0.1)" }}
             />
             <div className="pt-1">
               <div className="flex gap-2">
                 <Button
                   size="xs"
                   className="flex-1 font-poppins h-8 text-xs"
-                  style={{ background: "#C4724A", color: "#F2EEE6" }}
+                  style={{ background: "#F5E642", color: "#0D0D0D" }}
                   onMouseEnter={(e) =>
-                    (e.currentTarget.style.background = "#B85E38")
+                    (e.currentTarget.style.background = "#E8D800")
                   }
                   onMouseLeave={(e) =>
-                    (e.currentTarget.style.background = "#C4724A")
+                    (e.currentTarget.style.background = "#F5E642")
                   }
                   onClick={() => onStatusChange("confirmed")}
                   disabled={isUpdating}
@@ -208,8 +208,8 @@ export function GuestCard({
                   variant="outline"
                   className="flex-1 font-poppins h-8 text-xs"
                   style={{
-                    borderColor: "rgba(42,38,32,0.2)",
-                    color: "#2A2620",
+                    borderColor: "rgba(13,13,13,0.2)",
+                    color: "#0D0D0D",
                   }}
                   onClick={() =>
                     onStatusChange("cancelled", "Declined by vendor")

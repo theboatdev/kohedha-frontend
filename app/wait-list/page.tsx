@@ -443,7 +443,7 @@ export default function WaitListPage() {
                 className="w-full h-12 text-base font-medium rounded-xl transition-all duration-200 hover:opacity-90"
                 style={{
                   background: C.accent,
-                  color: "#ffffff",
+                  color: "#0D0D0D",
                   marginTop: "8px",
                 }}
               >

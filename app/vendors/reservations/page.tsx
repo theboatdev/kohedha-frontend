@@ -224,7 +224,7 @@ export default function ReservationsPage() {
             <div className="p-8 border-b border-gray-100">
               <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                 <div>
-                  <h2 className="font-bebas text-3xl tracking-tight text-gray-900 mb-2">
+                  <h2 className="font-poppins font-bold text-3xl tracking-tight text-gray-900 mb-2">
                     Reservation Management
                   </h2>
                   <p className="font-poppins text-sm text-gray-600">

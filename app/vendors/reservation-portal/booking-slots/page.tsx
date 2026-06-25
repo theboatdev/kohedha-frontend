@@ -233,26 +233,26 @@ export default function BookingSlotsPage() {
           {/* Stats Row */}
           <div className="flex flex-wrap items-center gap-2 mb-6">
             <div className="flex items-center gap-2 bg-white border border-gray-200 rounded-full px-4 py-1.5 shadow-sm">
-              <span className="font-poppins text-xs text-[#7A7368]">Total</span>
-              <span className="font-poppins text-sm font-semibold text-[#2A2620]">
+              <span className="font-poppins text-xs text-[rgba(13,13,13,0.48)]">Total</span>
+              <span className="font-poppins text-sm font-semibold text-[#0D0D0D]">
                 {bookingSlots.length}
               </span>
             </div>
             <div className="flex items-center gap-2 bg-white border border-gray-200 rounded-full px-4 py-1.5 shadow-sm">
-              <span className="w-2 h-2 rounded-full bg-[#C4724A]" />
-              <span className="font-poppins text-xs text-[#7A7368]">
+              <span className="w-2 h-2 rounded-full bg-[#F5E642]" />
+              <span className="font-poppins text-xs text-[rgba(13,13,13,0.48)]">
                 Active
               </span>
-              <span className="font-poppins text-sm font-semibold text-[#2A2620]">
+              <span className="font-poppins text-sm font-semibold text-[#0D0D0D]">
                 {bookingSlots.filter((s) => s.isActive).length}
               </span>
             </div>
             <div className="flex items-center gap-2 bg-white border border-gray-200 rounded-full px-4 py-1.5 shadow-sm">
               <span className="w-2 h-2 rounded-full bg-gray-300" />
-              <span className="font-poppins text-xs text-[#7A7368]">
+              <span className="font-poppins text-xs text-[rgba(13,13,13,0.48)]">
                 Inactive
               </span>
-              <span className="font-poppins text-sm font-semibold text-[#2A2620]">
+              <span className="font-poppins text-sm font-semibold text-[#0D0D0D]">
                 {bookingSlots.filter((s) => !s.isActive).length}
               </span>
             </div>
@@ -261,7 +261,7 @@ export default function BookingSlotsPage() {
             onClick={() =>
               router.push("/vendors/reservation-portal/booking-slots/create")
             }
-            className="font-poppins shrink-0 bg-[#C4724A] hover:bg-[#B85E38] text-[#F2EEE6] rounded-full px-6"
+            className="font-poppins shrink-0 bg-[#F5E642] hover:bg-[#E8D800] text-[#0D0D0D] rounded-full px-6"
           >
             <Plus className="h-4 w-4 mr-2" />
             Create Booking Slot
@@ -271,20 +271,20 @@ export default function BookingSlotsPage() {
         {/* Filters */}
         <div className="bg-white border border-gray-200 rounded-xl p-5 mb-6 shadow-sm">
           <div className="flex items-center justify-between mb-4">
-            <div className="flex items-center gap-2 font-poppins text-sm font-medium text-[#2A2620]">
-              <Filter className="h-4 w-4 text-[#7A7368]" />
+            <div className="flex items-center gap-2 font-poppins text-sm font-medium text-[#0D0D0D]">
+              <Filter className="h-4 w-4 text-[rgba(13,13,13,0.48)]" />
               <span>Filters</span>
             </div>
             <button
               onClick={resetFilters}
-              className="font-poppins text-xs text-[#7A7368] hover:text-[#2A2620] transition-colors underline-offset-2 hover:underline"
+              className="font-poppins text-xs text-[rgba(13,13,13,0.48)] hover:text-[#0D0D0D] transition-colors underline-offset-2 hover:underline"
             >
               Reset all
             </button>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             <div className="space-y-1.5">
-              <Label className="font-poppins text-xs text-[#7A7368]">
+              <Label className="font-poppins text-xs text-[rgba(13,13,13,0.48)]">
                 Status
               </Label>
               <Select value={filterStatus} onValueChange={setFilterStatus}>
@@ -305,7 +305,7 @@ export default function BookingSlotsPage() {
               </Select>
             </div>
             <div className="space-y-1.5">
-              <Label className="font-poppins text-xs text-[#7A7368]">
+              <Label className="font-poppins text-xs text-[rgba(13,13,13,0.48)]">
                 Slot Type
               </Label>
               <Select value={filterSlotType} onValueChange={setFilterSlotType}>
@@ -329,7 +329,7 @@ export default function BookingSlotsPage() {
               </Select>
             </div>
             <div className="space-y-1.5">
-              <Label className="font-poppins text-xs text-[#7A7368]">
+              <Label className="font-poppins text-xs text-[rgba(13,13,13,0.48)]">
                 Date From
               </Label>
               <Input
@@ -340,7 +340,7 @@ export default function BookingSlotsPage() {
               />
             </div>
             <div className="space-y-1.5">
-              <Label className="font-poppins text-xs text-[#7A7368]">
+              <Label className="font-poppins text-xs text-[rgba(13,13,13,0.48)]">
                 Date To
               </Label>
               <Input
@@ -356,8 +356,8 @@ export default function BookingSlotsPage() {
         {/* Content */}
         {isLoading ? (
           <div className="flex flex-col items-center justify-center py-24 gap-3">
-            <Loader2 className="h-8 w-8 animate-spin text-[#C4724A]" />
-            <p className="font-poppins text-sm text-[#7A7368]">
+            <Loader2 className="h-8 w-8 animate-spin text-[#0D0D0D]" />
+            <p className="font-poppins text-sm text-[rgba(13,13,13,0.48)]">
               Loading booking slots…
             </p>
           </div>
@@ -367,12 +367,12 @@ export default function BookingSlotsPage() {
               <Clock className="h-7 w-7 text-gray-400" />
             </div>
             <div className="text-center">
-              <h3 className="font-bebas text-xl text-[#2A2620] mb-1">
+              <h3 className="font-poppins font-bold text-xl text-[#0D0D0D] mb-1">
                 {bookingSlots.length === 0
                   ? "No Booking Slots Yet"
                   : "No Matching Slots"}
               </h3>
-              <p className="font-poppins text-sm text-[#7A7368] max-w-xs">
+              <p className="font-poppins text-sm text-[rgba(13,13,13,0.48)] max-w-xs">
                 {bookingSlots.length === 0
                   ? "Create your first booking slot to start accepting reservations."
                   : "Try adjusting your filters to see more results."}
@@ -385,7 +385,7 @@ export default function BookingSlotsPage() {
                     "/vendors/reservation-portal/booking-slots/create",
                   )
                 }
-                className="font-poppins mt-2 bg-[#C4724A] hover:bg-[#B85E38] text-[#F2EEE6] rounded-full px-6"
+                className="font-poppins mt-2 bg-[#F5E642] hover:bg-[#E8D800] text-[#0D0D0D] rounded-full px-6"
               >
                 <Plus className="h-4 w-4 mr-2" />
                 Create First Booking Slot
@@ -401,7 +401,7 @@ export default function BookingSlotsPage() {
               >
                 {/* Left accent bar */}
                 <div
-                  className={`w-1 shrink-0 ${slot.isActive ? "bg-[#C4724A]" : "bg-gray-200"}`}
+                  className={`w-1 shrink-0 ${slot.isActive ? "bg-[#F5E642]" : "bg-gray-200"}`}
                 />
 
                 <div className="flex-1 p-5 flex flex-col lg:flex-row lg:items-center justify-between gap-4 min-w-0">
@@ -412,20 +412,20 @@ export default function BookingSlotsPage() {
                       <span
                         className={`inline-flex items-center gap-1.5 font-poppins text-xs font-medium px-2.5 py-1 rounded-full ${
                           slot.isActive
-                            ? "bg-orange-50 text-[#C4724A]"
-                            : "bg-gray-100 text-[#7A7368]"
+                            ? "bg-orange-50 text-[#0D0D0D]"
+                            : "bg-gray-100 text-[rgba(13,13,13,0.48)]"
                         }`}
                       >
                         <span
-                          className={`w-1.5 h-1.5 rounded-full ${slot.isActive ? "bg-[#C4724A]" : "bg-gray-400"}`}
+                          className={`w-1.5 h-1.5 rounded-full ${slot.isActive ? "bg-[#F5E642]" : "bg-gray-400"}`}
                         />
                         {slot.isActive ? "Active" : "Inactive"}
                       </span>
-                      <span className="inline-flex font-poppins text-xs font-medium px-2.5 py-1 rounded-full bg-gray-100 text-[#2A2620]">
+                      <span className="inline-flex font-poppins text-xs font-medium px-2.5 py-1 rounded-full bg-gray-100 text-[#0D0D0D]">
                         {slot.slotType}
                       </span>
                       {slot.isRecurring && (
-                        <span className="inline-flex items-center gap-1 font-poppins text-xs font-medium px-2.5 py-1 rounded-full bg-gray-100 text-[#2A2620]">
+                        <span className="inline-flex items-center gap-1 font-poppins text-xs font-medium px-2.5 py-1 rounded-full bg-gray-100 text-[#0D0D0D]">
                           <svg
                             className="w-3 h-3"
                             fill="none"
@@ -446,10 +446,10 @@ export default function BookingSlotsPage() {
 
                     {/* Title + time meta */}
                     <div>
-                      <h3 className="font-bebas text-xl text-[#2A2620] leading-tight">
+                      <h3 className="font-poppins font-bold text-xl text-[#0D0D0D] leading-tight">
                         {slot.slotName || `${slot.slotType} Slot`}
                       </h3>
-                      <div className="flex items-center gap-4 flex-wrap mt-1 font-poppins text-sm text-[#7A7368]">
+                      <div className="flex items-center gap-4 flex-wrap mt-1 font-poppins text-sm text-[rgba(13,13,13,0.48)]">
                         <span className="flex items-center gap-1.5">
                           <Calendar className="h-3.5 w-3.5 shrink-0" />
                           {formatDateRange(slot)}
@@ -463,14 +463,14 @@ export default function BookingSlotsPage() {
 
                     {/* Detail chips */}
                     <div className="flex items-center gap-2 flex-wrap font-poppins text-xs">
-                      <span className="bg-gray-50 border border-gray-200 rounded-md px-2.5 py-1 text-[#2A2620]">
-                        <span className="text-[#7A7368]">Section · </span>
+                      <span className="bg-gray-50 border border-gray-200 rounded-md px-2.5 py-1 text-[#0D0D0D]">
+                        <span className="text-[rgba(13,13,13,0.48)]">Section · </span>
                         {typeof slot.sectionId === "object"
                           ? slot.sectionId.sectionName
                           : "N/A"}
                       </span>
-                      <span className="bg-gray-50 border border-gray-200 rounded-md px-2.5 py-1 text-[#2A2620]">
-                        <span className="text-[#7A7368]">Bookings · </span>
+                      <span className="bg-gray-50 border border-gray-200 rounded-md px-2.5 py-1 text-[#0D0D0D]">
+                        <span className="text-[rgba(13,13,13,0.48)]">Bookings · </span>
                         {slot.maxBookings
                           ? slot.isRecurring
                             ? `${slot.maxBookings} per day`
@@ -486,14 +486,14 @@ export default function BookingSlotsPage() {
                           href={slot.publicLink}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="font-poppins text-xs text-[#C4724A] hover:underline flex items-center gap-1 underline-offset-2"
+                          className="font-poppins text-xs text-[#0D0D0D] hover:underline flex items-center gap-1 underline-offset-2"
                         >
                           <ExternalLink className="h-3 w-3" />
                           Public link
                         </a>
                         <button
                           onClick={() => handleCopyLink(slot.publicLink!)}
-                          className="font-poppins text-xs text-[#7A7368] hover:text-[#2A2620] flex items-center gap-1 transition-colors"
+                          className="font-poppins text-xs text-[rgba(13,13,13,0.48)] hover:text-[#0D0D0D] flex items-center gap-1 transition-colors"
                         >
                           <Copy className="h-3 w-3" />
                           Copy
@@ -512,7 +512,7 @@ export default function BookingSlotsPage() {
                           `/vendors/reservation-portal/booking-slots/edit/${slot._id}`,
                         )
                       }
-                      className="font-poppins h-8 px-3 text-xs border-gray-200 text-[#2A2620] hover:bg-gray-50 hover:border-gray-300 transition-colors"
+                      className="font-poppins h-8 px-3 text-xs border-gray-200 text-[#0D0D0D] hover:bg-gray-50 hover:border-gray-300 transition-colors"
                     >
                       <Edit className="h-3.5 w-3.5 mr-1.5" />
                       Edit
@@ -521,7 +521,7 @@ export default function BookingSlotsPage() {
                       variant="outline"
                       size="sm"
                       onClick={() => handleToggleStatus(slot._id)}
-                      className="font-poppins h-8 px-3 text-xs border-gray-200 text-[#7A7368] hover:bg-gray-50 hover:border-gray-300 transition-colors"
+                      className="font-poppins h-8 px-3 text-xs border-gray-200 text-[rgba(13,13,13,0.48)] hover:bg-gray-50 hover:border-gray-300 transition-colors"
                     >
                       {slot.isActive ? "Deactivate" : "Activate"}
                     </Button>

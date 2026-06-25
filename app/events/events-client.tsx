@@ -297,7 +297,7 @@ export default function EventsPageClient({ events }: { events: SanityEvent[] }) 
             <div style={{ display: "flex", gap: "12px" }}>
               <button
                 onClick={() => setModal({ title: "Rooftop Jazz & Sunset Sessions", venue: "Harbour Lights · Colombo 1", date: "Sat 14 Dec · 6:30 PM", price: "LKR 2,500 / person", vibe: "Live music · Date night" })}
-                style={{ background: C.accent, color: C.cream, fontSize: "14px", fontWeight: 500, padding: "13px 28px", borderRadius: "40px", border: "none", cursor: "pointer", transition: "background 0.2s", fontFamily: "inherit" }}
+                style={{ background: C.accent, color: C.text, fontSize: "14px", fontWeight: 500, padding: "13px 28px", borderRadius: "40px", border: "none", cursor: "pointer", transition: "background 0.2s", fontFamily: "inherit" }}
                 onMouseEnter={(e) => (e.currentTarget.style.background = C.accent2)}
                 onMouseLeave={(e) => (e.currentTarget.style.background = C.accent)}
               >
@@ -530,7 +530,7 @@ export default function EventsPageClient({ events }: { events: SanityEvent[] }) 
               </div>
             </div>
             <div style={{ display: "flex", gap: "10px" }}>
-              <button onClick={() => setModal(null)} style={{ flex: 1, padding: "13px", borderRadius: "40px", fontSize: "14px", fontWeight: 500, textAlign: "center", cursor: "pointer", border: "none", background: C.accent, color: C.cream, fontFamily: "inherit" }}>
+              <button onClick={() => setModal(null)} style={{ flex: 1, padding: "13px", borderRadius: "40px", fontSize: "14px", fontWeight: 500, textAlign: "center", cursor: "pointer", border: "none", background: C.accent, color: C.text, fontFamily: "inherit" }}>
                 Get tickets →
               </button>
               <button onClick={() => setModal(null)} style={{ flex: 1, padding: "13px", borderRadius: "40px", fontSize: "14px", fontWeight: 500, textAlign: "center", cursor: "pointer", border: "none", background: C.bg2, color: C.text, fontFamily: "inherit" }}>

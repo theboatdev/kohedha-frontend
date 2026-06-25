@@ -131,30 +131,30 @@ export default function SettingsPage() {
     <ReservationPortalLayout pageTitle="Settings">
       <div
         className="max-w-7xl mx-auto px-6 py-12"
-        style={{ background: "#F5F5F5" }}
+        style={{ background: "#F0F0EE" }}
       >
         <div
           className="rounded-xl shadow-lg overflow-hidden"
           style={{
             background: "#ffffff",
-            border: "1px solid rgba(42,38,32,0.1)",
+            border: "1px solid rgba(13,13,13,0.09)",
           }}
         >
           <div
             className="p-6"
-            style={{ borderBottom: "1px solid rgba(42,38,32,0.1)" }}
+            style={{ borderBottom: "1px solid rgba(13,13,13,0.09)" }}
           >
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
               <div>
                 <h2
-                  className="font-bebas text-2xl tracking-tight mb-2"
-                  style={{ color: "#2A2620" }}
+                  className="font-poppins font-bold text-2xl tracking-tight mb-2"
+                  style={{ color: "#0D0D0D" }}
                 >
                   Restaurant Sections
                 </h2>
                 <p
                   className="font-poppins text-sm"
-                  style={{ color: "#7A7368" }}
+                  style={{ color: "rgba(13,13,13,0.48)" }}
                 >
                   Manage your restaurant dining areas and sections
                 </p>
@@ -163,16 +163,16 @@ export default function SettingsPage() {
                 onClick={() => setIsCreateDialogOpen(true)}
                 className="font-poppins flex items-center gap-2"
                 style={{
-                  background: "#C4724A",
-                  color: "#F2EEE6",
+                  background: "#F5E642",
+                  color: "#0D0D0D",
                   borderRadius: "40px",
                   padding: "13px 28px",
                 }}
                 onMouseEnter={(e) =>
-                  (e.currentTarget.style.background = "#B85E38")
+                  (e.currentTarget.style.background = "#E8D800")
                 }
                 onMouseLeave={(e) =>
-                  (e.currentTarget.style.background = "#C4724A")
+                  (e.currentTarget.style.background = "#F5E642")
                 }
               >
                 <Plus className="h-4 w-4" />
@@ -186,11 +186,11 @@ export default function SettingsPage() {
               <div className="text-center py-12">
                 <Loader2
                   className="h-12 w-12 mx-auto mb-4 animate-spin"
-                  style={{ color: "#C4724A" }}
+                  style={{ color: "#0D0D0D" }}
                 />
                 <p
                   className="font-poppins text-sm"
-                  style={{ color: "#7A7368" }}
+                  style={{ color: "rgba(13,13,13,0.48)" }}
                 >
                   Loading sections...
                 </p>
@@ -199,17 +199,17 @@ export default function SettingsPage() {
               <div className="text-center py-12">
                 <SettingsIcon
                   className="h-16 w-16 mx-auto mb-4"
-                  style={{ color: "#DDD9CE" }}
+                  style={{ color: "rgba(255,255,255,0.3)" }}
                 />
                 <h3
-                  className="font-bebas text-xl mb-2"
-                  style={{ color: "#2A2620" }}
+                  className="font-poppins font-bold text-xl mb-2"
+                  style={{ color: "#0D0D0D" }}
                 >
                   No Sections Yet
                 </h3>
                 <p
                   className="font-poppins text-sm mb-6"
-                  style={{ color: "#7A7368" }}
+                  style={{ color: "rgba(13,13,13,0.48)" }}
                 >
                   Create your first dining area section to get started
                 </p>
@@ -218,8 +218,8 @@ export default function SettingsPage() {
                   variant="outline"
                   className="font-poppins"
                   style={{
-                    borderColor: "rgba(42,38,32,0.2)",
-                    color: "#2A2620",
+                    borderColor: "rgba(13,13,13,0.18)",
+                    color: "#0D0D0D",
                   }}
                 >
                   <Plus className="h-4 w-4 mr-2" />

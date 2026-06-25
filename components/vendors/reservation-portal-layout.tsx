@@ -63,7 +63,7 @@ export function ReservationPortalLayout({
             flex: 1,
             overflowY: "auto",
             paddingTop: "64px",
-            background: "#F5F5F5",
+            background: "#F0F0EE",
           }}
         >
           {children}
