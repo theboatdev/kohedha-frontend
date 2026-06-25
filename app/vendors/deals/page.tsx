@@ -288,7 +288,7 @@ export default function DealsManagementPage() {
   return (
     <VendorLayout onSignOut={handleSignOut} pageTitle="Manage Deals">
       <div style={{ minHeight: "100vh", background: "#F0F0EE" }}>
-        <div className="max-w-7xl mx-auto px-6 py-12">
+        <div className="max-w-7xl mx-auto px-4 py-6 sm:px-6 sm:py-8 lg:py-12">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-12">
             <div className="flex items-center gap-4 flex-1">
               <div

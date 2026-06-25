@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { ReservationPortalLayout } from "@/components/vendors/reservation-portal-layout";
+import { TimePicker } from "@/components/vendors/time-picker";
 import { Clock, Save, ArrowLeft, Calendar, Users, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -223,7 +224,7 @@ export default function EditBookingSlotPage() {
     return (
       <ReservationPortalLayout pageTitle="Edit Booking Slot">
         <div
-          className="max-w-4xl mx-auto px-6 py-12"
+          className="max-w-4xl mx-auto px-4 py-6 sm:px-6 sm:py-8 lg:py-12"
           style={{ background: "#F0F0EE" }}
         >
           <div className="bg-white rounded-xl shadow-lg border border-gray-100 p-12">
@@ -239,7 +240,7 @@ export default function EditBookingSlotPage() {
   return (
     <ReservationPortalLayout pageTitle="Edit Booking Slot">
       <div
-        className="max-w-4xl mx-auto px-6 py-12"
+        className="max-w-4xl mx-auto px-4 py-6 sm:px-6 sm:py-8 lg:py-12"
         style={{ background: "#F0F0EE" }}
       >
         <div className="bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden">
@@ -481,13 +482,18 @@ export default function EditBookingSlotPage() {
                     <Clock className="inline h-4 w-4 mr-2" />
                     Start Time <span className="text-red-500">*</span>
                   </Label>
-                  <Input
+                  <TimePicker
                     id="startTime"
-                    type="time"
                     value={formData.startTime}
-                    onChange={(e) => handleChange("startTime", e.target.value)}
-                    className="font-poppins"
-                    required
+                    onChange={(val) => {
+                      setFormData((prev) => ({
+                        ...prev,
+                        startTime: val,
+                        endTime:
+                          prev.endTime && prev.endTime <= val ? "" : prev.endTime,
+                      }));
+                    }}
+                    placeholder="Select start time"
                   />
                 </div>
 
@@ -496,13 +502,12 @@ export default function EditBookingSlotPage() {
                     <Clock className="inline h-4 w-4 mr-2" />
                     End Time <span className="text-red-500">*</span>
                   </Label>
-                  <Input
+                  <TimePicker
                     id="endTime"
-                    type="time"
                     value={formData.endTime}
-                    onChange={(e) => handleChange("endTime", e.target.value)}
-                    className="font-poppins"
-                    required
+                    onChange={(val) => handleChange("endTime", val)}
+                    minTime={formData.startTime || undefined}
+                    placeholder="Select end time"
                   />
                 </div>
               </div>

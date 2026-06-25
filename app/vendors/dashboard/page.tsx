@@ -148,8 +148,8 @@ export default function VendorDashboardPage() {
   return (
     <VendorLayout onSignOut={handleSignOut} pageTitle="Dashboard">
       <div
-        className="font-dm-sans"
-        style={{ padding: "32px 40px", maxWidth: "1200px", margin: "0 auto" }}
+        className="font-dm-sans px-4 py-6 sm:px-6 sm:py-8 lg:px-10 lg:py-8"
+        style={{ maxWidth: "1200px", margin: "0 auto" }}
       >
         {/* Loading State */}
         {isLoading && (
@@ -211,12 +211,7 @@ export default function VendorDashboardPage() {
           <>
             {/* Stats */}
             <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "repeat(4, 1fr)",
-                gap: "20px",
-                marginBottom: "32px",
-              }}
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8"
             >
               {stats.map(
                 ({ icon: Icon, value, label, sub, iconBg, iconColor }) => (
@@ -246,9 +241,8 @@ export default function VendorDashboardPage() {
                       />
                     </div>
                     <p
-                  className="font-poppins"
+                  className="font-poppins text-[32px] sm:text-[40px]"
                     style={{
-                      fontSize: "40px",
                       fontWeight: 800,
                       color: C.text,
                       lineHeight: 1,
@@ -275,11 +269,7 @@ export default function VendorDashboardPage() {
 
             {/* Main grid */}
             <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "1fr 320px",
-                gap: "20px",
-              }}
+              className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-4"
             >
               {/* Venue Performance */}
               <div
@@ -517,12 +507,10 @@ export default function VendorDashboardPage() {
               }}
             >
               <div
+                className="flex flex-wrap items-center justify-between gap-2"
                 style={{
-                  padding: "24px 28px",
+                  padding: "20px 24px",
                   borderBottom: "1px solid rgba(13,13,13,0.06)",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "space-between",
                 }}
               >
                 <div>

@@ -16,6 +16,7 @@ interface ReservationPortalSidebarProps {
   className?: string;
   onCollapse: () => void;
   isCollapsed?: boolean;
+  onLinkClick?: () => void;
 }
 
 const menuItems = [
@@ -45,6 +46,7 @@ export function ReservationPortalSidebar({
   className,
   onCollapse,
   isCollapsed = false,
+  onLinkClick,
 }: ReservationPortalSidebarProps) {
   const pathname = usePathname();
   const router = useRouter();
@@ -161,6 +163,7 @@ export function ReservationPortalSidebar({
                 <Link
                   href={item.href}
                   title={isCollapsed ? item.title : undefined}
+                  onClick={onLinkClick}
                   style={{
                     display: "flex",
                     alignItems: "center",

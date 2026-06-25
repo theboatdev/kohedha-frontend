@@ -102,25 +102,15 @@ export default function VendorRegisterPage() {
 
   return (
     <div
-      className="font-dm-sans"
+      className="font-dm-sans flex items-center justify-center px-4 py-10 sm:px-6 lg:px-8"
       style={{
         minHeight: "100vh",
         background: C.bg,
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        padding: "48px 24px",
       }}
     >
       <div
-        style={{
-          maxWidth: "960px",
-          width: "100%",
-          display: "grid",
-          gridTemplateColumns: "1fr 1fr",
-          gap: "48px",
-          alignItems: "center",
-        }}
+        className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center w-full"
+        style={{ maxWidth: "960px" }}
       >
         {/* Left - Branding */}
         <div className="hidden lg:block">

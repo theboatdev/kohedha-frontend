@@ -14,32 +14,28 @@ import {
 } from "@/lib/guestList";
 import { getBookingSlots, BookingSlot } from "@/lib/bookingSlots";
 import { useToast } from "@/hooks/use-toast";
+import { CalendarDays, Users } from "lucide-react";
 
 export default function GuestListPage() {
   const { toast } = useToast();
 
-  // Slots state
   const [slots, setSlots] = useState<BookingSlot[]>([]);
   const [selectedSlotId, setSelectedSlotId] = useState<string | null>(null);
   const [isSlotsLoading, setIsSlotsLoading] = useState(true);
   const [slotsError, setSlotsError] = useState<string | null>(null);
 
-  // Today view state
   const [showToday, setShowToday] = useState(false);
 
-  // Reservations state
   const [reservations, setReservations] = useState<Reservation[]>([]);
   const [isReservationsLoading, setIsReservationsLoading] = useState(false);
   const [reservationsError, setReservationsError] = useState<string | null>(
     null,
   );
 
-  // Fetch booking slots on mount
   useEffect(() => {
     fetchSlots();
   }, []);
 
-  // Fetch reservations when slot is selected
   useEffect(() => {
     if (showToday) {
       fetchTodayReservations();
@@ -125,16 +121,16 @@ export default function GuestListPage() {
     status: ReservationStatus,
     reason?: string,
   ) => {
-    if (!selectedSlotId) return;
+    const slotId = selectedSlotId;
+    if (!slotId && !showToday) return;
 
     try {
       if (status === "confirmed") {
-        await confirmReservation(selectedSlotId, reservationId);
+        await confirmReservation(slotId!, reservationId);
       } else if (status === "cancelled") {
-        await cancelReservation(selectedSlotId, reservationId, reason);
+        await cancelReservation(slotId!, reservationId, reason);
       }
 
-      // Update local state
       setReservations((prev) =>
         prev.map((res) =>
           res._id === reservationId ? { ...res, status } : res,
@@ -156,120 +152,136 @@ export default function GuestListPage() {
     }
   };
 
+  const showGuestList = selectedSlotId || showToday;
+
   return (
-    <ReservationPortalLayout pageTitle="Guest List">
+    <ReservationPortalLayout
+      pageTitle="Guest List"
+      headerActions={
+        <button
+          onClick={handleToggleToday}
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "6px",
+            background: showToday ? "#F5E642" : "transparent",
+            border: `1px solid ${showToday ? "#F5E642" : "rgba(13,13,13,0.15)"}`,
+            borderRadius: "40px",
+            padding: "6px 14px",
+            fontSize: "13px",
+            color: showToday ? "#0D0D0D" : "rgba(13,13,13,0.48)",
+            cursor: "pointer",
+            transition: "all 0.2s ease",
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.background = "#F5E642";
+            e.currentTarget.style.color = "#0D0D0D";
+            e.currentTarget.style.borderColor = "#F5E642";
+          }}
+          onMouseLeave={(e) => {
+            if (showToday) {
+              e.currentTarget.style.background = "#F5E642";
+              e.currentTarget.style.color = "#0D0D0D";
+              e.currentTarget.style.borderColor = "#F5E642";
+            } else {
+              e.currentTarget.style.background = "transparent";
+              e.currentTarget.style.color = "rgba(13,13,13,0.48)";
+              e.currentTarget.style.borderColor = "rgba(13,13,13,0.15)";
+            }
+          }}
+        >
+          <CalendarDays style={{ width: 13, height: 13 }} />
+          <span className="hidden sm:inline">Today&apos;s reservations</span>
+          <span className="sm:hidden">Today</span>
+        </button>
+      }
+    >
       <div
-        className="max-w-7xl mx-auto px-3 sm:px-6 py-8 sm:py-12"
+        className="min-h-full"
         style={{ background: "#F0F0EE" }}
       >
-        {/* Header */}
-        <div className="mb-8 flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
-          <div>
-            
-            <p
-              className="font-poppins text-sm sm:text-base"
-              style={{ color: "rgba(13,13,13,0.48)" }}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 sm:py-10">
+          {slotsError && !isSlotsLoading && (
+            <div className="rounded-2xl border border-black/10 bg-white p-4 mb-6">
+              <p className="font-poppins text-sm text-gray-800">{slotsError}</p>
+            </div>
+          )}
+
+          {/* Today view banner */}
+          {showToday && (
+            <div
+              className="rounded-2xl border border-black/[0.08] bg-white p-5 mb-6 flex items-center gap-4"
             >
-              Select a slot and manage your reservations
-            </p>
-          </div>
-          <button
-            onClick={handleToggleToday}
-            className="font-poppins text-sm px-4 py-2 rounded-lg border transition-colors self-start"
-            style={
-              showToday
-                ? {
-                    background: "#0D0D0D",
-                    color: "#ffffff",
-                    borderColor: "#0D0D0D",
-                  }
-                : {
-                    background: "#ffffff",
-                    color: "#0D0D0D",
-                    borderColor: "rgba(13,13,13,0.3)",
-                  }
-            }
-          >
-            Today&apos;s Reservations
-          </button>
-        </div>
-
-        {/* Slots Error State */}
-        {slotsError && !isSlotsLoading && (
-          <div
-            className="rounded-lg p-4 mb-6"
-            style={{
-              background: "#ffffff",
-              border: "1px solid rgba(245,230,66,0.3)",
-            }}
-          >
-            <p className="font-poppins text-sm" style={{ color: "#0D0D0D" }}>
-              {slotsError}
-            </p>
-          </div>
-        )}
-
-        {/* Slot Selector - hidden when today view is active */}
-        {!showToday && (
-          <div className="mb-8">
-            <SlotSelector
-              slots={slots}
-              selectedSlotId={selectedSlotId}
-              onSlotChange={handleSlotChange}
-              isLoading={isSlotsLoading}
-            />
-          </div>
-        )}
-
-        {/* Content Section */}
-        {(selectedSlotId || showToday) && (
-          <div className="space-y-6">
-            {/* Reservations Error State */}
-            {reservationsError && !isReservationsLoading && (
               <div
-                className="rounded-lg p-4"
-                style={{
-                  background: "#ffffff",
-                  border: "1px solid rgba(245,230,66,0.3)",
-                }}
+                className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl"
+                style={{ background: "rgba(245,230,66,0.25)" }}
               >
-                <p
-                  className="font-poppins text-sm"
-                  style={{ color: "#0D0D0D" }}
-                >
-                  {reservationsError}
+                <CalendarDays className="h-5 w-5 text-gray-800" />
+              </div>
+              <div>
+                <h3 className="font-poppins font-semibold text-gray-900">
+                  Today&apos;s reservations
+                </h3>
+                <p className="font-poppins text-sm text-gray-500">
+                  All bookings scheduled for today across your active slots
                 </p>
               </div>
-            )}
+            </div>
+          )}
 
-            {/* Guest List */}
-            {!reservationsError && (
-              <GuestListContainer
-                reservations={reservations}
-                isLoading={isReservationsLoading}
-                onUpdateReservation={handleUpdateReservation}
+          {/* Slot selector */}
+          {!showToday && (
+            <div className="mb-6">
+              <SlotSelector
+                slots={slots}
+                selectedSlotId={selectedSlotId}
+                onSlotChange={handleSlotChange}
+                isLoading={isSlotsLoading}
               />
-            )}
-          </div>
-        )}
+            </div>
+          )}
 
-        {/* Empty State - No Slot Selected */}
-        {!selectedSlotId &&
-          !showToday &&
-          !isSlotsLoading &&
-          slots.length > 0 && (
-            <div
-              className="text-center py-16 rounded-lg"
-              style={{
-                background: "#ffffff",
-                border: "1px solid rgba(13,13,13,0.09)",
-              }}
-            >
-              <p className="font-poppins" style={{ color: "rgba(13,13,13,0.48)" }}>
-                Select a booking slot above to view and manage its guests
+          {/* Guest list */}
+          {showGuestList && (
+            <div>
+              {reservationsError && !isReservationsLoading && (
+                <div className="rounded-2xl border border-black/10 bg-white p-4 mb-6">
+                  <p className="font-poppins text-sm text-gray-800">
+                    {reservationsError}
+                  </p>
+                </div>
+              )}
+
+              {!reservationsError && (
+                <GuestListContainer
+                  reservations={reservations}
+                  isLoading={isReservationsLoading}
+                  onUpdateReservation={handleUpdateReservation}
+                  isTodayView={showToday}
+                />
+              )}
+            </div>
+          )}
+
+          {/* Empty state — no slot selected */}
+          {!selectedSlotId && !showToday && !isSlotsLoading && slots.length > 0 && (
+            <div className="rounded-2xl border border-dashed border-black/12 bg-white px-6 py-16 text-center">
+              <div
+                className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl"
+                style={{ background: "rgba(13,13,13,0.05)" }}
+              >
+                <Users className="h-7 w-7 text-gray-400" />
+              </div>
+              <h3 className="font-poppins font-semibold text-gray-900 mb-1">
+                Pick a slot to get started
+              </h3>
+              <p className="font-poppins text-sm text-gray-500 max-w-sm mx-auto">
+                Choose a booking slot above to see who&apos;s coming in and
+                manage confirmations.
               </p>
             </div>
           )}
+        </div>
       </div>
     </ReservationPortalLayout>
   );

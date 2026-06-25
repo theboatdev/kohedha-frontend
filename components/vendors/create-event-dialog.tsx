@@ -24,7 +24,13 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Calendar } from "@/components/ui/calendar";
-import { Calendar as CalendarIcon, Clock, ImagePlus, X } from "lucide-react";
+import {
+  Calendar as CalendarIcon,
+  Clock,
+  ImagePlus,
+  Loader2,
+  X,
+} from "lucide-react";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 
@@ -53,7 +59,7 @@ export type NewEventData = {
 type CreateEventDialogProps = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  onCreateEvent: (data: NewEventData) => void;
+  onCreateEvent: (data: NewEventData) => void | Promise<void>;
   initialData?: NewEventData;
   isEditing?: boolean;
 };
@@ -98,9 +104,10 @@ export function CreateEventDialog({
     { url: string; uploadedAt?: string }[]
   >(initialData?.existingImages || []);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (
       !formData.eventName ||
       !formData.description ||
@@ -117,7 +124,6 @@ export function CreateEventDialog({
       return;
     }
 
-    // Format dates for submission
     const submitData: NewEventData = {
       ...formData,
       eventDate: format(startDate, "yyyy-MM-dd"),
@@ -126,11 +132,12 @@ export function CreateEventDialog({
       existingImages: existingImages,
     };
 
-    onCreateEvent(submitData);
-    resetImageState();
-    setFormData(initialFormData);
-    setStartDate(undefined);
-    setEndDate(undefined);
+    setIsSubmitting(true);
+    try {
+      await onCreateEvent(submitData);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   function resetImageState() {
@@ -141,6 +148,7 @@ export function CreateEventDialog({
   }
 
   const handleOpenChange = (nextOpen: boolean) => {
+    if (!nextOpen && isSubmitting) return;
     onOpenChange(nextOpen);
     if (!nextOpen) {
       setFormData(initialData || initialFormData);
@@ -560,14 +568,25 @@ export function CreateEventDialog({
             variant="outline"
             onClick={() => handleOpenChange(false)}
             className="font-poppins"
+            disabled={isSubmitting}
           >
             Cancel
           </Button>
           <Button
             onClick={handleSubmit}
-            className="bg-black hover:bg-gray-900 font-poppins"
+            className="bg-black hover:bg-gray-900 font-poppins min-w-[140px]"
+            disabled={isSubmitting}
           >
-            {isEditing ? "Update Event" : "Create Event"}
+            {isSubmitting ? (
+              <>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                {isEditing ? "Updating…" : "Creating…"}
+              </>
+            ) : isEditing ? (
+              "Update Event"
+            ) : (
+              "Create Event"
+            )}
           </Button>
         </DialogFooter>
       </DialogContent>

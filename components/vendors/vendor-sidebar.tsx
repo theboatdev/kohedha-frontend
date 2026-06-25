@@ -13,6 +13,7 @@ import { cn } from "@/lib/utils";
 
 interface VendorSidebarProps {
   className?: string;
+  onLinkClick?: () => void;
 }
 
 const menuItems = [
@@ -23,7 +24,7 @@ const menuItems = [
   { title: "Manage Deals", icon: Tag, href: "/vendors/deals" },
 ];
 
-export function VendorSidebar({ className }: VendorSidebarProps) {
+export function VendorSidebar({ className, onLinkClick }: VendorSidebarProps) {
   const pathname = usePathname();
 
   return (
@@ -81,6 +82,7 @@ export function VendorSidebar({ className }: VendorSidebarProps) {
               <li key={item.href}>
                 <Link
                   href={item.href}
+                  onClick={onLinkClick}
                   style={{
                     display: "flex",
                     alignItems: "center",

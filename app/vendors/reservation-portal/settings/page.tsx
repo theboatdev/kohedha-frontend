@@ -130,7 +130,7 @@ export default function SettingsPage() {
   return (
     <ReservationPortalLayout pageTitle="Settings">
       <div
-        className="max-w-7xl mx-auto px-6 py-12"
+        className="max-w-7xl mx-auto px-4 py-6 sm:px-6 sm:py-8 lg:py-12"
         style={{ background: "#F0F0EE" }}
       >
         <div

@@ -4,7 +4,7 @@ import { useState, useMemo } from "react";
 import { GuestCard } from "./guest-card";
 import { GuestListFilters } from "./guest-list-filters";
 import { Reservation, ReservationStatus } from "@/lib/guestList";
-import { Users } from "lucide-react";
+import { Users, UserCheck, Clock, UserX, Inbox } from "lucide-react";
 
 type GuestListContainerProps = {
   reservations: Reservation[];
@@ -14,21 +14,48 @@ type GuestListContainerProps = {
     status: ReservationStatus,
     reason?: string,
   ) => Promise<void>;
+  isTodayView?: boolean;
 };
 
 const COLUMNS: {
   key: ReservationStatus;
   label: string;
+  accent: string;
+  badgeBg: string;
+  badgeText: string;
+  icon: typeof Clock;
 }[] = [
-  { key: "pending", label: "Pending" },
-  { key: "confirmed", label: "Confirmed" },
-  { key: "cancelled", label: "Cancelled" },
+  {
+    key: "pending",
+    label: "Pending",
+    accent: "#F5E642",
+    badgeBg: "rgba(245,230,66,0.2)",
+    badgeText: "#7A6F00",
+    icon: Clock,
+  },
+  {
+    key: "confirmed",
+    label: "Confirmed",
+    accent: "#0D0D0D",
+    badgeBg: "rgba(13,13,13,0.08)",
+    badgeText: "#0D0D0D",
+    icon: UserCheck,
+  },
+  {
+    key: "cancelled",
+    label: "Cancelled",
+    accent: "rgba(13,13,13,0.2)",
+    badgeBg: "rgba(13,13,13,0.06)",
+    badgeText: "rgba(13,13,13,0.55)",
+    icon: UserX,
+  },
 ];
 
 export function GuestListContainer({
   reservations,
   isLoading = false,
   onUpdateReservation,
+  isTodayView = false,
 }: GuestListContainerProps) {
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState<ReservationStatus | "all">(
@@ -64,15 +91,11 @@ export function GuestListContainer({
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {COLUMNS.map((col) => (
           <div key={col.key} className="space-y-3">
-            <div
-              className="h-8 rounded animate-pulse"
-              style={{ background: "#E5E7EB" }}
-            />
-            {Array.from({ length: 3 }).map((_, i) => (
+            <div className="h-12 rounded-xl animate-pulse bg-white" />
+            {Array.from({ length: 2 }).map((_, i) => (
               <div
                 key={i}
-                className="h-44 rounded-lg animate-pulse"
-                style={{ background: "#ffffff" }}
+                className="h-44 rounded-xl animate-pulse bg-white border border-black/[0.06]"
               />
             ))}
           </div>
@@ -83,103 +106,90 @@ export function GuestListContainer({
 
   if (reservations.length === 0) {
     return (
-      <div className="text-center py-16">
-        <Users
-          className="h-12 w-12 mx-auto mb-4"
-          style={{ color: "rgba(255,255,255,0.3)" }}
-        />
-        <h3 className="font-poppins font-bold text-xl mb-2" style={{ color: "#0D0D0D" }}>
-          No Reservations Yet
-        </h3>
-        <p
-          className="font-poppins text-sm max-w-sm mx-auto"
-          style={{ color: "rgba(13,13,13,0.48)" }}
+      <div className="rounded-2xl border border-black/[0.08] bg-white px-6 py-16 text-center">
+        <div
+          className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl"
+          style={{ background: "rgba(245,230,66,0.2)" }}
         >
-          Reservations from your public booking link will appear here. Share
-          your booking link to start receiving reservations.
+          <Inbox className="h-7 w-7 text-gray-700" />
+        </div>
+        <h3 className="font-poppins font-bold text-xl text-gray-900 mb-2">
+          No reservations yet
+        </h3>
+        <p className="font-poppins text-sm text-gray-500 max-w-md mx-auto">
+          {isTodayView
+            ? "There are no reservations scheduled for today across your booking slots."
+            : "Share your public booking link for this slot and reservations will appear here automatically."}
         </p>
       </div>
     );
   }
 
   return (
-    <div className="space-y-6">
-      {/* Filters */}
-      <GuestListFilters
-        searchQuery={searchQuery}
-        onSearchChange={setSearchQuery}
-        statusFilter={statusFilter}
-        onStatusChange={setStatusFilter}
-        totalGuests={reservations.length}
-        filteredGuests={filteredReservations.length}
-      />
+    <div className="space-y-5">
+      <div className="rounded-2xl border border-black/[0.08] bg-white p-4">
+        <GuestListFilters
+          searchQuery={searchQuery}
+          onSearchChange={setSearchQuery}
+          statusFilter={statusFilter}
+          onStatusChange={setStatusFilter}
+          totalGuests={reservations.length}
+          filteredGuests={filteredReservations.length}
+        />
+      </div>
 
       {filteredReservations.length === 0 ? (
-        <div
-          className="text-center py-12 rounded-lg"
-          style={{
-            background: "#ffffff",
-            border: "1px solid rgba(13,13,13,0.1)",
-          }}
-        >
-          <Users
-            className="h-10 w-10 mx-auto mb-3"
-            style={{ color: "rgba(255,255,255,0.3)" }}
-          />
-          <p className="font-poppins" style={{ color: "rgba(13,13,13,0.48)" }}>
-            No guests match your filters
+        <div className="rounded-2xl border border-dashed border-black/15 bg-white px-6 py-14 text-center">
+          <Users className="h-10 w-10 mx-auto mb-3 text-gray-300" />
+          <p className="font-poppins text-sm text-gray-500">
+            No guests match your search or filters
           </p>
         </div>
       ) : (
-        /* Jira-style 3-column board */
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-start">
           {COLUMNS.map((col) => {
             const cards = filteredReservations.filter(
               (r) => r.status === col.key,
             );
+            const ColIcon = col.icon;
+
             return (
               <div
                 key={col.key}
-                className="rounded-xl overflow-hidden"
-                style={{ border: "1px solid rgba(13,13,13,0.12)" }}
+                className="rounded-2xl border border-black/[0.08] bg-white overflow-hidden"
               >
-                {/* Column header */}
                 <div
-                  className="flex items-center justify-between px-4 py-3"
-                  style={{
-                    background: "#ffffff",
-                    borderBottom: "1px solid rgba(13,13,13,0.08)",
-                  }}
-                >
+                  className="h-1"
+                  style={{ background: col.accent }}
+                />
+                <div className="flex items-center justify-between px-4 py-3.5 border-b border-black/[0.06]">
+                  <div className="flex items-center gap-2">
+                    <ColIcon className="h-4 w-4 text-gray-500" />
+                    <span className="font-poppins font-semibold text-sm text-gray-900">
+                      {col.label}
+                    </span>
+                  </div>
                   <span
-                    className="font-poppins font-bold text-base tracking-wide"
-                    style={{ color: "#0D0D0D" }}
-                  >
-                    {col.label}
-                  </span>
-                  <span
-                    className="font-poppins text-xs font-medium px-2 py-0.5 rounded-full"
+                    className="font-poppins text-xs font-bold px-2.5 py-1 rounded-full tabular-nums"
                     style={{
-                      background: "rgba(13,13,13,0.08)",
-                      color: "rgba(13,13,13,0.48)",
+                      background: col.badgeBg,
+                      color: col.badgeText,
                     }}
                   >
                     {cards.length}
                   </span>
                 </div>
 
-                {/* Cards */}
                 <div
-                  className="p-3 space-y-3"
-                  style={{ background: "#F0F0EE", minHeight: "120px" }}
+                  className="p-3 space-y-3 min-h-[140px]"
+                  style={{ background: "#F8F8F6" }}
                 >
                   {cards.length === 0 ? (
-                    <p
-                      className="text-center py-6 font-poppins text-xs"
-                      style={{ color: "rgba(13,13,13,0.48)" }}
-                    >
-                      No {col.label.toLowerCase()} reservations
-                    </p>
+                    <div className="flex flex-col items-center justify-center py-10 text-center">
+                      <p className="font-poppins text-xs text-gray-400">
+                        No {col.label.toLowerCase()} guests
+                      </p>
+                    </div>
                   ) : (
                     cards.map((reservation) => (
                       <GuestCard

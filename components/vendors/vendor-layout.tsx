@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { VendorSidebar } from "./vendor-sidebar";
 import { VendorHeader } from "./vendor-header";
@@ -17,6 +18,7 @@ export function VendorLayout({
   onSignOut,
 }: VendorLayoutProps) {
   const router = useRouter();
+  const [mobileNavOpen, setMobileNavOpen] = useState(false);
 
   const defaultSignOut = async () => {
     try {
@@ -39,6 +41,7 @@ export function VendorLayout({
         overflow: "hidden",
       }}
     >
+      {/* Desktop sidebar — fixed, hidden on mobile */}
       <div
         style={{
           position: "fixed",
@@ -50,6 +53,24 @@ export function VendorLayout({
       >
         <VendorSidebar />
       </div>
+
+      {/* Mobile sidebar overlay drawer */}
+      {mobileNavOpen && (
+        <div
+          className="md:hidden"
+          style={{ position: "fixed", inset: 0, zIndex: 40, display: "flex" }}
+        >
+          <div
+            style={{ position: "absolute", inset: 0, background: "rgba(0,0,0,0.5)" }}
+            onClick={() => setMobileNavOpen(false)}
+          />
+          <div style={{ position: "relative", width: "256px", height: "100%", flexShrink: 0, zIndex: 1 }}>
+            <VendorSidebar onLinkClick={() => setMobileNavOpen(false)} />
+          </div>
+        </div>
+      )}
+
+      {/* Content column — offset by sidebar on desktop */}
       <div
         className="md:ml-64"
         style={{
@@ -57,17 +78,15 @@ export function VendorLayout({
           flex: 1,
           flexDirection: "column",
           overflow: "hidden",
+          minWidth: 0,
         }}
       >
-        <VendorHeader pageTitle={pageTitle} onSignOut={handleSignOut} />
-        <main
-          style={{
-            flex: 1,
-            overflowY: "auto",
-            paddingTop: "64px",
-            background: "#F0F0EE",
-          }}
-        >
+        <VendorHeader
+          pageTitle={pageTitle}
+          onSignOut={handleSignOut}
+          onMobileMenuToggle={() => setMobileNavOpen((prev) => !prev)}
+        />
+        <main style={{ flex: 1, overflowY: "auto", background: "#F0F0EE" }}>
           {children}
         </main>
       </div>
