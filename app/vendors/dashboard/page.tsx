@@ -130,7 +130,7 @@ export default function VendorDashboardPage() {
     },
     {
       icon: ThumbsUp,
-      value: (0).toLocaleString(), // Mock data - will implement upvote feature later
+      value: (dashboardData?.stats.totalMenuUpvotes ?? 0).toLocaleString(),
       label: "Total Menu Upvotes",
       sub: "Customer favorites across all items",
       iconBg: "rgba(34,197,94,0.08)",
