@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import {
   TrendingUp,
   Calendar,
@@ -34,6 +34,7 @@ const C = {
 
 export default function VendorDashboardPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [isSigningOut, setIsSigningOut] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -69,6 +70,14 @@ export default function VendorDashboardPage() {
       trend: "+4",
     },
   ];
+
+  useEffect(() => {
+    const token = searchParams.get("token");
+    if (token) {
+      localStorage.setItem("auth_token", token);
+      router.replace("/vendors/dashboard");
+    }
+  }, [searchParams, router]);
 
   // Fetch dashboard analytics
   useEffect(() => {
