@@ -117,7 +117,7 @@ export function CSVUploadDialog({
     <Dialog open={open} onOpenChange={handleClose}>
       <DialogContent className="sm:max-w-2xl bg-white">
         <DialogHeader>
-          <DialogTitle className="flex items-center gap-2 font-bebas text-2xl">
+          <DialogTitle className="flex items-center gap-2 font-poppins font-bold text-2xl">
             <FileSpreadsheet className="h-6 w-6 text-green-600" />
             Upload CSV Menu
           </DialogTitle>

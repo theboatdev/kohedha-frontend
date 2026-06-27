@@ -111,7 +111,7 @@ export default function VendorCompleteProfilePage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-muted/10 px-4 py-10 flex items-center justify-center">
+      <div className="min-h-screen px-4 py-10 flex items-center justify-center" style={{ background: "#F0F0EE" }}>
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-black mx-auto mb-4"></div>
           <p className="font-poppins text-sm text-muted-foreground">
@@ -123,7 +123,7 @@ export default function VendorCompleteProfilePage() {
   }
 
   return (
-    <div className="min-h-screen bg-muted/10 px-4 py-10">
+    <div className="min-h-screen px-4 py-10" style={{ background: "#F0F0EE" }}>
       <div className="max-w-4xl mx-auto">
         {/* Sign Out Button */}
         <div className="flex justify-end mb-4">
@@ -141,7 +141,7 @@ export default function VendorCompleteProfilePage() {
 
         <Card className="border border-border shadow-lg">
           <CardHeader className="space-y-2">
-            <CardTitle className="font-bebas text-3xl tracking-wide text-black">
+            <CardTitle className="font-poppins font-bold text-2xl" style={{ color: "#0D0D0D", letterSpacing: "-0.02em" }}>
               Complete Your Vendor Profile
             </CardTitle>
             <CardDescription className="font-poppins text-sm">
@@ -154,7 +154,7 @@ export default function VendorCompleteProfilePage() {
             <form className="space-y-8" onSubmit={handleSubmit}>
               {/* Account section */}
               <section className="space-y-3">
-                <h2 className="font-bebas text-xl tracking-wide text-black">
+                <h2 className="font-poppins font-semibold text-base" style={{ color: "#0D0D0D" }}>
                   Account
                 </h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -178,7 +178,7 @@ export default function VendorCompleteProfilePage() {
 
               {/* Business details section */}
               <section className="space-y-3">
-                <h2 className="font-bebas text-xl tracking-wide text-black">
+                <h2 className="font-poppins font-semibold text-base" style={{ color: "#0D0D0D" }}>
                   Business Details
                 </h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -262,7 +262,7 @@ export default function VendorCompleteProfilePage() {
 
               {/* Location section */}
               <section className="space-y-3">
-                <h2 className="font-bebas text-xl tracking-wide text-black">
+                <h2 className="font-poppins font-semibold text-base" style={{ color: "#0D0D0D" }}>
                   Location
                 </h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -354,7 +354,7 @@ export default function VendorCompleteProfilePage() {
 
               {/* Description section */}
               <section className="space-y-3">
-                <h2 className="font-bebas text-xl tracking-wide text-black">
+                <h2 className="font-poppins font-semibold text-base" style={{ color: "#0D0D0D" }}>
                   Story & Description
                 </h2>
                 <div className="space-y-1">
@@ -389,7 +389,8 @@ export default function VendorCompleteProfilePage() {
               <div className="flex items-center justify-between gap-4">
                 <Button
                   type="submit"
-                  className="bg-black hover:bg-black/90 text-white font-poppins font-medium"
+                  className="font-poppins font-semibold rounded-full px-8"
+                  style={{ background: "#F5E642", color: "#0D0D0D", border: "none" }}
                   disabled={isSubmitting || isLoading}
                 >
                   {isSubmitting ? "Saving..." : "Save Profile"}

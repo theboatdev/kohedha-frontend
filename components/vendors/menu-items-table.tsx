@@ -124,14 +124,14 @@ export function MenuItemsTable({ menuItems, onRefresh }: MenuItemsTableProps) {
         {groupedItems.map(({ category, items }) => (
           <div key={category}>
             <h3
-              className="font-bebas text-2xl mb-4 flex items-center gap-2"
-              style={{ color: "#2A2620" }}
+              className="font-poppins font-bold text-2xl mb-4 flex items-center gap-2"
+              style={{ color: "#0D0D0D" }}
             >
               {category}
               <Badge
                 variant="secondary"
                 className="font-poppins"
-                style={{ background: "#EEEEEE", color: "#2A2620" }}
+                style={{ background: "#E8E8E4", color: "#0D0D0D" }}
               >
                 {items.length}
               </Badge>
@@ -144,7 +144,7 @@ export function MenuItemsTable({ menuItems, onRefresh }: MenuItemsTableProps) {
                   className="group relative rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-all duration-300"
                   style={{
                     background: "white",
-                    border: "1px solid rgba(42,38,32,0.08)",
+                    border: "1px solid rgba(13,13,13,0.08)",
                   }}
                 >
                   {/* Image Section - Square aspect ratio */}
@@ -234,8 +234,8 @@ export function MenuItemsTable({ menuItems, onRefresh }: MenuItemsTableProps) {
                   <div className="p-4 space-y-2">
                     {/* Item Name */}
                     <h4
-                      className="font-bebas text-xl leading-tight"
-                      style={{ color: "#2A2620" }}
+                      className="font-poppins font-bold text-xl leading-tight"
+                      style={{ color: "#0D0D0D" }}
                     >
                       {item.name}
                     </h4>
@@ -243,7 +243,7 @@ export function MenuItemsTable({ menuItems, onRefresh }: MenuItemsTableProps) {
                     {/* Description */}
                     <p
                       className="font-poppins text-sm line-clamp-2 min-h-[2.5rem]"
-                      style={{ color: "#7A7368" }}
+                      style={{ color: "rgba(13,13,13,0.48)" }}
                     >
                       {item.description || "No description available"}
                     </p>
@@ -251,11 +251,11 @@ export function MenuItemsTable({ menuItems, onRefresh }: MenuItemsTableProps) {
                     {/* Price and Upvotes/Downvotes */}
                     <div
                       className="pt-2 flex items-center justify-between gap-2"
-                      style={{ borderTop: "1px solid rgba(42,38,32,0.08)" }}
+                      style={{ borderTop: "1px solid rgba(13,13,13,0.08)" }}
                     >
                       <p
                         className="font-poppins text-lg font-bold"
-                        style={{ color: "#2A2620" }}
+                        style={{ color: "#0D0D0D" }}
                       >
                         {item.currency} {item.price.toFixed(2)}
                       </p>
@@ -267,11 +267,11 @@ export function MenuItemsTable({ menuItems, onRefresh }: MenuItemsTableProps) {
                           >
                             <ThumbsUp
                               className="h-3.5 w-3.5"
-                              style={{ color: "#C4724A" }}
+                              style={{ color: "#F5E642" }}
                             />
                             <span
                               className="font-poppins text-xs font-semibold"
-                              style={{ color: "#C4724A" }}
+                              style={{ color: "#F5E642" }}
                             >
                               {item.upvotes}
                             </span>
@@ -318,7 +318,7 @@ export function MenuItemsTable({ menuItems, onRefresh }: MenuItemsTableProps) {
       <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle className="font-bebas text-xl">
+            <AlertDialogTitle className="font-poppins font-bold text-xl">
               Delete Menu Item
             </AlertDialogTitle>
             <AlertDialogDescription className="font-poppins">

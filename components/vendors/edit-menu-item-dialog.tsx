@@ -152,7 +152,7 @@ export function EditMenuItemDialog({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-lg max-h-[90vh] overflow-y-auto bg-white">
         <DialogHeader>
-          <DialogTitle className="font-bebas text-2xl tracking-tight">
+          <DialogTitle className="font-poppins font-bold text-2xl tracking-tight">
             Edit Menu Item
           </DialogTitle>
           <DialogDescription className="font-poppins text-sm">

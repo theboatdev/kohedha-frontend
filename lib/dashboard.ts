@@ -5,6 +5,7 @@ export interface DashboardStats {
   upcomingEvents: number;
   monthlyReservations: number;
   ongoingReservations: number;
+  totalMenuUpvotes: number;
 }
 
 export interface PerformanceMetrics {

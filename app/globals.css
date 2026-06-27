@@ -140,7 +140,13 @@
     font-family: var(--font-playfair);
   }
   .font-poppins {
-    font-family: var(--font-poppins);
+    font-family: var(--font-poppins), "Poppins", sans-serif;
+  }
+  /* Display headings for public rebrand (replaces font-dm-serif). */
+  .font-display {
+    font-family: var(--font-poppins), "Poppins", sans-serif;
+    font-weight: 800;
+    letter-spacing: -0.02em;
   }
   .font-dm-sans {
     font-family: var(--font-dm-sans), "DM Sans", sans-serif;
@@ -150,17 +156,40 @@
   }
 }
 
-/* Landing page color palette */
+/* Landing page color palette (KOHEDHA rebrand v1.0) */
 :root {
-  --lp-bg: #e8e4da;
-  --lp-bg2: #ddd9ce;
-  --lp-bg3: #d4cfc3;
-  --lp-text: #2a2620;
-  --lp-muted: #7a7368;
-  --lp-accent: #c4724a;
-  --lp-accent2: #b85e38;
-  --lp-cream: #f2eee6;
-  --lp-dark: #1e1b17;
+  --lp-bg: #ffffff;
+  --lp-bg2: #f0f0ee;
+  --lp-bg3: #e8e8e4;
+  --lp-text: #0d0d0d;
+  --lp-muted: rgba(13, 13, 13, 0.48);
+  --lp-accent: #f5e642;
+  --lp-accent2: #e8d800;
+  --lp-cream: #f6f6f4;
+  --lp-dark: #0d0d0d;
+  --lp-rule: rgba(13, 13, 13, 0.09);
+}
+
+/* Public-facing routes opt into the rebrand shadcn palette via this scope.
+   Vendor routes keep the global :root tokens untouched. */
+.public-brand {
+  --background: 0 0% 100%;
+  --foreground: 0 0% 5%;
+  --card: 0 0% 100%;
+  --card-foreground: 0 0% 5%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 0 0% 5%;
+  --primary: 54 89% 62%;
+  --primary-foreground: 0 0% 5%;
+  --secondary: 60 11% 96%;
+  --secondary-foreground: 0 0% 5%;
+  --muted: 60 11% 96%;
+  --muted-foreground: 0 0% 42%;
+  --accent: 54 89% 62%;
+  --accent-foreground: 0 0% 5%;
+  --border: 0 0% 91%;
+  --input: 0 0% 91%;
+  --ring: 54 89% 62%;
 }
 
 /* Dark form input placeholders */
@@ -265,15 +294,29 @@
   }
 }
 
+/* Footer responsive grid */
+@media (max-width: 768px) {
+  .foot-grid {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 32px !important;
+  }
+}
+@media (max-width: 480px) {
+  .foot-grid {
+    grid-template-columns: 1fr !important;
+    gap: 28px !important;
+  }
+}
+
 /* Pulse animation for center dot */
 @keyframes pulse {
   0% {
-    box-shadow: 0 0 0 0 rgba(196, 114, 74, 0.4);
+    box-shadow: 0 0 0 0 rgba(245, 230, 66, 0.4);
   }
   70% {
-    box-shadow: 0 0 0 12px rgba(196, 114, 74, 0);
+    box-shadow: 0 0 0 12px rgba(245, 230, 66, 0);
   }
   100% {
-    box-shadow: 0 0 0 0 rgba(196, 114, 74, 0);
+    box-shadow: 0 0 0 0 rgba(245, 230, 66, 0);
   }
 }

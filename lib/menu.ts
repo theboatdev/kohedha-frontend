@@ -295,3 +295,61 @@ export async function analyzeCSV(file: File): Promise<any> {
     throw error;
   }
 }
+
+export interface MenuVoteItem {
+  _id: string;
+  name: string;
+  category: string;
+  upvotes: number;
+  downvotes: number;
+  netVotes: number;
+  is_available: boolean;
+}
+
+export interface MenuVoteSummary {
+  totalUpvotes: number;
+  totalDownvotes: number;
+  itemCount: number;
+  items: MenuVoteItem[];
+}
+
+// GET /api/vendor/menu/votes
+// Returns per-item upvote/downvote summary sorted by the chosen field.
+export async function getMenuVoteSummary(options?: {
+  sortBy?: "upvotes" | "downvotes" | "net" | "category";
+  category?: string;
+}): Promise<{ success: boolean; data?: MenuVoteSummary; error?: string }> {
+  try {
+    const token = localStorage.getItem("auth_token");
+    const params = new URLSearchParams();
+    if (options?.sortBy) params.set("sortBy", options.sortBy);
+    if (options?.category) params.set("category", options.category);
+    const qs = params.toString() ? `?${params.toString()}` : "";
+
+    const res = await fetch(`${API_URL}/vendor/menu/votes${qs}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        ...(token && { Authorization: `Bearer ${token}` }),
+      },
+      credentials: "include",
+    });
+
+    const data = await res.json();
+
+    if (res.ok) {
+      return { success: true, data: data.data };
+    }
+
+    return {
+      success: false,
+      error: data.message || "Failed to fetch menu vote summary",
+    };
+  } catch (error) {
+    console.error("Get menu vote summary error:", error);
+    return {
+      success: false,
+      error: "Unable to fetch menu vote summary. Please try again.",
+    };
+  }
+}

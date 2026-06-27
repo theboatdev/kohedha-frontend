@@ -1,11 +1,7 @@
 "use client"
 
 import { Tag, Copy } from "lucide-react"
-
-const C = {
-  bg2: "#DDD9CE", text: "#2A2620", muted: "#7A7368",
-  accent: "#C4724A", cream: "#F2EEE6", dark: "#1E1B17",
-}
+import { C } from "@/lib/brand-theme"
 
 export function CouponCard({ coupon }: { coupon: any }) {
   const copyToClipboard = (text: string) => {
@@ -13,7 +9,7 @@ export function CouponCard({ coupon }: { coupon: any }) {
   }
 
   return (
-    <div style={{ background: C.cream, border: "2px dashed rgba(196,114,74,0.35)", borderRadius: "16px", padding: "22px 24px", position: "relative", overflow: "hidden" }}>
+    <div style={{ background: C.cream, border: "2px dashed rgba(245,230,66,0.35)", borderRadius: "16px", padding: "22px 24px", position: "relative", overflow: "hidden" }}>
       <div style={{ position: "absolute", left: 0, top: "50%", transform: "translateY(-50%)", width: "16px", height: "16px", background: C.bg2, borderRadius: "0 50% 50% 0", marginLeft: "-8px" }} />
       <div style={{ position: "absolute", right: 0, top: "50%", transform: "translateY(-50%)", width: "16px", height: "16px", background: C.bg2, borderRadius: "50% 0 0 50%", marginRight: "-8px" }} />
 

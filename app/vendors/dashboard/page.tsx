@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import {
   TrendingUp,
   Calendar,
@@ -22,17 +22,19 @@ import {
 } from "@/lib/dashboard";
 
 const C = {
-  bg: "#F5F5F5",
-  bg2: "#EEEEEE",
-  text: "#2A2620",
-  muted: "#7A7368",
-  accent: "#C4724A",
+  bg: "#F0F0EE",
+  bg2: "#E8E8E4",
+  text: "#0D0D0D",
+  muted: "rgba(13,13,13,0.48)",
+  accent: "#F5E642",
+  accentHover: "#E8D800",
   cream: "#ffffff",
-  dark: "#1E1B17",
+  dark: "#0D0D0D",
 };
 
 export default function VendorDashboardPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [isSigningOut, setIsSigningOut] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -68,6 +70,14 @@ export default function VendorDashboardPage() {
       trend: "+4",
     },
   ];
+
+  useEffect(() => {
+    const token = searchParams.get("token");
+    if (token) {
+      localStorage.setItem("auth_token", token);
+      router.replace("/vendors/dashboard");
+    }
+  }, [searchParams, router]);
 
   // Fetch dashboard analytics
   useEffect(() => {
@@ -108,15 +118,15 @@ export default function VendorDashboardPage() {
       value: dashboardData?.stats.activeDeals ?? 0,
       label: "Active Deals",
       sub: "Currently visible on Kohedha",
-      iconBg: "rgba(196,114,74,0.12)",
-      iconColor: "#C4724A",
+      iconBg: "rgba(245,230,66,0.2)",
+      iconColor: "#0D0D0D",
     },
     {
       icon: Calendar,
       value: dashboardData?.stats.upcomingEvents ?? 0,
       label: "Upcoming Events",
       sub: "In the next 30 days",
-      iconBg: "rgba(42,38,32,0.08)",
+      iconBg: "rgba(13,13,13,0.06)",
       iconColor: C.text,
     },
     {
@@ -129,7 +139,7 @@ export default function VendorDashboardPage() {
     },
     {
       icon: ThumbsUp,
-      value: (0).toLocaleString(), // Mock data - will implement upvote feature later
+      value: (dashboardData?.stats.totalMenuUpvotes ?? 0).toLocaleString(),
       label: "Total Menu Upvotes",
       sub: "Customer favorites across all items",
       iconBg: "rgba(34,197,94,0.08)",
@@ -147,8 +157,8 @@ export default function VendorDashboardPage() {
   return (
     <VendorLayout onSignOut={handleSignOut} pageTitle="Dashboard">
       <div
-        className="font-dm-sans"
-        style={{ padding: "32px 40px", maxWidth: "1200px", margin: "0 auto" }}
+        className="font-dm-sans px-4 py-6 sm:px-6 sm:py-8 lg:px-10 lg:py-8"
+        style={{ maxWidth: "1200px", margin: "0 auto" }}
       >
         {/* Loading State */}
         {isLoading && (
@@ -165,7 +175,7 @@ export default function VendorDashboardPage() {
                 style={{
                   width: "40px",
                   height: "40px",
-                  border: "3px solid rgba(196,114,74,0.2)",
+                  border: "3px solid rgba(245,230,66,0.3)",
                   borderTopColor: C.accent,
                   borderRadius: "50%",
                   animation: "spin 1s linear infinite",
@@ -210,12 +220,7 @@ export default function VendorDashboardPage() {
           <>
             {/* Stats */}
             <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "repeat(4, 1fr)",
-                gap: "20px",
-                marginBottom: "32px",
-              }}
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8"
             >
               {stats.map(
                 ({ icon: Icon, value, label, sub, iconBg, iconColor }) => (
@@ -225,7 +230,7 @@ export default function VendorDashboardPage() {
                       background: C.cream,
                       borderRadius: "16px",
                       padding: "24px",
-                      border: "1px solid rgba(42,38,32,0.08)",
+                      border: "1px solid rgba(13,13,13,0.06)",
                     }}
                   >
                     <div
@@ -245,14 +250,14 @@ export default function VendorDashboardPage() {
                       />
                     </div>
                     <p
-                      className="font-dm-serif"
-                      style={{
-                        fontSize: "40px",
-                        color: C.text,
-                        lineHeight: 1,
-                        marginBottom: "6px",
-                      }}
-                    >
+                  className="font-poppins text-[32px] sm:text-[40px]"
+                    style={{
+                      fontWeight: 800,
+                      color: C.text,
+                      lineHeight: 1,
+                      marginBottom: "6px",
+                    }}
+                  >
                       {value}
                     </p>
                     <p
@@ -273,31 +278,28 @@ export default function VendorDashboardPage() {
 
             {/* Main grid */}
             <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "1fr 320px",
-                gap: "20px",
-              }}
+              className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-4"
             >
               {/* Venue Performance */}
               <div
                 style={{
                   background: C.cream,
                   borderRadius: "16px",
-                  border: "1px solid rgba(42,38,32,0.08)",
+                  border: "1px solid rgba(13,13,13,0.06)",
                   overflow: "hidden",
                 }}
               >
                 <div
                   style={{
                     padding: "24px 28px",
-                    borderBottom: "1px solid rgba(42,38,32,0.08)",
+                    borderBottom: "1px solid rgba(13,13,13,0.06)",
                   }}
                 >
                   <h2
-                    className="font-dm-serif"
+                    className="font-poppins"
                     style={{
-                      fontSize: "22px",
+                      fontSize: "18px",
+                      fontWeight: 700,
                       color: C.text,
                       marginBottom: "4px",
                     }}
@@ -414,7 +416,7 @@ export default function VendorDashboardPage() {
                           <div
                             style={{
                               height: "1px",
-                              background: "rgba(42,38,32,0.08)",
+                              background: "rgba(13,13,13,0.06)",
                             }}
                           />
                         )}
@@ -429,20 +431,21 @@ export default function VendorDashboardPage() {
                 style={{
                   background: C.cream,
                   borderRadius: "16px",
-                  border: "1px solid rgba(42,38,32,0.08)",
+                  border: "1px solid rgba(13,13,13,0.06)",
                   overflow: "hidden",
                 }}
               >
                 <div
                   style={{
                     padding: "24px 28px",
-                    borderBottom: "1px solid rgba(42,38,32,0.08)",
+                    borderBottom: "1px solid rgba(13,13,13,0.06)",
                   }}
                 >
                   <h2
-                    className="font-dm-serif"
+                    className="font-poppins"
                     style={{
-                      fontSize: "22px",
+                      fontSize: "18px",
+                      fontWeight: 700,
                       color: C.text,
                       marginBottom: "4px",
                     }}
@@ -471,7 +474,7 @@ export default function VendorDashboardPage() {
                         justifyContent: "space-between",
                         padding: "14px 16px",
                         borderRadius: "12px",
-                        border: "1px solid rgba(42,38,32,0.1)",
+                        border: "1px solid rgba(13,13,13,0.09)",
                         textDecoration: "none",
                         fontSize: "13px",
                         fontWeight: 500,
@@ -483,13 +486,13 @@ export default function VendorDashboardPage() {
                         (e.currentTarget as HTMLElement).style.background =
                           C.bg2;
                         (e.currentTarget as HTMLElement).style.borderColor =
-                          "rgba(42,38,32,0.2)";
+                          "rgba(13,13,13,0.18)";
                       }}
                       onMouseLeave={(e) => {
                         (e.currentTarget as HTMLElement).style.background =
                           "transparent";
                         (e.currentTarget as HTMLElement).style.borderColor =
-                          "rgba(42,38,32,0.1)";
+                          "rgba(13,13,13,0.09)";
                       }}
                     >
                       {label}
@@ -508,24 +511,23 @@ export default function VendorDashboardPage() {
                 marginTop: "20px",
                 background: C.cream,
                 borderRadius: "16px",
-                border: "1px solid rgba(42,38,32,0.08)",
+                border: "1px solid rgba(13,13,13,0.06)",
                 overflow: "hidden",
               }}
             >
               <div
+                className="flex flex-wrap items-center justify-between gap-2"
                 style={{
-                  padding: "24px 28px",
-                  borderBottom: "1px solid rgba(42,38,32,0.08)",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "space-between",
+                  padding: "20px 24px",
+                  borderBottom: "1px solid rgba(13,13,13,0.06)",
                 }}
               >
                 <div>
                   <h2
-                    className="font-dm-serif"
+                    className="font-poppins"
                     style={{
-                      fontSize: "22px",
+                      fontSize: "18px",
+                      fontWeight: 700,
                       color: C.text,
                       marginBottom: "4px",
                     }}
@@ -541,8 +543,9 @@ export default function VendorDashboardPage() {
                   style={{
                     fontSize: "13px",
                     fontWeight: 500,
-                    color: C.accent,
-                    textDecoration: "none",
+                    color: C.text,
+                    textDecoration: "underline",
+                    textUnderlineOffset: "2px",
                     display: "flex",
                     alignItems: "center",
                     gap: "4px",
@@ -587,14 +590,14 @@ export default function VendorDashboardPage() {
                               borderRadius: "8px",
                               background:
                                 index === 0
-                                  ? "rgba(196,114,74,0.12)"
-                                  : "rgba(42,38,32,0.06)",
+                                  ? "rgba(245,230,66,0.2)"
+                                  : "rgba(13,13,13,0.05)",
                               display: "flex",
                               alignItems: "center",
                               justifyContent: "center",
                               fontSize: "14px",
                               fontWeight: 700,
-                              color: index === 0 ? C.accent : C.muted,
+                              color: index === 0 ? "#0D0D0D" : C.muted,
                             }}
                           >
                             {index + 1}
@@ -642,7 +645,7 @@ export default function VendorDashboardPage() {
                             }}
                           >
                             <ThumbsUp
-                              style={{ width: 16, height: 16, color: C.accent }}
+                              style={{ width: 16, height: 16, color: C.muted }}
                             />
                             <span
                               style={{
@@ -660,7 +663,7 @@ export default function VendorDashboardPage() {
                         <div
                           style={{
                             height: "1px",
-                            background: "rgba(42,38,32,0.08)",
+                            background: "rgba(13,13,13,0.06)",
                           }}
                         />
                       )}

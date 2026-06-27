@@ -9,7 +9,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Search, X } from "lucide-react";
+import { Search, SlidersHorizontal, X } from "lucide-react";
 import { ReservationStatus } from "@/lib/guestList";
 
 type GuestListFiltersProps = {
@@ -31,72 +31,61 @@ export function GuestListFilters({
 }: GuestListFiltersProps) {
   const hasActiveFilters = searchQuery !== "" || statusFilter !== "all";
 
-  const handleReset = () => {
-    onSearchChange("");
-    onStatusChange("all");
-  };
-
   return (
-    <div className="bg-white rounded-lg p-4 border border-gray-200 space-y-4">
-      <div className="flex flex-col md:flex-row gap-3">
-        {/* Search Input */}
-        <div className="flex-1">
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
-            <Input
-              type="text"
-              placeholder="Search by guest name or phone..."
-              value={searchQuery}
-              onChange={(e) => onSearchChange(e.target.value)}
-              className="pl-10 font-poppins"
-            />
-          </div>
-        </div>
+    <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+      <div className="relative flex-1">
+        <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+        <Input
+          type="text"
+          placeholder="Search by name or phone…"
+          value={searchQuery}
+          onChange={(e) => onSearchChange(e.target.value)}
+          className="h-10 pl-10 font-poppins bg-white border-black/10 rounded-xl"
+        />
+      </div>
 
-        {/* Status Filter */}
+      <div className="flex items-center gap-2">
         <Select
           value={statusFilter}
           onValueChange={(value) =>
             onStatusChange(value as ReservationStatus | "all")
           }
         >
-          <SelectTrigger className="w-full md:w-48 font-poppins">
-            <SelectValue />
+          <SelectTrigger className="h-10 w-full sm:w-44 font-poppins rounded-xl border-black/10 bg-white">
+            <div className="flex items-center gap-2">
+              <SlidersHorizontal className="h-3.5 w-3.5 text-gray-400" />
+              <SelectValue />
+            </div>
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">All Statuses</SelectItem>
+            <SelectItem value="all">All statuses</SelectItem>
             <SelectItem value="pending">Pending</SelectItem>
             <SelectItem value="confirmed">Confirmed</SelectItem>
             <SelectItem value="cancelled">Cancelled</SelectItem>
           </SelectContent>
         </Select>
 
-        {/* Reset Button */}
         {hasActiveFilters && (
           <Button
             variant="outline"
-            size="sm"
-            onClick={handleReset}
-            className="font-poppins"
+            size="icon"
+            onClick={() => {
+              onSearchChange("");
+              onStatusChange("all");
+            }}
+            className="h-10 w-10 shrink-0 rounded-xl border-black/10"
+            title="Clear filters"
           >
-            <X className="h-4 w-4 mr-2" />
-            Reset
+            <X className="h-4 w-4" />
           </Button>
         )}
       </div>
 
-      {/* Results Count */}
-      <div className="flex items-center justify-between text-sm">
-        <p className="font-poppins text-gray-600">
-          Showing <span className="font-semibold">{filteredGuests}</span> of{" "}
-          <span className="font-semibold">{totalGuests}</span> guests
-        </p>
-        {filteredGuests === 0 && hasActiveFilters && (
-          <p className="font-poppins text-gray-500">
-            No guests match your filters
-          </p>
-        )}
-      </div>
+      <p className="font-poppins text-xs text-gray-500 sm:ml-auto whitespace-nowrap">
+        <span className="font-semibold text-gray-900">{filteredGuests}</span> of{" "}
+        <span className="font-semibold text-gray-900">{totalGuests}</span>{" "}
+        reservations
+      </p>
     </div>
   );
 }

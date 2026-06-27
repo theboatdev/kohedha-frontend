@@ -102,7 +102,7 @@ export function CreateTableDialog({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto bg-white">
         <DialogHeader>
-          <DialogTitle className="font-bebas text-2xl">
+          <DialogTitle className="font-poppins font-bold text-2xl">
             {editingTable ? "Edit Table" : "Add New Table"}
           </DialogTitle>
           <DialogDescription className="font-poppins text-sm">

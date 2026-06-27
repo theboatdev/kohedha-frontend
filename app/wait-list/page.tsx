@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, FormEvent } from "react";
+import Link from "next/link";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { submitWaitlist, type UserType } from "@/lib/waitList";
@@ -19,17 +20,7 @@ import {
   Store,
   User,
 } from "lucide-react";
-
-const C = {
-  bg: "#ffffff",
-  bg2: "#DDD9CE",
-  text: "#2A2620",
-  muted: "#7A7368",
-  accent: "#C4724A",
-  accent2: "#B85E38",
-  cream: "#F2EEE6",
-  dark: "#1E1B17",
-};
+import { C } from "@/lib/brand-theme";
 
 const benefits = [
   {
@@ -48,6 +39,63 @@ const benefits = [
     desc: "Waitlist members receive special offers and priority features at launch.",
   },
 ];
+
+function Eyebrow({
+  children,
+  onDark = false,
+}: {
+  children: React.ReactNode;
+  onDark?: boolean;
+}) {
+  return (
+    <p
+      className="font-poppins"
+      style={{
+        fontSize: "11px",
+        fontWeight: 600,
+        letterSpacing: "0.16em",
+        textTransform: "uppercase",
+        color: onDark ? C.accent : C.red,
+        marginBottom: "20px",
+        display: "inline-flex",
+        alignItems: "center",
+        gap: "10px",
+      }}
+    >
+      <span
+        style={{
+          width: "22px",
+          height: "2px",
+          background: onDark ? C.accent : C.red,
+          borderRadius: "2px",
+          flexShrink: 0,
+        }}
+      />
+      {children}
+    </p>
+  );
+}
+
+function BgWord({ text, style }: { text: string; style?: React.CSSProperties }) {
+  return (
+    <span
+      className="font-poppins"
+      style={{
+        position: "absolute",
+        fontSize: "clamp(100px, 18vw, 200px)",
+        fontWeight: 600,
+        letterSpacing: "-0.04em",
+        color: "rgba(245,230,66,0.07)",
+        pointerEvents: "none",
+        userSelect: "none",
+        whiteSpace: "nowrap",
+        ...style,
+      }}
+    >
+      {text}
+    </span>
+  );
+}
 
 export default function WaitListPage() {
   const [formData, setFormData] = useState({
@@ -83,7 +131,8 @@ export default function WaitListPage() {
     }
 
     if (!formData.userType) {
-      newErrors.userType = "Please select whether you're a Restaurant or Customer";
+      newErrors.userType =
+        "Please select whether you're a Restaurant or Customer";
     }
 
     if (formData.userType === "restaurant") {
@@ -132,7 +181,7 @@ export default function WaitListPage() {
   };
 
   const inputStyle = (field: string) => ({
-    borderColor: errors[field] ? "#ef4444" : "#D4CFC3",
+    borderColor: errors[field] ? C.red : C.rule,
     background: C.cream,
     color: C.text,
     fontSize: "15px",
@@ -150,141 +199,265 @@ export default function WaitListPage() {
 
   const errorStyle = {
     fontSize: "12px",
-    color: "#ef4444",
+    color: C.red,
     marginTop: "4px",
   };
 
   if (isSuccess) {
     return (
       <div
-        className="font-dm-sans min-h-screen flex items-center justify-center px-4"
-        style={{ background: C.cream }}
+        className="font-dm-sans min-h-screen flex flex-col"
+        style={{ background: C.bg, color: C.text }}
       >
-        <div
-          className="text-center max-w-md w-full px-8 py-12 rounded-2xl"
-          style={{ background: C.bg, boxShadow: "0 8px 40px rgba(42,38,32,0.08)" }}
+        <nav
+          style={{
+            padding: "20px clamp(20px, 5vw, 48px)",
+            borderBottom: `1px solid ${C.rule}`,
+            background: "rgba(255,255,255,0.92)",
+            backdropFilter: "blur(12px)",
+          }}
         >
-          <div
-            className="mx-auto mb-6 flex items-center justify-center rounded-full"
+          <Link
+            href="/"
+            className="font-poppins"
             style={{
-              width: "72px",
-              height: "72px",
-              background: `${C.accent}18`,
+              fontSize: "22px",
+              fontWeight: 800,
+              color: C.text,
+              textDecoration: "none",
+              letterSpacing: "-0.02em",
             }}
           >
-            <CheckCircle2 size={36} style={{ color: C.accent }} />
-          </div>
-          <h1
-            className="font-dm-serif mb-3"
-            style={{ fontSize: "32px", color: C.text, letterSpacing: "-0.02em" }}
+            kohedha<span style={{ color: C.red }}>.</span>
+          </Link>
+        </nav>
+
+        <div
+          className="flex-1 flex items-center justify-center px-4 py-16"
+          style={{ background: C.bg2 }}
+        >
+          <div
+            className="text-center max-w-md w-full px-8 py-12"
+            style={{
+              background: C.bg,
+              borderRadius: "20px",
+              border: `1px solid ${C.rule}`,
+              boxShadow: "0 8px 40px rgba(13,13,13,0.06)",
+            }}
           >
-            You&apos;re on the list!
-          </h1>
-          <p style={{ color: C.muted, lineHeight: 1.7, fontSize: "16px" }}>
-            Thanks for joining the Kohedha waitlist. We&apos;ll reach out with
-            early access details as we get closer to launch.
-          </p>
+            <div
+              className="mx-auto mb-6 flex items-center justify-center rounded-full"
+              style={{
+                width: "72px",
+                height: "72px",
+                background: C.greenBg,
+              }}
+            >
+              <CheckCircle2 size={36} style={{ color: C.green }} />
+            </div>
+            <Eyebrow>Confirmed</Eyebrow>
+            <h1
+              className="font-poppins mb-3"
+              style={{
+                fontSize: "clamp(28px, 4vw, 36px)",
+                fontWeight: 800,
+                color: C.text,
+                letterSpacing: "-0.02em",
+                lineHeight: 1.1,
+              }}
+            >
+              You&apos;re on the list!
+            </h1>
+            <p
+              style={{
+                color: C.muted,
+                lineHeight: 1.7,
+                fontSize: "16px",
+                marginBottom: "32px",
+              }}
+            >
+              Thanks for joining the Kohedha waitlist. We&apos;ll reach out with
+              early access details as we get closer to launch.
+            </p>
+            <Link
+              href="/"
+              className="font-poppins"
+              style={{
+                display: "inline-block",
+                background: C.accent,
+                color: C.text,
+                fontSize: "14px",
+                fontWeight: 700,
+                padding: "13px 28px",
+                borderRadius: "40px",
+                textDecoration: "none",
+                transition: "background 0.2s",
+              }}
+              onMouseEnter={(e) => (e.currentTarget.style.background = C.accent2)}
+              onMouseLeave={(e) => (e.currentTarget.style.background = C.accent)}
+            >
+              Back to home
+            </Link>
+          </div>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="font-dm-sans" style={{ background: C.bg, color: C.text }}>
-      <div
-        className="flex flex-col lg:flex-row min-h-screen"
-        style={{ maxWidth: "1200px", margin: "0 auto" }}
+    <div
+      className="font-dm-sans min-h-screen flex flex-col"
+      style={{ background: C.bg, color: C.text, overflowX: "hidden" }}
+    >
+      {/* Nav */}
+      <nav
+        style={{
+          padding: "20px clamp(20px, 5vw, 48px)",
+          borderBottom: `1px solid ${C.rule}`,
+          background: "rgba(255,255,255,0.92)",
+          backdropFilter: "blur(12px)",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          gap: "16px",
+        }}
       >
+        <Link
+          href="/"
+          className="font-poppins"
+          style={{
+            fontSize: "22px",
+            fontWeight: 800,
+            color: C.text,
+            textDecoration: "none",
+            letterSpacing: "-0.02em",
+          }}
+        >
+          kohedha<span style={{ color: C.red }}>.</span>
+        </Link>
+        <Link
+          href="/"
+          className="font-poppins hidden sm:inline-block"
+          style={{
+            fontSize: "13px",
+            fontWeight: 500,
+            color: C.muted,
+            textDecoration: "none",
+            transition: "color 0.2s",
+          }}
+          onMouseEnter={(e) => (e.currentTarget.style.color = C.text)}
+          onMouseLeave={(e) => (e.currentTarget.style.color = C.muted)}
+        >
+          ← Back to home
+        </Link>
+      </nav>
+
+      <div className="flex flex-col lg:flex-row flex-1">
         {/* Left — copy & benefits */}
         <div
-          className="flex flex-col justify-center px-6 py-16 lg:px-12 lg:py-24 lg:w-[45%]"
+          className="flex flex-col justify-center px-6 py-16 lg:px-12 lg:py-24 lg:w-[45%] relative overflow-hidden"
           style={{ background: C.dark }}
         >
-          <img
-            src="/3.png"
-            alt="Kohedha"
-            style={{ height: "38px", width: "160px", marginBottom: "32px" }}
-          />
+          <BgWord text="JOIN" style={{ bottom: "-40px", right: "-20px" }} />
 
-          <p
-            style={{
-              fontSize: "11px",
-              fontWeight: 500,
-              letterSpacing: "0.15em",
-              textTransform: "uppercase",
-              color: C.accent,
-              marginBottom: "16px",
-            }}
-          >
-            Early access
-          </p>
-          <h1
-            className="font-dm-serif mb-5"
-            style={{
-              fontSize: "clamp(32px, 4vw, 48px)",
-              color: "#ffffff",
-              letterSpacing: "-0.02em",
-              lineHeight: 1.15,
-            }}
-          >
-            Be the First to Experience Kohedha
-          </h1>
-          <p
-            style={{
-              color: "rgba(255,255,255,0.7)",
-              fontSize: "17px",
-              lineHeight: 1.7,
-              marginBottom: "40px",
-              maxWidth: "420px",
-            }}
-          >
-            Sri Lanka&apos;s vibe-first venue platform is almost here. Join the
-            waitlist for priority access, launch updates, and exclusive perks.
-          </p>
+          <div style={{ position: "relative", zIndex: 1 }}>
+            <Eyebrow onDark>Early access</Eyebrow>
+            <h1
+              className="font-poppins mb-5"
+              style={{
+                fontSize: "clamp(32px, 4vw, 48px)",
+                fontWeight: 800,
+                color: C.text2,
+                letterSpacing: "-0.03em",
+                lineHeight: 1.08,
+              }}
+            >
+              Be the first to
+              <br />
+              experience{" "}
+              <em style={{ fontStyle: "italic", color: C.accent }}>Kohedha</em>
+            </h1>
+            <p
+              style={{
+                color: C.onDarkA(0.65),
+                fontSize: "16px",
+                lineHeight: 1.75,
+                marginBottom: "40px",
+                maxWidth: "420px",
+              }}
+            >
+              Sri Lanka&apos;s vibe-first venue platform is almost here. Join the
+              waitlist for priority access, launch updates, and exclusive perks.
+            </p>
 
-          <div className="flex flex-col gap-6">
-            {benefits.map(({ icon: Icon, title, desc }) => (
-              <div key={title} className="flex gap-4 items-start">
-                <div
-                  className="flex-shrink-0 flex items-center justify-center rounded-lg"
-                  style={{
-                    width: "40px",
-                    height: "40px",
-                    background: `${C.accent}22`,
-                  }}
-                >
-                  <Icon size={18} style={{ color: C.accent }} />
-                </div>
-                <div>
-                  <p
+            <div className="flex flex-col gap-6">
+              {benefits.map(({ icon: Icon, title, desc }) => (
+                <div key={title} className="flex gap-4 items-start">
+                  <div
+                    className="flex-shrink-0 flex items-center justify-center"
                     style={{
-                      color: "#ffffff",
-                      fontWeight: 500,
-                      fontSize: "15px",
-                      marginBottom: "2px",
+                      width: "40px",
+                      height: "40px",
+                      borderRadius: "10px",
+                      background: C.accentA(0.12),
                     }}
                   >
-                    {title}
-                  </p>
-                  <p style={{ color: "rgba(255,255,255,0.55)", fontSize: "14px", lineHeight: 1.6 }}>
-                    {desc}
-                  </p>
+                    <Icon size={18} style={{ color: C.accent }} />
+                  </div>
+                  <div>
+                    <p
+                      className="font-poppins"
+                      style={{
+                        color: C.text2,
+                        fontWeight: 600,
+                        fontSize: "15px",
+                        marginBottom: "4px",
+                      }}
+                    >
+                      {title}
+                    </p>
+                    <p
+                      style={{
+                        color: C.onDarkA(0.5),
+                        fontSize: "14px",
+                        lineHeight: 1.65,
+                      }}
+                    >
+                      {desc}
+                    </p>
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </div>
 
         {/* Right — form */}
-        <div className="flex flex-col justify-center px-6 py-16 lg:px-12 lg:py-24 lg:w-[55%]">
+        <div
+          className="flex flex-col justify-center px-6 py-16 lg:px-12 lg:py-24 lg:w-[55%]"
+          style={{ background: C.bg }}
+        >
           <div style={{ maxWidth: "480px", margin: "0 auto", width: "100%" }}>
+            <Eyebrow>Waitlist</Eyebrow>
             <h2
-              className="font-dm-serif mb-2"
-              style={{ fontSize: "28px", letterSpacing: "-0.02em", color: C.text }}
+              className="font-poppins mb-2"
+              style={{
+                fontSize: "clamp(26px, 3vw, 32px)",
+                fontWeight: 800,
+                letterSpacing: "-0.02em",
+                color: C.text,
+              }}
             >
-              Join the Waitlist
+              Join the waitlist
             </h2>
-            <p style={{ color: C.muted, fontSize: "15px", marginBottom: "32px", lineHeight: 1.6 }}>
+            <p
+              style={{
+                color: C.muted,
+                fontSize: "15px",
+                marginBottom: "32px",
+                lineHeight: 1.65,
+              }}
+            >
               Fill in your details below and we&apos;ll notify you when Kohedha
               is ready for you.
             </p>
@@ -292,7 +465,11 @@ export default function WaitListPage() {
             {generalError && (
               <div
                 className="mb-5 px-4 py-3 rounded-lg text-sm"
-                style={{ background: "#fef2f2", color: "#b91c1c", border: "1px solid #fecaca" }}
+                style={{
+                  background: "rgba(200,40,26,0.08)",
+                  color: C.red,
+                  border: `1px solid rgba(200,40,26,0.2)`,
+                }}
               >
                 {generalError}
               </div>
@@ -302,7 +479,7 @@ export default function WaitListPage() {
               {/* Name */}
               <div>
                 <label htmlFor="name" style={labelStyle}>
-                  Full name <span style={{ color: C.accent }}>*</span>
+                  Full name <span style={{ color: C.red }}>*</span>
                 </label>
                 <Input
                   id="name"
@@ -313,7 +490,7 @@ export default function WaitListPage() {
                     setFormData({ ...formData, name: e.target.value })
                   }
                   style={inputStyle("name")}
-                  className="focus-visible:ring-[#C4724A] focus-visible:border-[#C4724A]"
+                  className="focus-visible:ring-[#F5E642] focus-visible:border-[#F5E642]"
                 />
                 {errors.name && <p style={errorStyle}>{errors.name}</p>}
               </div>
@@ -321,7 +498,7 @@ export default function WaitListPage() {
               {/* Email */}
               <div>
                 <label htmlFor="email" style={labelStyle}>
-                  Gmail address <span style={{ color: C.accent }}>*</span>
+                  Gmail address <span style={{ color: C.red }}>*</span>
                 </label>
                 <Input
                   id="email"
@@ -332,7 +509,7 @@ export default function WaitListPage() {
                     setFormData({ ...formData, email: e.target.value })
                   }
                   style={inputStyle("email")}
-                  className="focus-visible:ring-[#C4724A] focus-visible:border-[#C4724A]"
+                  className="focus-visible:ring-[#F5E642] focus-visible:border-[#F5E642]"
                 />
                 {errors.email && <p style={errorStyle}>{errors.email}</p>}
               </div>
@@ -340,7 +517,7 @@ export default function WaitListPage() {
               {/* Mobile */}
               <div>
                 <label htmlFor="mobile" style={labelStyle}>
-                  Mobile number <span style={{ color: C.accent }}>*</span>
+                  Mobile number <span style={{ color: C.red }}>*</span>
                 </label>
                 <Input
                   id="mobile"
@@ -351,7 +528,7 @@ export default function WaitListPage() {
                     setFormData({ ...formData, mobile: e.target.value })
                   }
                   style={inputStyle("mobile")}
-                  className="focus-visible:ring-[#C4724A] focus-visible:border-[#C4724A]"
+                  className="focus-visible:ring-[#F5E642] focus-visible:border-[#F5E642]"
                 />
                 {errors.mobile && <p style={errorStyle}>{errors.mobile}</p>}
               </div>
@@ -359,7 +536,7 @@ export default function WaitListPage() {
               {/* User type */}
               <div>
                 <label style={labelStyle}>
-                  I am a… <span style={{ color: C.accent }}>*</span>
+                  I am a… <span style={{ color: C.red }}>*</span>
                 </label>
                 <div className="grid grid-cols-2 gap-3">
                   {(
@@ -377,19 +554,22 @@ export default function WaitListPage() {
                           setFormData({
                             ...formData,
                             userType: value,
-                            businessName: value === "customer" ? "" : formData.businessName,
+                            businessName:
+                              value === "customer" ? "" : formData.businessName,
                             city: value === "customer" ? "" : formData.city,
                           })
                         }
-                        className="flex flex-col items-center gap-2 py-4 rounded-xl border-2 transition-all duration-200 cursor-pointer"
+                        className="font-poppins flex flex-col items-center gap-2 py-4 transition-all duration-200 cursor-pointer"
                         style={{
-                          borderColor: selected ? C.accent : "#D4CFC3",
-                          background: selected ? `${C.accent}10` : C.cream,
-                          color: selected ? C.accent2 : C.muted,
+                          borderRadius: "40px",
+                          border: `1.5px solid ${selected ? C.accent2 : C.rule}`,
+                          background: selected ? C.accent : C.cream,
+                          color: selected ? C.text : C.muted,
+                          fontWeight: selected ? 600 : 500,
                         }}
                       >
-                        <Icon size={22} />
-                        <span style={{ fontSize: "14px", fontWeight: 500 }}>{label}</span>
+                        <Icon size={20} />
+                        <span style={{ fontSize: "14px" }}>{label}</span>
                       </button>
                     );
                   })}
@@ -407,7 +587,7 @@ export default function WaitListPage() {
               >
                 <div>
                   <label htmlFor="businessName" style={labelStyle}>
-                    Business name <span style={{ color: C.accent }}>*</span>
+                    Business name <span style={{ color: C.red }}>*</span>
                   </label>
                   <Input
                     id="businessName"
@@ -418,17 +598,19 @@ export default function WaitListPage() {
                       setFormData({ ...formData, businessName: e.target.value })
                     }
                     style={inputStyle("businessName")}
-                    className="focus-visible:ring-[#C4724A] focus-visible:border-[#C4724A]"
+                    className="focus-visible:ring-[#F5E642] focus-visible:border-[#F5E642]"
                     tabIndex={formData.userType === "restaurant" ? 0 : -1}
                   />
-                  {errors.businessName && <p style={errorStyle}>{errors.businessName}</p>}
+                  {errors.businessName && (
+                    <p style={errorStyle}>{errors.businessName}</p>
+                  )}
                 </div>
 
                 <div>
                   <label htmlFor="city" style={labelStyle}>
                     <span className="inline-flex items-center gap-1.5">
                       <MapPin size={14} />
-                      City <span style={{ color: C.accent }}>*</span>
+                      City <span style={{ color: C.red }}>*</span>
                     </span>
                   </label>
                   <Input
@@ -440,7 +622,7 @@ export default function WaitListPage() {
                       setFormData({ ...formData, city: e.target.value })
                     }
                     style={inputStyle("city")}
-                    className="focus-visible:ring-[#C4724A] focus-visible:border-[#C4724A]"
+                    className="focus-visible:ring-[#F5E642] focus-visible:border-[#F5E642]"
                     tabIndex={formData.userType === "restaurant" ? 0 : -1}
                   />
                   {errors.city && <p style={errorStyle}>{errors.city}</p>}
@@ -450,14 +632,15 @@ export default function WaitListPage() {
               <Button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full h-12 text-base font-medium rounded-xl transition-all duration-200 hover:opacity-90"
+                className="font-poppins w-full h-12 text-sm font-bold transition-all duration-200 hover:opacity-90"
                 style={{
                   background: C.accent,
-                  color: "#ffffff",
+                  color: C.text,
                   marginTop: "8px",
+                  borderRadius: "40px",
                 }}
               >
-                {isSubmitting ? "Joining…" : "Join the Waitlist"}
+                {isSubmitting ? "Joining…" : "Join the waitlist →"}
               </Button>
 
               <p
@@ -474,6 +657,60 @@ export default function WaitListPage() {
           </div>
         </div>
       </div>
+
+      {/* Footer */}
+      <footer
+        style={{
+          background: C.dark,
+          color: C.text2,
+          padding: "24px clamp(20px, 5vw, 48px)",
+          borderTop: `1px solid ${C.onDarkA(0.08)}`,
+        }}
+      >
+        <div
+          style={{
+            maxWidth: "1200px",
+            margin: "0 auto",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            flexWrap: "wrap",
+            gap: "16px",
+          }}
+        >
+          <span
+            className="font-dm-sans"
+            style={{ fontSize: "13px", color: C.onDarkA(0.4) }}
+          >
+            © {new Date().getFullYear()} Kohedha
+          </span>
+          <div className="font-dm-sans" style={{ display: "flex", gap: "20px" }}>
+            {[
+              { label: "About", href: "/about" },
+              { label: "For venues", href: "/vendors" },
+            ].map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                style={{
+                  fontSize: "13px",
+                  color: C.onDarkA(0.4),
+                  textDecoration: "none",
+                  transition: "color 0.2s",
+                }}
+                onMouseEnter={(e) =>
+                  (e.currentTarget.style.color = C.onDarkA(0.8))
+                }
+                onMouseLeave={(e) =>
+                  (e.currentTarget.style.color = C.onDarkA(0.4))
+                }
+              >
+                {link.label}
+              </Link>
+            ))}
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }

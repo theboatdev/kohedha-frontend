@@ -13,6 +13,7 @@ import { cn } from "@/lib/utils";
 
 interface VendorSidebarProps {
   className?: string;
+  onLinkClick?: () => void;
 }
 
 const menuItems = [
@@ -23,14 +24,14 @@ const menuItems = [
   { title: "Manage Deals", icon: Tag, href: "/vendors/deals" },
 ];
 
-export function VendorSidebar({ className }: VendorSidebarProps) {
+export function VendorSidebar({ className, onLinkClick }: VendorSidebarProps) {
   const pathname = usePathname();
 
   return (
     <div
       className={cn("flex h-full w-full flex-col font-dm-sans", className)}
       style={{
-        background: "#1E1B17",
+        background: "#0D0D0D",
         borderRight: "1px solid rgba(255,255,255,0.06)",
       }}
     >
@@ -42,10 +43,10 @@ export function VendorSidebar({ className }: VendorSidebarProps) {
         }}
       >
         <div
-          className="font-dm-serif"
-          style={{ fontSize: "22px", color: "white", letterSpacing: "-0.01em" }}
+          className="font-poppins"
+          style={{ fontSize: "22px", fontWeight: 700, color: "white", letterSpacing: "-0.02em" }}
         >
-          kohedha<span style={{ color: "#C4724A" }}>.</span>
+          kohedha<span style={{ color: "#C8281A" }}>.</span>
         </div>
         <div
           style={{
@@ -81,6 +82,7 @@ export function VendorSidebar({ className }: VendorSidebarProps) {
               <li key={item.href}>
                 <Link
                   href={item.href}
+                  onClick={onLinkClick}
                   style={{
                     display: "flex",
                     alignItems: "center",
@@ -91,8 +93,8 @@ export function VendorSidebar({ className }: VendorSidebarProps) {
                     fontWeight: isActive ? 600 : 400,
                     textDecoration: "none",
                     transition: "all 0.15s",
-                    background: isActive ? "#C4724A" : "transparent",
-                    color: isActive ? "white" : "rgba(255,255,255,0.55)",
+                    background: isActive ? "#F5E642" : "transparent",
+                    color: isActive ? "#0D0D0D" : "rgba(255,255,255,0.55)",
                   }}
                   onMouseEnter={(e) => {
                     if (!isActive) {

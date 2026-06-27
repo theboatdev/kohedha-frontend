@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
-import { List, Plus } from "lucide-react";
+import { List, Plus, SlidersHorizontal, X } from "lucide-react";
 import { ReservationPortalLayout } from "@/components/vendors/reservation-portal-layout";
 import {
   TableTypeSelector,
@@ -47,6 +47,7 @@ export default function ArrangementsPage() {
   const [totalCapacity, setTotalCapacity] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
+  const [mobilePanelOpen, setMobilePanelOpen] = useState(false);
 
   // Ref for debouncing position saves
   const saveTimeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -368,9 +369,45 @@ export default function ArrangementsPage() {
 
   return (
     <ReservationPortalLayout pageTitle="Arrangements">
-      <div className="flex h-[calc(100vh-3.5rem)]">
-        {/* Left Panel */}
-        <div className="w-80 bg-white border-r border-gray-200 p-6 overflow-y-auto">
+      <div className="flex h-[calc(100vh-3.5rem)] relative">
+        {/* Mobile panel toggle button */}
+        <button
+          className="md:hidden fixed bottom-5 right-5 z-30 flex items-center gap-2 shadow-lg"
+          onClick={() => setMobilePanelOpen((prev) => !prev)}
+          style={{
+            background: "#0D0D0D",
+            color: "white",
+            border: "none",
+            borderRadius: "40px",
+            padding: "10px 16px",
+            fontSize: "13px",
+            fontWeight: 600,
+            cursor: "pointer",
+          }}
+          aria-label="Toggle table options"
+        >
+          {mobilePanelOpen ? <X style={{ width: 16, height: 16 }} /> : <SlidersHorizontal style={{ width: 16, height: 16 }} />}
+          {mobilePanelOpen ? "Close" : "Table Options"}
+        </button>
+
+        {/* Mobile panel overlay */}
+        {mobilePanelOpen && (
+          <div
+            className="md:hidden fixed inset-0 z-20"
+            style={{ background: "rgba(0,0,0,0.3)" }}
+            onClick={() => setMobilePanelOpen(false)}
+          />
+        )}
+
+        {/* Left Panel — fixed on desktop, overlay drawer on mobile */}
+        <div
+          className={`
+            bg-white border-r border-gray-200 p-6 overflow-y-auto
+            md:w-80 md:relative md:block md:z-auto
+            fixed inset-y-0 left-0 z-20 w-[300px] transition-transform duration-300
+            ${mobilePanelOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"}
+          `}
+        >
           {/* Table Options Section */}
           <div className="space-y-4 mb-6 pb-6 border-b">
             <h2 className="font-bold text-xl">TABLE OPTIONS</h2>

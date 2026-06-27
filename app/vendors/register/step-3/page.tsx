@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, FormEvent, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -15,7 +15,6 @@ import {
   FileText,
   CheckCircle2,
   ArrowLeft,
-  Store,
 } from "lucide-react";
 
 type Step3Draft = {
@@ -26,6 +25,15 @@ type Step3Draft = {
 
 export default function RegistrationStep3Page() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+
+  useEffect(() => {
+    const token = searchParams.get("token");
+    if (token) {
+      localStorage.setItem("auth_token", token);
+      router.replace("/vendors/register/step-3");
+    }
+  }, [searchParams, router]);
 
   const [location, setLocation] = useState<SelectedLocation | null>(null);
   const [website, setWebsite] = useState("");
@@ -127,14 +135,16 @@ export default function RegistrationStep3Page() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-100 via-white to-gray-50 flex items-center justify-center px-4 py-12">
+    <div className="min-h-screen flex items-center justify-center px-4 py-12" style={{ background: "#F0F0EE" }}>
       <div className="max-w-2xl w-full">
         {/* Header */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center gap-3 bg-white px-4 py-2 rounded-full shadow-sm border border-gray-200 mb-4">
-            <Store className="h-5 w-5 text-gray-900" />
-            <span className="font-bebas text-xl tracking-wide text-gray-900">
-              Kohedha Vendor Portal
+          <div className="inline-flex items-center gap-3 bg-white px-4 py-2 rounded-full border mb-4" style={{ borderColor: "rgba(13,13,13,0.09)" }}>
+            <span className="font-poppins font-bold text-base" style={{ color: "#0D0D0D", letterSpacing: "-0.02em" }}>
+              kohedha<span style={{ color: "#C8281A" }}>.</span>
+            </span>
+            <span className="text-xs font-dm-sans" style={{ color: "rgba(13,13,13,0.48)", letterSpacing: "0.08em", textTransform: "uppercase" }}>
+              Vendor Portal
             </span>
           </div>
 
@@ -142,7 +152,7 @@ export default function RegistrationStep3Page() {
             <RegistrationProgress currentStep={3} />
           </div>
 
-          <h1 className="font-bebas text-5xl tracking-tight text-gray-900 mb-2">
+          <h1 className="font-poppins font-bold text-4xl mb-2" style={{ color: "#0D0D0D", letterSpacing: "-0.02em" }}>
             Location & Details
           </h1>
           <p className="font-poppins text-gray-600">
@@ -151,7 +161,7 @@ export default function RegistrationStep3Page() {
         </div>
 
         {/* Main Form Card */}
-        <div className="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
+        <div className="bg-white rounded-2xl overflow-hidden" style={{ border: "1px solid rgba(13,13,13,0.09)" }}>
           <div className="p-8 lg:p-10">
             <form onSubmit={handleSubmit} className="space-y-8">
               {/* General Error */}
@@ -164,8 +174,8 @@ export default function RegistrationStep3Page() {
               {/* Business Location Section */}
               <div className="space-y-5">
                 <div className="pb-2 border-b border-gray-200">
-                  <h3 className="font-bebas text-2xl tracking-wide text-gray-900 flex items-center gap-2">
-                    <MapPin className="h-6 w-6" />
+                  <h3 className="font-poppins font-semibold text-lg flex items-center gap-2" style={{ color: "#0D0D0D" }}>
+                    <MapPin className="h-5 w-5" />
                     Business Location
                   </h3>
                   <p className="font-poppins text-sm text-gray-600 mt-1">
@@ -184,8 +194,8 @@ export default function RegistrationStep3Page() {
               {/* Additional Information Section */}
               <div className="space-y-5">
                 <div className="pb-2 border-b border-gray-200">
-                  <h3 className="font-bebas text-2xl tracking-wide text-gray-900 flex items-center gap-2">
-                    <FileText className="h-6 w-6" />
+                  <h3 className="font-poppins font-semibold text-lg flex items-center gap-2" style={{ color: "#0D0D0D" }}>
+                    <FileText className="h-5 w-5" />
                     Additional Information
                   </h3>
                   <p className="font-poppins text-sm text-gray-600 mt-1">
@@ -249,7 +259,8 @@ export default function RegistrationStep3Page() {
                 <Button
                   type="submit"
                   disabled={isSubmitting}
-                  className="bg-black hover:bg-gray-900 text-white font-poppins font-medium h-12 px-8 shadow-lg hover:shadow-xl transition-all duration-200 gap-2"
+                  className="font-poppins font-semibold h-12 px-8 transition-all duration-200 gap-2 rounded-full"
+                  style={{ background: isSubmitting ? "rgba(13,13,13,0.08)" : "#F5E642", color: isSubmitting ? "rgba(13,13,13,0.48)" : "#0D0D0D", border: "none" }}
                 >
                   {isSubmitting ? "Completing..." : "Complete Registration"}
                   {!isSubmitting && <CheckCircle2 className="h-4 w-4" />}
