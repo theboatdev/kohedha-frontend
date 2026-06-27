@@ -151,19 +151,19 @@ export default function MenuManagementPage() {
 
   return (
     <VendorLayout pageTitle="Menu Management">
-      <div style={{ minHeight: "100vh", background: "#F5F5F5" }}>
-        <div className="max-w-7xl mx-auto px-6 py-12">
+      <div style={{ minHeight: "100vh", background: "#F0F0EE" }}>
+        <div className="max-w-7xl mx-auto px-4 py-6 sm:px-6 sm:py-8 lg:py-12">
           {/* Upload Buttons */}
           <div
             className="rounded-xl p-6 shadow-lg mb-8"
             style={{
               background: "#ffffff",
-              border: "1px solid rgba(42,38,32,0.1)",
+              border: "1px solid rgba(13,13,13,0.09)",
             }}
           >
             <h2
-              className="text-xl font-bebas mb-4"
-              style={{ color: "#2A2620" }}
+              className="text-xl font-poppins font-bold mb-4"
+              style={{ color: "#0D0D0D" }}
             >
               Upload Menu
             </h2>
@@ -171,12 +171,12 @@ export default function MenuManagementPage() {
               <Button
                 onClick={() => setAddItemDialogOpen(true)}
                 className="font-poppins"
-                style={{ background: "#C4724A", color: "#F2EEE6" }}
+                style={{ background: "#F5E642", color: "#0D0D0D" }}
                 onMouseEnter={(e) =>
-                  (e.currentTarget.style.background = "#B85E38")
+                  (e.currentTarget.style.background = "#E8D800")
                 }
                 onMouseLeave={(e) =>
-                  (e.currentTarget.style.background = "#C4724A")
+                  (e.currentTarget.style.background = "#F5E642")
                 }
                 size="lg"
               >
@@ -186,12 +186,12 @@ export default function MenuManagementPage() {
               <Button
                 onClick={() => setCsvDialogOpen(true)}
                 className="font-poppins"
-                style={{ background: "#2A2620", color: "#F2EEE6" }}
+                style={{ background: "#0D0D0D", color: "#FFFFFF" }}
                 onMouseEnter={(e) =>
-                  (e.currentTarget.style.background = "#1E1B17")
+                  (e.currentTarget.style.background = "#0D0D0D")
                 }
                 onMouseLeave={(e) =>
-                  (e.currentTarget.style.background = "#2A2620")
+                  (e.currentTarget.style.background = "#111111")
                 }
                 size="lg"
               >
@@ -201,12 +201,12 @@ export default function MenuManagementPage() {
               <Button
                 onClick={() => setPdfDialogOpen(true)}
                 className="font-poppins"
-                style={{ background: "#7A7368", color: "#F2EEE6" }}
+                style={{ background: "rgba(13,13,13,0.08)", color: "rgba(13,13,13,0.48)" }}
                 onMouseEnter={(e) =>
                   (e.currentTarget.style.background = "#5A5348")
                 }
                 onMouseLeave={(e) =>
-                  (e.currentTarget.style.background = "#7A7368")
+                  (e.currentTarget.style.background = "rgba(13,13,13,0.08)")
                 }
                 size="lg"
               >
@@ -216,7 +216,7 @@ export default function MenuManagementPage() {
             </div>
             <p
               className="text-sm font-poppins mt-4"
-              style={{ color: "#7A7368" }}
+              style={{ color: "rgba(13,13,13,0.48)" }}
             >
               Upload your menu using CSV for structured data or PDF for
               AI-powered extraction
@@ -228,18 +228,18 @@ export default function MenuManagementPage() {
             className="rounded-xl p-6 shadow-lg"
             style={{
               background: "#ffffff",
-              border: "1px solid rgba(42,38,32,0.1)",
+              border: "1px solid rgba(13,13,13,0.09)",
             }}
           >
             <div className="flex items-center justify-between mb-6">
-              <h2 className="text-xl font-bebas" style={{ color: "#2A2620" }}>
+              <h2 className="text-xl font-poppins font-bold" style={{ color: "#0D0D0D" }}>
                 Menu Items ({filteredItems.length})
               </h2>
               <Button
                 onClick={fetchMenuItems}
                 variant="outline"
                 size="sm"
-                style={{ borderColor: "rgba(42,38,32,0.2)", color: "#2A2620" }}
+                style={{ borderColor: "rgba(13,13,13,0.18)", color: "#0D0D0D" }}
                 disabled={isLoading}
               >
                 {isLoading ? (
@@ -267,22 +267,22 @@ export default function MenuManagementPage() {
               <div className="flex items-center justify-center py-12">
                 <Loader2
                   className="h-8 w-8 animate-spin"
-                  style={{ color: "#C4724A" }}
+                  style={{ color: "#0D0D0D" }}
                 />
               </div>
             ) : menuItems.length === 0 ? (
               <div className="text-center py-12">
                 <Upload
                   className="h-16 w-16 mx-auto mb-4"
-                  style={{ color: "#DDD9CE" }}
+                  style={{ color: "rgba(255,255,255,0.4)" }}
                 />
                 <h3
                   className="text-lg font-poppins font-medium mb-2"
-                  style={{ color: "#2A2620" }}
+                  style={{ color: "#0D0D0D" }}
                 >
                   No menu items yet
                 </h3>
-                <p className="font-poppins mb-6" style={{ color: "#7A7368" }}>
+                <p className="font-poppins mb-6" style={{ color: "rgba(13,13,13,0.48)" }}>
                   Upload your first menu using CSV or PDF
                 </p>
               </div>
@@ -290,15 +290,15 @@ export default function MenuManagementPage() {
               <div className="text-center py-12">
                 <Search
                   className="h-16 w-16 mx-auto mb-4"
-                  style={{ color: "#DDD9CE" }}
+                  style={{ color: "rgba(255,255,255,0.4)" }}
                 />
                 <h3
                   className="text-lg font-poppins font-medium mb-2"
-                  style={{ color: "#2A2620" }}
+                  style={{ color: "#0D0D0D" }}
                 >
                   No items found
                 </h3>
-                <p className="font-poppins mb-6" style={{ color: "#7A7368" }}>
+                <p className="font-poppins mb-6" style={{ color: "rgba(13,13,13,0.48)" }}>
                   Try adjusting your search or filter
                 </p>
                 <Button
@@ -309,8 +309,8 @@ export default function MenuManagementPage() {
                   variant="outline"
                   className="font-poppins"
                   style={{
-                    borderColor: "rgba(42,38,32,0.2)",
-                    color: "#2A2620",
+                    borderColor: "rgba(13,13,13,0.18)",
+                    color: "#0D0D0D",
                   }}
                 >
                   Clear Filters

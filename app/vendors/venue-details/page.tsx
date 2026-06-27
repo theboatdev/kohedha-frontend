@@ -196,7 +196,7 @@ export default function VenueDetailsPage() {
         <div
           style={{
             minHeight: "100vh",
-            background: "#F5F5F5",
+            background: "#F0F0EE",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
@@ -206,9 +206,9 @@ export default function VenueDetailsPage() {
           <div className="text-center">
             <div
               className="animate-spin rounded-full h-12 w-12 border-b-2 mx-auto mb-4"
-              style={{ borderColor: "#C4724A" }}
+              style={{ borderColor: "#F5E642" }}
             />
-            <p className="font-poppins text-sm" style={{ color: "#7A7368" }}>
+            <p className="font-poppins text-sm" style={{ color: "rgba(13,13,13,0.48)" }}>
               Loading venue details...
             </p>
           </div>
@@ -222,7 +222,7 @@ export default function VenueDetailsPage() {
       <div
         style={{
           minHeight: "100vh",
-          background: "#F5F5F5",
+          background: "#F0F0EE",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
@@ -234,21 +234,21 @@ export default function VenueDetailsPage() {
             className="rounded-xl shadow-lg overflow-hidden"
             style={{
               background: "#ffffff",
-              border: "1px solid rgba(42,38,32,0.1)",
+              border: "1px solid rgba(13,13,13,0.09)",
             }}
           >
             {/* Header */}
             <div
               className="p-8 flex items-center justify-between"
-              style={{ borderBottom: "1px solid rgba(42,38,32,0.1)" }}
+              style={{ borderBottom: "1px solid rgba(13,13,13,0.09)" }}
             >
               <div>
-                <p className="font-poppins text-sm" style={{ color: "#7A7368" }}>
+                <p className="font-poppins text-sm" style={{ color: "rgba(13,13,13,0.48)" }}>
                   Manage your business and location information
                 </p>
                 <p
                   className="text-xs font-poppins text-center pt-2"
-                  style={{ color: "#7A7368" }}
+                  style={{ color: "rgba(13,13,13,0.48)" }}
                 >
                   Accurate details help guests find your venue and improve your
                   visibility on Kohedha.
@@ -258,12 +258,12 @@ export default function VenueDetailsPage() {
                 <Button
                   onClick={() => setIsEditing(true)}
                   className="h-10 font-poppins font-medium"
-                  style={{ background: "#C4724A", color: "#F2EEE6" }}
+                  style={{ background: "#F5E642", color: "#0D0D0D" }}
                   onMouseEnter={(e) =>
-                    (e.currentTarget.style.background = "#B85E38")
+                    (e.currentTarget.style.background = "#E8D800")
                   }
                   onMouseLeave={(e) =>
-                    (e.currentTarget.style.background = "#C4724A")
+                    (e.currentTarget.style.background = "#F5E642")
                   }
                 >
                   <Edit2 className="w-4 h-4 mr-2" />
@@ -275,8 +275,8 @@ export default function VenueDetailsPage() {
                   variant="outline"
                   className="h-10 font-poppins"
                   style={{
-                    borderColor: "rgba(42,38,32,0.2)",
-                    color: "#2A2620",
+                    borderColor: "rgba(13,13,13,0.18)",
+                    color: "#0D0D0D",
                   }}
                 >
                   <X className="w-4 h-4 mr-2" />
@@ -412,12 +412,12 @@ export default function VenueDetailsPage() {
                     <Button
                       type="submit"
                       className="w-full sm:w-auto h-12 font-poppins font-medium shadow-lg hover:shadow-xl transition-all duration-200"
-                      style={{ background: "#C4724A", color: "#F2EEE6" }}
+                      style={{ background: "#F5E642", color: "#0D0D0D" }}
                       onMouseEnter={(e) =>
-                        (e.currentTarget.style.background = "#B85E38")
+                        (e.currentTarget.style.background = "#E8D800")
                       }
                       onMouseLeave={(e) =>
-                        (e.currentTarget.style.background = "#C4724A")
+                        (e.currentTarget.style.background = "#F5E642")
                       }
                       disabled={isSaving}
                     >
@@ -431,8 +431,8 @@ export default function VenueDetailsPage() {
                         variant="outline"
                         className="w-full h-12 font-poppins"
                         style={{
-                          borderColor: "rgba(42,38,32,0.2)",
-                          color: "#2A2620",
+                          borderColor: "rgba(13,13,13,0.18)",
+                          color: "#0D0D0D",
                           background: "transparent",
                         }}
                       >

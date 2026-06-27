@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { ReservationPortalLayout } from "@/components/vendors/reservation-portal-layout";
+import { TimePicker } from "@/components/vendors/time-picker";
 import {
   Clock,
   Save,
@@ -43,154 +44,6 @@ const dayLabels = [
   "Friday",
   "Saturday",
 ];
-
-// Modern Time Picker
-
-function TimePicker({
-  value,
-  onChange,
-  id,
-}: {
-  value: string;
-  onChange: (val: string) => void;
-  id?: string;
-}) {
-  const [open, setOpen] = useState(false);
-  const ref = useRef<HTMLDivElement>(null);
-
-  const parseTime = (v: string) => {
-    if (!v) return { hour: 12, minute: 0, period: "AM" as "AM" | "PM" };
-    const [h, m] = v.split(":").map(Number);
-    const period = h >= 12 ? "PM" : "AM";
-    const hour = h % 12 === 0 ? 12 : h % 12;
-    return { hour, minute: m, period };
-  };
-
-  const { hour, minute, period } = parseTime(value);
-
-  const toHHMM = (h: number, m: number, p: "AM" | "PM") => {
-    let h24 = h % 12;
-    if (p === "PM") h24 += 12;
-    return `${String(h24).padStart(2, "0")}:${String(m).padStart(2, "0")}`;
-  };
-
-  const setHour = (h: number) =>
-    onChange(toHHMM(h, minute, period as "AM" | "PM"));
-  const setMinute = (m: number) =>
-    onChange(toHHMM(hour, m, period as "AM" | "PM"));
-  const setPeriod = (p: "AM" | "PM") => onChange(toHHMM(hour, minute, p));
-
-  const displayTime = value
-    ? `${String(hour).padStart(2, "0")}:${String(minute).padStart(2, "0")} ${period}`
-    : "Select time";
-
-  useEffect(() => {
-    const handler = (e: MouseEvent) => {
-      if (ref.current && !ref.current.contains(e.target as Node))
-        setOpen(false);
-    };
-    document.addEventListener("mousedown", handler);
-    return () => document.removeEventListener("mousedown", handler);
-  }, []);
-
-  const hours = Array.from({ length: 12 }, (_, i) => i + 1);
-  const minutes = [0, 15, 30, 45];
-
-  return (
-    <div className="relative" ref={ref}>
-      <button
-        id={id}
-        type="button"
-        onClick={() => setOpen((o) => !o)}
-        className={`w-full flex items-center justify-between px-3 py-2.5 rounded-lg border text-sm font-poppins transition-all
-          ${open ? "border-black ring-2 ring-black/10" : "border-gray-300 hover:border-gray-400"}
-          bg-white text-gray-900`}
-      >
-        <span className={value ? "text-gray-900" : "text-gray-400"}>
-          {displayTime}
-        </span>
-        <Clock className="h-4 w-4 text-gray-400 shrink-0" />
-      </button>
-
-      {open && (
-        <div className="absolute z-50 mt-1.5 bg-white border border-gray-200 rounded-xl shadow-xl p-3 w-64">
-          <div className="flex gap-2">
-            {/* Hours */}
-            <div className="flex-1">
-              <p className="text-[10px] font-semibold text-gray-400 uppercase tracking-wider mb-1.5 font-poppins">
-                Hour
-              </p>
-              <div className="grid grid-cols-3 gap-1">
-                {hours.map((h) => (
-                  <button
-                    key={h}
-                    type="button"
-                    onClick={() => setHour(h)}
-                    className={`rounded-lg py-1.5 text-sm font-poppins font-medium transition-all
-                      ${hour === h ? "bg-black text-white" : "hover:bg-gray-100 text-gray-700"}`}
-                  >
-                    {String(h).padStart(2, "0")}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* Divider */}
-            <div className="w-px bg-gray-100" />
-
-            {/* Minutes + AM/PM */}
-            <div className="w-20 flex flex-col gap-2">
-              <div>
-                <p className="text-[10px] font-semibold text-gray-400 uppercase tracking-wider mb-1.5 font-poppins">
-                  Min
-                </p>
-                <div className="flex flex-col gap-1">
-                  {minutes.map((m) => (
-                    <button
-                      key={m}
-                      type="button"
-                      onClick={() => setMinute(m)}
-                      className={`rounded-lg py-1.5 text-sm font-poppins font-medium transition-all
-                        ${minute === m ? "bg-black text-white" : "hover:bg-gray-100 text-gray-700"}`}
-                    >
-                      {String(m).padStart(2, "0")}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              <div className="border-t border-gray-100 pt-2">
-                <p className="text-[10px] font-semibold text-gray-400 uppercase tracking-wider mb-1.5 font-poppins">
-                  AM/PM
-                </p>
-                <div className="flex flex-col gap-1">
-                  {(["AM", "PM"] as const).map((p) => (
-                    <button
-                      key={p}
-                      type="button"
-                      onClick={() => setPeriod(p)}
-                      className={`rounded-lg py-1.5 text-sm font-poppins font-medium transition-all
-                        ${period === p ? "bg-black text-white" : "hover:bg-gray-100 text-gray-700"}`}
-                    >
-                      {p}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="mt-3 pt-2 border-t border-gray-100 text-center">
-            <span className="text-base font-semibold font-poppins text-gray-900 tabular-nums">
-              {String(hour).padStart(2, "0")}:{String(minute).padStart(2, "0")}{" "}
-              {period}
-            </span>
-          </div>
-        </div>
-      )}
-    </div>
-  );
-}
 
 // Date Picker
 
@@ -564,8 +417,8 @@ export default function CreateBookingSlotPage() {
     return (
       <ReservationPortalLayout pageTitle="Create Booking Slot">
         <div
-          className="max-w-4xl mx-auto px-6 py-12"
-          style={{ background: "#F5F5F5" }}
+          className="max-w-4xl mx-auto px-4 py-6 sm:px-6 sm:py-8 lg:py-12"
+          style={{ background: "#F0F0EE" }}
         >
           <div className="bg-white rounded-xl shadow-lg border border-gray-100 p-12">
             <div className="flex items-center justify-center">
@@ -580,8 +433,8 @@ export default function CreateBookingSlotPage() {
   return (
     <ReservationPortalLayout pageTitle="Create Booking Slot">
       <div
-        className="max-w-4xl mx-auto px-6 py-12"
-        style={{ background: "#F5F5F5" }}
+        className="max-w-4xl mx-auto px-4 py-6 sm:px-6 sm:py-8 lg:py-12"
+        style={{ background: "#F0F0EE" }}
       >
         <div className="bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden">
           <div className="p-6 border-b border-gray-100">
@@ -598,7 +451,7 @@ export default function CreateBookingSlotPage() {
                 Back
               </Button>
             </div>
-            <h2 className="font-bebas text-2xl tracking-tight text-gray-900 mb-2">
+            <h2 className="font-poppins font-bold text-2xl tracking-tight text-gray-900 mb-2">
               Create Booking Slot
             </h2>
             <p className="font-poppins text-sm text-gray-500">
@@ -838,7 +691,15 @@ export default function CreateBookingSlotPage() {
                   <TimePicker
                     id="startTime"
                     value={formData.startTime}
-                    onChange={(val) => handleChange("startTime", val)}
+                    onChange={(val) => {
+                      setFormData((prev) => ({
+                        ...prev,
+                        startTime: val,
+                        endTime:
+                          prev.endTime && prev.endTime <= val ? "" : prev.endTime,
+                      }));
+                    }}
+                    placeholder="Select start time"
                   />
                 </div>
                 <div className="space-y-2">
@@ -850,6 +711,8 @@ export default function CreateBookingSlotPage() {
                     id="endTime"
                     value={formData.endTime}
                     onChange={(val) => handleChange("endTime", val)}
+                    minTime={formData.startTime || undefined}
+                    placeholder="Select end time"
                   />
                 </div>
               </div>

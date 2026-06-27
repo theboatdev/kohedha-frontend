@@ -87,7 +87,7 @@ export function CreateReservationDialog({
       </DialogTrigger>
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle className="font-bebas text-2xl">
+          <DialogTitle className="font-poppins font-bold text-2xl">
             Create New Reservation
           </DialogTitle>
           <DialogDescription className="font-poppins text-sm">

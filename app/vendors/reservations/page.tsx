@@ -185,7 +185,7 @@ export default function ReservationsPage() {
   return (
     <VendorLayout onSignOut={handleSignOut} pageTitle="Reservations">
       <div className="min-h-screen bg-gradient-to-br from-gray-100 via-white to-gray-50">
-        <div className="max-w-7xl mx-auto px-6 py-12">
+        <div className="max-w-7xl mx-auto px-4 py-6 sm:px-6 sm:py-8 lg:py-12">
           {/* Stats Cards */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
             <StatsCard
@@ -221,10 +221,10 @@ export default function ReservationsPage() {
           {/* Main Content */}
           <div className="bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden">
             {/* Header */}
-            <div className="p-8 border-b border-gray-100">
+            <div className="p-4 sm:p-6 lg:p-8 border-b border-gray-100">
               <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                 <div>
-                  <h2 className="font-bebas text-3xl tracking-tight text-gray-900 mb-2">
+                  <h2 className="font-poppins font-bold text-3xl tracking-tight text-gray-900 mb-2">
                     Reservation Management
                   </h2>
                   <p className="font-poppins text-sm text-gray-600">
@@ -266,7 +266,7 @@ export default function ReservationsPage() {
             </div>
 
             {/* Reservations List */}
-            <div className="p-8">
+            <div className="p-4 sm:p-6 lg:p-8">
               {filteredReservations.length === 0 ? (
                 <div className="text-center py-12">
                   <Calendar className="h-12 w-12 text-gray-300 mx-auto mb-4" />

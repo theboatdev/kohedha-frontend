@@ -90,7 +90,7 @@ export function EditSectionDialog({
     <Dialog open={isOpen} onOpenChange={handleClose}>
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto bg-white">
         <DialogHeader>
-          <DialogTitle className="font-bebas text-2xl tracking-tight">
+          <DialogTitle className="font-poppins font-bold text-2xl tracking-tight">
             Edit Section
           </DialogTitle>
           <DialogDescription className="font-poppins text-sm">

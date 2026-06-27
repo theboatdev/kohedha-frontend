@@ -25,7 +25,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { ImagePlus, X, CalendarIcon } from "lucide-react";
+import { ImagePlus, Loader2, X, CalendarIcon } from "lucide-react";
 import { format } from "date-fns";
 
 export type NewDealData = {
@@ -55,7 +55,7 @@ export type NewDealData = {
 type CreateDealDialogProps = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  onCreateDeal: (data: NewDealData) => void;
+  onCreateDeal: (data: NewDealData) => void | Promise<void>;
   initialData?: NewDealData;
   mode?: "create" | "edit";
 };
@@ -91,6 +91,7 @@ export function CreateDealDialog({
     undefined,
   );
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
 
   // Update form data when initialData changes (for edit mode)
@@ -135,7 +136,7 @@ export function CreateDealDialog({
     setExistingImageUrl(undefined);
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!formData.dealName || !formData.description || !formData.category) {
       toast({
         title: "Validation Error",
@@ -154,16 +155,20 @@ export function CreateDealDialog({
       return;
     }
 
-    onCreateDeal({
-      ...formData,
-      imageFile: newImageFile,
-      existingImageUrl: existingImageUrl,
-    });
-    resetImageState();
-    setFormData(initialFormData);
+    setIsSubmitting(true);
+    try {
+      await onCreateDeal({
+        ...formData,
+        imageFile: newImageFile,
+        existingImageUrl: existingImageUrl,
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleOpenChange = (nextOpen: boolean) => {
+    if (!nextOpen && isSubmitting) return;
     onOpenChange(nextOpen);
     if (!nextOpen) {
       resetImageState();
@@ -178,7 +183,7 @@ export function CreateDealDialog({
     <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto bg-white">
         <DialogHeader>
-          <DialogTitle className="font-bebas text-2xl tracking-tight">
+          <DialogTitle className="font-poppins font-bold text-2xl tracking-tight">
             {mode === "edit" ? "Edit Deal" : "Create New Deal"}
           </DialogTitle>
           <DialogDescription className="font-poppins text-sm">
@@ -540,14 +545,25 @@ export function CreateDealDialog({
             variant="outline"
             onClick={() => handleOpenChange(false)}
             className="font-poppins"
+            disabled={isSubmitting}
           >
             Cancel
           </Button>
           <Button
             onClick={handleSubmit}
-            className="bg-black hover:bg-gray-900 font-poppins"
+            className="bg-black hover:bg-gray-900 font-poppins min-w-[140px]"
+            disabled={isSubmitting}
           >
-            {mode === "edit" ? "Update Deal" : "Create Deal"}
+            {isSubmitting ? (
+              <>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                {mode === "edit" ? "Updating…" : "Creating…"}
+              </>
+            ) : mode === "edit" ? (
+              "Update Deal"
+            ) : (
+              "Create Deal"
+            )}
           </Button>
         </DialogFooter>
       </DialogContent>

@@ -11,32 +11,34 @@ import { PasswordStrengthHelper } from "@/components/vendors/password-strength-h
 import { Mail, Lock, CheckCircle2 } from "lucide-react";
 
 const C = {
-  bg: "#FFFFFF",
-  text: "#2A2620",
-  muted: "#7A7368",
-  accent: "#C4724A",
-  cream: "#FFFFFF",
-  dark: "#1E1B17",
+  bg: "#0D0D0D",
+  text: "#FFFFFF",
+  muted: "rgba(255,255,255,0.48)",
+  accent: "#F5E642",
+  accentHover: "#E8D800",
+  card: "#1A1A1A",
+  inputBg: "#262626",
+  rule: "rgba(255,255,255,0.09)",
 };
 
 const benefits = [
   {
     title: "Reach More Customers",
     body: "Showcase your venue to engaged users actively searching for experiences.",
-    color: "rgba(196,114,74,0.12)",
-    iconColor: "#C4724A",
+    color: "rgba(245,230,66,0.15)",
+    iconColor: "#F5E642",
   },
   {
     title: "Manage Deals & Events",
     body: "Create promotional offers and event listings with an intuitive dashboard.",
-    color: "rgba(42,38,32,0.08)",
-    iconColor: "#2A2620",
+    color: "rgba(255,255,255,0.06)",
+    iconColor: "#F5E642",
   },
   {
     title: "Track Performance",
     body: "Get insights on views, engagement, and customer interactions.",
-    color: "rgba(196,114,74,0.08)",
-    iconColor: "#B85E38",
+    color: "rgba(245,230,66,0.15)",
+    iconColor: "#F5E642",
   },
 ];
 
@@ -100,36 +102,26 @@ export default function VendorRegisterPage() {
 
   return (
     <div
-      className="font-dm-sans"
+      className="font-dm-sans flex items-center justify-center px-4 py-10 sm:px-6 lg:px-8"
       style={{
         minHeight: "100vh",
         background: C.bg,
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        padding: "48px 24px",
       }}
     >
       <div
-        style={{
-          maxWidth: "960px",
-          width: "100%",
-          display: "grid",
-          gridTemplateColumns: "1fr 1fr",
-          gap: "48px",
-          alignItems: "center",
-        }}
+        className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center w-full"
+        style={{ maxWidth: "960px" }}
       >
         {/* Left - Branding */}
         <div className="hidden lg:block">
           <div
-            className="font-dm-serif"
-            style={{ fontSize: "26px", color: C.dark, marginBottom: "20px" }}
+            className="font-poppins"
+            style={{ fontSize: "26px", fontWeight: 700, color: C.text, marginBottom: "20px", letterSpacing: "-0.02em" }}
           >
-            kohedha<span style={{ color: C.accent }}>.</span>
+            kohedha<span style={{ color: "#C8281A" }}>.</span>
           </div>
           <h1
-            className="font-dm-serif"
+            className="font-poppins"
             style={{
               fontSize: "clamp(36px,4vw,52px)",
               color: C.text,
@@ -214,9 +206,10 @@ export default function VendorRegisterPage() {
         <div>
           <div style={{ marginBottom: "24px" }}>
             <h2
-              className="font-dm-serif"
+              className="font-poppins"
               style={{
-                fontSize: "28px",
+                fontSize: "26px",
+                fontWeight: 700,
                 color: C.text,
                 letterSpacing: "-0.02em",
                 marginBottom: "6px",
@@ -231,14 +224,14 @@ export default function VendorRegisterPage() {
 
           <div
             style={{
-              background: C.cream,
+              background: C.card,
               borderRadius: "20px",
-              border: "1px solid rgba(42,38,32,0.1)",
+              border: `1px solid ${C.rule}`,
               padding: "32px",
             }}
           >
             <div style={{ marginBottom: "22px" }}>
-              <GoogleSignInButton text="Sign up with Google" />
+              <GoogleSignInButton text="Sign up with Google" dark />
             </div>
 
             <div
@@ -253,7 +246,7 @@ export default function VendorRegisterPage() {
                 style={{
                   flex: 1,
                   height: "1px",
-                  background: "rgba(42,38,32,0.12)",
+                  background: C.rule,
                 }}
               />
               <span
@@ -269,7 +262,7 @@ export default function VendorRegisterPage() {
                 style={{
                   flex: 1,
                   height: "1px",
-                  background: "rgba(42,38,32,0.12)",
+                  background: C.rule,
                 }}
               />
             </div>
@@ -309,11 +302,12 @@ export default function VendorRegisterPage() {
                     onChange={(e) => setEmail(e.target.value)}
                     style={{
                       paddingLeft: "36px",
-                      background: C.bg,
-                      border: "1px solid rgba(42,38,32,0.15)",
+                      background: C.inputBg,
+                      border: `1px solid ${C.rule}`,
                       borderRadius: "10px",
                       fontSize: "14px",
                       height: "42px",
+                      color: C.text,
                     }}
                     required
                   />
@@ -351,11 +345,12 @@ export default function VendorRegisterPage() {
                     onChange={(e) => setPassword(e.target.value)}
                     style={{
                       paddingLeft: "36px",
-                      background: C.bg,
-                      border: "1px solid rgba(42,38,32,0.15)",
+                      background: C.inputBg,
+                      border: `1px solid ${C.rule}`,
                       borderRadius: "10px",
                       fontSize: "14px",
                       height: "42px",
+                      color: C.text,
                     }}
                     required
                   />
@@ -397,11 +392,12 @@ export default function VendorRegisterPage() {
                     onChange={(e) => setConfirmPassword(e.target.value)}
                     style={{
                       paddingLeft: "36px",
-                      background: C.bg,
-                      border: "1px solid rgba(42,38,32,0.15)",
+                      background: C.inputBg,
+                      border: `1px solid ${C.rule}`,
                       borderRadius: "10px",
                       fontSize: "14px",
                       height: "42px",
+                      color: C.text,
                     }}
                     required
                   />
@@ -427,8 +423,8 @@ export default function VendorRegisterPage() {
                 style={{
                   width: "100%",
                   height: "44px",
-                  background: isSubmitting ? C.muted : C.accent,
-                  color: "white",
+                  background: isSubmitting ? "rgba(255,255,255,0.08)" : C.accent,
+                  color: isSubmitting ? C.muted : "#0D0D0D",
                   border: "none",
                   borderRadius: "40px",
                   fontSize: "14px",
@@ -438,7 +434,7 @@ export default function VendorRegisterPage() {
                 }}
                 onMouseEnter={(e) => {
                   if (!isSubmitting) {
-                    e.currentTarget.style.background = "#b85e38";
+                    e.currentTarget.style.background = C.accentHover;
                   }
                 }}
                 onMouseLeave={(e) => {
@@ -488,7 +484,8 @@ export default function VendorRegisterPage() {
                   style={{
                     color: C.accent,
                     fontWeight: 600,
-                    textDecoration: "none",
+                    textDecoration: "underline",
+                    textUnderlineOffset: "2px",
                   }}
                 >
                   Sign in
