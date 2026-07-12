@@ -50,6 +50,7 @@ export type NewDealData = {
   isPublished?: boolean;
   startDate?: string;
   endDate?: string;
+  dealType?: "regular" | "mmr-rally-special";
 };
 
 type CreateDealDialogProps = {
@@ -73,6 +74,7 @@ const initialFormData: NewDealData = {
   isPublished: false,
   startDate: undefined,
   endDate: undefined,
+  dealType: "regular",
 };
 
 export function CreateDealDialog({
@@ -241,6 +243,28 @@ export function CreateDealDialog({
                 </SelectItem>
                 <SelectItem value="events">Events</SelectItem>
                 <SelectItem value="other">Other</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div className="space-y-2">
+            <label className="text-sm font-medium font-poppins">
+              Deal Type <span className="text-red-500">*</span>
+            </label>
+            <Select
+              value={formData.dealType}
+              onValueChange={(value: "regular" | "mmr-rally-special") =>
+                setFormData({ ...formData, dealType: value })
+              }
+            >
+              <SelectTrigger className="font-poppins">
+                <SelectValue placeholder="Select deal type" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="regular">Regular Deal</SelectItem>
+                <SelectItem value="mmr-rally-special">
+                  MMR-Rally Special
+                </SelectItem>
               </SelectContent>
             </Select>
           </div>
