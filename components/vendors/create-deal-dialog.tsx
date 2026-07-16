@@ -50,6 +50,9 @@ export type NewDealData = {
   isPublished?: boolean;
   startDate?: string;
   endDate?: string;
+  dealType?: "regular" | "mmr-rally-special";
+  question?: string;
+  rallyLocation?: 1 | 2 | 3;
 };
 
 type CreateDealDialogProps = {
@@ -73,6 +76,9 @@ const initialFormData: NewDealData = {
   isPublished: false,
   startDate: undefined,
   endDate: undefined,
+  dealType: "regular",
+  question: "",
+  rallyLocation: undefined,
 };
 
 export function CreateDealDialog({
@@ -244,6 +250,54 @@ export function CreateDealDialog({
               </SelectContent>
             </Select>
           </div>
+
+          <div className="space-y-2">
+            <label className="text-sm font-medium font-poppins">
+              Deal Type <span className="text-red-500">*</span>
+            </label>
+            <Select
+              value={formData.dealType}
+              onValueChange={(value: "regular" | "mmr-rally-special") =>
+                setFormData({ ...formData, dealType: value })
+              }
+            >
+              <SelectTrigger className="font-poppins">
+                <SelectValue placeholder="Select deal type" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="regular">Regular Deal</SelectItem>
+                <SelectItem value="mmr-rally-special">
+                  MMR-Rally Special
+                </SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
+          {formData.dealType === "mmr-rally-special" && (
+            <div className="space-y-2">
+              <label className="text-sm font-medium font-poppins">
+                Checkpoint Location <span className="text-red-500">*</span>
+              </label>
+              <Select
+                value={formData.rallyLocation ? String(formData.rallyLocation) : ""}
+                onValueChange={(value) =>
+                  setFormData({
+                    ...formData,
+                    rallyLocation: parseInt(value, 10) as 1 | 2 | 3,
+                  })
+                }
+              >
+                <SelectTrigger className="font-poppins">
+                  <SelectValue placeholder="Select checkpoint (1, 2 or 3)" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="1">Checkpoint 1</SelectItem>
+                  <SelectItem value="2">Checkpoint 2</SelectItem>
+                  <SelectItem value="3">Checkpoint 3</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          )}
 
           <div className="space-y-2">
             <label className="text-sm font-medium font-poppins">
@@ -517,6 +571,25 @@ export function CreateDealDialog({
                 })
               }
               className="font-poppins min-h-[80px]"
+            />
+          </div>
+
+          <div className="space-y-2">
+            <label className="text-sm font-medium font-poppins">
+              Question{" "}
+              <span className="text-gray-400 font-normal">(optional)</span>
+            </label>
+            <Input
+              placeholder="e.g. What is your favourite dish here?"
+              value={formData.question}
+              onChange={(e) =>
+                setFormData({
+                  ...formData,
+                  question: e.target.value,
+                })
+              }
+              className="font-poppins"
+              maxLength={500}
             />
           </div>
 
