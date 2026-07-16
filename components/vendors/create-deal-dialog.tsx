@@ -161,6 +161,18 @@ export function CreateDealDialog({
       return;
     }
 
+    if (
+      formData.dealType === "mmr-rally-special" &&
+      ![1, 2, 3].includes(formData.rallyLocation as number)
+    ) {
+      toast({
+        title: "Validation Error",
+        description: "Please select a checkpoint location (1, 2, or 3).",
+        variant: "destructive",
+      });
+      return;
+    }
+
     setIsSubmitting(true);
     try {
       await onCreateDeal({

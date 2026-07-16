@@ -82,6 +82,8 @@ function transformToBackendDeal(frontendDeal: NewDealData) {
     startDate: frontendDeal.startDate,
     endDate: frontendDeal.endDate,
     dealType: frontendDeal.dealType || "regular",
+    question: frontendDeal.question || "",
+    rallyLocation: frontendDeal.rallyLocation,
   };
 }
 
@@ -461,6 +463,8 @@ export default function DealsManagementPage() {
                 startDate: (editingDeal as any).backendData.startDate,
                 endDate: (editingDeal as any).backendData.endDate,
                 dealType: (editingDeal as any).backendData.dealType || "regular",
+                question: (editingDeal as any).backendData.question || "",
+                rallyLocation: (editingDeal as any).backendData.rallyLocation,
               }
             : undefined
         }
