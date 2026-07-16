@@ -2,8 +2,6 @@
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5002/api";
 
-export type DealType = "regular" | "mmr-rally-special";
-
 export type DealCategory =
   | "food-beverage"
   | "entertainment"
@@ -63,9 +61,6 @@ export interface Deal {
   publishedAt?: string;
   startDate?: string;
   endDate?: string;
-  dealType: DealType;
-  question?: string;
-  rallyLocation?: 1 | 2 | 3;
   createdAt: string;
   updatedAt: string;
 }
@@ -85,9 +80,6 @@ export interface CreateDealData {
   isPublished?: boolean;
   startDate?: string;
   endDate?: string;
-  dealType?: DealType;
-  question?: string;
-  rallyLocation?: 1 | 2 | 3;
 }
 
 export interface UpdateDealData {
@@ -106,9 +98,6 @@ export interface UpdateDealData {
   isPublished?: boolean;
   startDate?: string;
   endDate?: string;
-  dealType?: DealType;
-  question?: string;
-  rallyLocation?: 1 | 2 | 3;
 }
 
 export interface DealActionResponse {
@@ -174,9 +163,6 @@ function buildDealFormData(data: CreateDealData | UpdateDealData): FormData {
   appendIfDefined("removeImage", (data as UpdateDealData).removeImage);
   appendIfDefined("startDate", (data as any).startDate);
   appendIfDefined("endDate", (data as any).endDate);
-  appendIfDefined("dealType", (data as any).dealType);
-  appendIfDefined("question", (data as any).question);
-  appendIfDefined("rallyLocation", (data as any).rallyLocation);
 
   if ((data as any).tags) {
     fd.append("tags", JSON.stringify((data as any).tags));

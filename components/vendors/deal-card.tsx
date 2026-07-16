@@ -21,8 +21,6 @@ export type DealCategory =
   | "events"
   | "other";
 
-export type DealType = "regular" | "mmr-rally-special";
-
 export type DealItem = {
   id: string;
   title: string;
@@ -36,7 +34,6 @@ export type DealItem = {
   createdAt: string;
   startDate?: string;
   endDate?: string;
-  dealType?: DealType;
   backendData?: any;
 };
 
@@ -185,11 +182,6 @@ export function DealCard({
           <span className="font-poppins text-xs px-2 py-0.5 rounded-full bg-purple-50 text-purple-700 border border-purple-200">
             {categoryLabels[deal.category]}
           </span>
-          {deal.dealType === "mmr-rally-special" && (
-            <span className="font-poppins text-xs px-2 py-0.5 rounded-full bg-orange-50 text-orange-700 border border-orange-200 font-semibold">
-              MMR-Rally Special
-            </span>
-          )}
           <div className="w-px h-3 bg-gray-200" />
           <span className="font-poppins text-xs text-gray-500">
             {formattedDate}
