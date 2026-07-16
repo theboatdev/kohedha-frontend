@@ -61,6 +61,7 @@ function transformDeal(backendDeal: Deal): DealItem {
     createdAt: backendDeal.createdAt,
     startDate: backendDeal.startDate,
     endDate: backendDeal.endDate,
+    dealType: backendDeal.dealType,
   };
 }
 
@@ -80,6 +81,7 @@ function transformToBackendDeal(frontendDeal: NewDealData) {
     isPublished: frontendDeal.isPublished || false,
     startDate: frontendDeal.startDate,
     endDate: frontendDeal.endDate,
+    dealType: frontendDeal.dealType || "regular",
   };
 }
 
@@ -458,6 +460,7 @@ export default function DealsManagementPage() {
                 isPublished: (editingDeal as any).backendData.isPublished,
                 startDate: (editingDeal as any).backendData.startDate,
                 endDate: (editingDeal as any).backendData.endDate,
+                dealType: (editingDeal as any).backendData.dealType || "regular",
               }
             : undefined
         }
