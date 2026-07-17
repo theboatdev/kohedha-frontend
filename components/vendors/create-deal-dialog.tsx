@@ -94,19 +94,26 @@ export function CreateDealDialog({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
 
-  // Update form data when initialData changes (for edit mode)
+  // Hydrate only when the dialog opens — do not depend on initialData identity
+  // (parent rebuilds that object every render and would wipe in-progress edits).
   useEffect(() => {
-    if (initialData && open) {
-      setFormData(initialData);
-      setExistingImageUrl(initialData.existingImageUrl);
+    if (open) {
+      if (initialData) {
+        setFormData(initialData);
+        setExistingImageUrl(initialData.existingImageUrl);
+      } else {
+        setFormData(initialFormData);
+        setExistingImageUrl(undefined);
+      }
       if (newImagePreview) URL.revokeObjectURL(newImagePreview);
       setNewImageFile(undefined);
       setNewImagePreview(undefined);
-    } else if (!open) {
+    } else {
       resetImageState();
       setFormData(initialFormData);
     }
-  }, [initialData, open]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- only re-hydrate on open
+  }, [open]);
 
   function resetImageState() {
     if (newImagePreview) URL.revokeObjectURL(newImagePreview);
@@ -155,13 +162,35 @@ export function CreateDealDialog({
       return;
     }
 
+    if (
+      formData.dealType === "mmr-rally-special" &&
+      ![1, 2, 3].includes(formData.rallyLocation as number)
+    ) {
+      toast({
+        title: "Validation Error",
+        description: "Please select a checkpoint location (1, 2, or 3).",
+        variant: "destructive",
+      });
+      return;
+    }
+
     setIsSubmitting(true);
     try {
-      await onCreateDeal({
+      const payload: NewDealData = {
         ...formData,
         imageFile: newImageFile,
         existingImageUrl: existingImageUrl,
+        rallyLocation:
+          formData.dealType === "mmr-rally-special"
+            ? (Number(formData.rallyLocation) as 1 | 2 | 3)
+            : formData.rallyLocation,
+      };
+      console.log("[CreateDeal] submitting", {
+        dealType: payload.dealType,
+        rallyLocation: payload.rallyLocation,
+        question: payload.question,
       });
+      await onCreateDeal(payload);
     } finally {
       setIsSubmitting(false);
     }
@@ -244,6 +273,58 @@ export function CreateDealDialog({
               </SelectContent>
             </Select>
           </div>
+
+          <div className="space-y-2">
+            <label className="text-sm font-medium font-poppins">
+              Deal Type <span className="text-red-500">*</span>
+            </label>
+            <Select
+              value={formData.dealType}
+              onValueChange={(value: "regular" | "mmr-rally-special") =>
+                setFormData((prev) => ({ ...prev, dealType: value }))
+              }
+            >
+              <SelectTrigger className="font-poppins">
+                <SelectValue placeholder="Select deal type" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="regular">Regular Deal</SelectItem>
+                <SelectItem value="mmr-rally-special">
+                  MMR-Rally Special
+                </SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
+          {formData.dealType === "mmr-rally-special" && (
+            <div className="space-y-2">
+              <label className="text-sm font-medium font-poppins">
+                Checkpoint Location <span className="text-red-500">*</span>
+              </label>
+              <Select
+                value={
+                  formData.rallyLocation
+                    ? String(formData.rallyLocation)
+                    : undefined
+                }
+                onValueChange={(value) =>
+                  setFormData((prev) => ({
+                    ...prev,
+                    rallyLocation: Number(value) as 1 | 2 | 3,
+                  }))
+                }
+              >
+                <SelectTrigger className="font-poppins">
+                  <SelectValue placeholder="Select checkpoint (1, 2 or 3)" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="1">Checkpoint 1</SelectItem>
+                  <SelectItem value="2">Checkpoint 2</SelectItem>
+                  <SelectItem value="3">Checkpoint 3</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          )}
 
           <div className="space-y-2">
             <label className="text-sm font-medium font-poppins">

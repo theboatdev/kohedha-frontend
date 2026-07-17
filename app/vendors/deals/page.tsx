@@ -80,6 +80,13 @@ function transformToBackendDeal(frontendDeal: NewDealData) {
     isPublished: frontendDeal.isPublished || false,
     startDate: frontendDeal.startDate,
     endDate: frontendDeal.endDate,
+    dealType: frontendDeal.dealType || "regular",
+    question: frontendDeal.question || "",
+    rallyLocation:
+      frontendDeal.rallyLocation !== undefined &&
+      frontendDeal.rallyLocation !== null
+        ? (Number(frontendDeal.rallyLocation) as 1 | 2 | 3)
+        : undefined,
   };
 }
 
@@ -157,6 +164,11 @@ export default function DealsManagementPage() {
   const handleCreateDeal = async (data: NewDealData) => {
     try {
       const backendData = transformToBackendDeal(data);
+      console.log("[DealsPage] create payload", {
+        dealType: backendData.dealType,
+        rallyLocation: backendData.rallyLocation,
+        question: backendData.question,
+      });
       const result = await createDeal(backendData);
 
       if (result.success && result.data) {
@@ -458,6 +470,9 @@ export default function DealsManagementPage() {
                 isPublished: (editingDeal as any).backendData.isPublished,
                 startDate: (editingDeal as any).backendData.startDate,
                 endDate: (editingDeal as any).backendData.endDate,
+                dealType: (editingDeal as any).backendData.dealType || "regular",
+                question: (editingDeal as any).backendData.question || "",
+                rallyLocation: (editingDeal as any).backendData.rallyLocation,
               }
             : undefined
         }

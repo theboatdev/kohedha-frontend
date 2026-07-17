@@ -163,6 +163,16 @@ function buildDealFormData(data: CreateDealData | UpdateDealData): FormData {
   appendIfDefined("removeImage", (data as UpdateDealData).removeImage);
   appendIfDefined("startDate", (data as any).startDate);
   appendIfDefined("endDate", (data as any).endDate);
+  appendIfDefined("dealType", (data as any).dealType);
+  appendIfDefined("question", (data as any).question);
+  // Always send as a plain string — multer/multipart can drop non-string values
+  if (
+    (data as any).rallyLocation !== undefined &&
+    (data as any).rallyLocation !== null &&
+    (data as any).rallyLocation !== ""
+  ) {
+    fd.append("rallyLocation", String(Number((data as any).rallyLocation)));
+  }
 
   if ((data as any).tags) {
     fd.append("tags", JSON.stringify((data as any).tags));
