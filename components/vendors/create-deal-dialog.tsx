@@ -50,9 +50,6 @@ export type NewDealData = {
   isPublished?: boolean;
   startDate?: string;
   endDate?: string;
-  dealType?: "regular" | "mmr-rally-special";
-  question?: string;
-  rallyLocation?: 1 | 2 | 3;
 };
 
 type CreateDealDialogProps = {
@@ -76,9 +73,6 @@ const initialFormData: NewDealData = {
   isPublished: false,
   startDate: undefined,
   endDate: undefined,
-  dealType: "regular",
-  question: "",
-  rallyLocation: undefined,
 };
 
 export function CreateDealDialog({
@@ -604,25 +598,6 @@ export function CreateDealDialog({
                 })
               }
               className="font-poppins min-h-[80px]"
-            />
-          </div>
-
-          <div className="space-y-2">
-            <label className="text-sm font-medium font-poppins">
-              Question{" "}
-              <span className="text-gray-400 font-normal">(optional)</span>
-            </label>
-            <Input
-              placeholder="e.g. What is your favourite dish here?"
-              value={formData.question}
-              onChange={(e) =>
-                setFormData({
-                  ...formData,
-                  question: e.target.value,
-                })
-              }
-              className="font-poppins"
-              maxLength={500}
             />
           </div>
 

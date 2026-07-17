@@ -61,7 +61,6 @@ function transformDeal(backendDeal: Deal): DealItem {
     createdAt: backendDeal.createdAt,
     startDate: backendDeal.startDate,
     endDate: backendDeal.endDate,
-    dealType: backendDeal.dealType,
   };
 }
 
