@@ -52,7 +52,7 @@ export type NewDealData = {
   endDate?: string;
   dealType?: "regular" | "mmr-rally-special";
   question?: string;
-  rallyLocation?: 1 | 2 | 3;
+  rallyLocation?: 1 | 2 | 3 | 4 | 5 | 6;
 };
 
 type CreateDealDialogProps = {
@@ -170,11 +170,11 @@ export function CreateDealDialog({
 
     if (
       formData.dealType === "mmr-rally-special" &&
-      ![1, 2, 3].includes(formData.rallyLocation as number)
+      ![1, 2, 3, 4, 5, 6].includes(formData.rallyLocation as number)
     ) {
       toast({
         title: "Validation Error",
-        description: "Please select a checkpoint location (1, 2, or 3).",
+        description: "Please select a checkpoint location (1-6).",
         variant: "destructive",
       });
       return;
@@ -188,7 +188,7 @@ export function CreateDealDialog({
         existingImageUrl: existingImageUrl,
         rallyLocation:
           formData.dealType === "mmr-rally-special"
-            ? (Number(formData.rallyLocation) as 1 | 2 | 3)
+            ? (Number(formData.rallyLocation) as 1 | 2 | 3 | 4 | 5 | 6)
             : formData.rallyLocation,
       };
       console.log("[CreateDeal] submitting", {
@@ -316,17 +316,20 @@ export function CreateDealDialog({
                 onValueChange={(value) =>
                   setFormData((prev) => ({
                     ...prev,
-                    rallyLocation: Number(value) as 1 | 2 | 3,
+                    rallyLocation: Number(value) as 1 | 2 | 3 | 4 | 5 | 6,
                   }))
                 }
               >
                 <SelectTrigger className="font-poppins">
-                  <SelectValue placeholder="Select checkpoint (1, 2 or 3)" />
+                  <SelectValue placeholder="Select checkpoint (1-6)" />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="1">Checkpoint 1</SelectItem>
                   <SelectItem value="2">Checkpoint 2</SelectItem>
                   <SelectItem value="3">Checkpoint 3</SelectItem>
+                  <SelectItem value="4">Checkpoint 4</SelectItem>
+                  <SelectItem value="5">Checkpoint 5</SelectItem>
+                  <SelectItem value="6">Checkpoint 6</SelectItem>
                 </SelectContent>
               </Select>
             </div>

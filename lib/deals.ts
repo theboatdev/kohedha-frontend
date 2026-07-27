@@ -65,7 +65,7 @@ export interface Deal {
   endDate?: string;
   dealType: DealType;
   question?: string;
-  rallyLocation?: 1 | 2 | 3;
+  rallyLocation?: 1 | 2 | 3 | 4 | 5 | 6;
   createdAt: string;
   updatedAt: string;
 }
@@ -87,7 +87,7 @@ export interface CreateDealData {
   endDate?: string;
   dealType?: DealType;
   question?: string;
-  rallyLocation?: 1 | 2 | 3;
+  rallyLocation?: 1 | 2 | 3 | 4 | 5 | 6;
 }
 
 export interface UpdateDealData {
@@ -108,7 +108,7 @@ export interface UpdateDealData {
   endDate?: string;
   dealType?: DealType;
   question?: string;
-  rallyLocation?: 1 | 2 | 3;
+  rallyLocation?: 1 | 2 | 3 | 4 | 5 | 6;
 }
 
 export interface DealActionResponse {

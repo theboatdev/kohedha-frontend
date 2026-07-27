@@ -52,7 +52,7 @@ export function Footer() {
               Sri Lanka&apos;s restaurant &amp; event discovery app — every venue, perfectly matched to your mood.
             </p>
             <Link
-              href="/vendors"
+              href="/vendors/register"
               className="font-poppins"
               style={{
                 fontWeight: 700,
@@ -128,7 +128,7 @@ export function Footer() {
             </h5>
             {[
               { label: "About", href: "/about" },
-              { label: "Get the app", href: "/vendors/register" },
+              { label: "Get the app", href: "/#app" },
               { label: "For vendors", href: "/vendors" },
               { label: "Careers", href: "#" },
             ].map((link) => (
