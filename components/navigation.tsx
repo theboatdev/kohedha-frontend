@@ -73,7 +73,7 @@ export function Navigation() {
       {/* Right side: CTA + mobile toggle */}
       <div style={{ display: "flex", alignItems: "center", gap: "14px" }}>
         <Link
-          href="/vendors/register"
+          href="/#app"
           className="hidden md:inline-block font-poppins"
           style={{
             fontSize: "13px",
@@ -181,7 +181,7 @@ export function Navigation() {
             </Link>
           ))}
           <Link
-            href="/vendors/register"
+            href="/#app"
             onClick={() => setIsOpen(false)}
             className="font-poppins"
             style={{
