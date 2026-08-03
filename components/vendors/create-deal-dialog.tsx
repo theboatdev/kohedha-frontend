@@ -50,9 +50,6 @@ export type NewDealData = {
   isPublished?: boolean;
   startDate?: string;
   endDate?: string;
-  dealType?: "regular" | "mmr-rally-special";
-  question?: string;
-  rallyLocation?: 1 | 2 | 3 | 4 | 5 | 6;
 };
 
 type CreateDealDialogProps = {
@@ -76,9 +73,6 @@ const initialFormData: NewDealData = {
   isPublished: false,
   startDate: undefined,
   endDate: undefined,
-  dealType: "regular",
-  question: "",
-  rallyLocation: undefined,
 };
 
 export function CreateDealDialog({
@@ -168,34 +162,13 @@ export function CreateDealDialog({
       return;
     }
 
-    if (
-      formData.dealType === "mmr-rally-special" &&
-      ![1, 2, 3, 4, 5, 6].includes(formData.rallyLocation as number)
-    ) {
-      toast({
-        title: "Validation Error",
-        description: "Please select a checkpoint location (1-6).",
-        variant: "destructive",
-      });
-      return;
-    }
-
     setIsSubmitting(true);
     try {
       const payload: NewDealData = {
         ...formData,
         imageFile: newImageFile,
         existingImageUrl: existingImageUrl,
-        rallyLocation:
-          formData.dealType === "mmr-rally-special"
-            ? (Number(formData.rallyLocation) as 1 | 2 | 3 | 4 | 5 | 6)
-            : formData.rallyLocation,
       };
-      console.log("[CreateDeal] submitting", {
-        dealType: payload.dealType,
-        rallyLocation: payload.rallyLocation,
-        question: payload.question,
-      });
       await onCreateDeal(payload);
     } finally {
       setIsSubmitting(false);
@@ -279,61 +252,6 @@ export function CreateDealDialog({
               </SelectContent>
             </Select>
           </div>
-
-          <div className="space-y-2">
-            <label className="text-sm font-medium font-poppins">
-              Deal Type <span className="text-red-500">*</span>
-            </label>
-            <Select
-              value={formData.dealType}
-              onValueChange={(value: "regular" | "mmr-rally-special") =>
-                setFormData((prev) => ({ ...prev, dealType: value }))
-              }
-            >
-              <SelectTrigger className="font-poppins">
-                <SelectValue placeholder="Select deal type" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="regular">Regular Deal</SelectItem>
-                <SelectItem value="mmr-rally-special">
-                  MMR-Rally Special
-                </SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-
-          {formData.dealType === "mmr-rally-special" && (
-            <div className="space-y-2">
-              <label className="text-sm font-medium font-poppins">
-                Checkpoint Location <span className="text-red-500">*</span>
-              </label>
-              <Select
-                value={
-                  formData.rallyLocation
-                    ? String(formData.rallyLocation)
-                    : undefined
-                }
-                onValueChange={(value) =>
-                  setFormData((prev) => ({
-                    ...prev,
-                    rallyLocation: Number(value) as 1 | 2 | 3 | 4 | 5 | 6,
-                  }))
-                }
-              >
-                <SelectTrigger className="font-poppins">
-                  <SelectValue placeholder="Select checkpoint (1-6)" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="1">Checkpoint 1</SelectItem>
-                  <SelectItem value="2">Checkpoint 2</SelectItem>
-                  <SelectItem value="3">Checkpoint 3</SelectItem>
-                  <SelectItem value="4">Checkpoint 4</SelectItem>
-                  <SelectItem value="5">Checkpoint 5</SelectItem>
-                  <SelectItem value="6">Checkpoint 6</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-          )}
 
           <div className="space-y-2">
             <label className="text-sm font-medium font-poppins">
@@ -607,25 +525,6 @@ export function CreateDealDialog({
                 })
               }
               className="font-poppins min-h-[80px]"
-            />
-          </div>
-
-          <div className="space-y-2">
-            <label className="text-sm font-medium font-poppins">
-              Question{" "}
-              <span className="text-gray-400 font-normal">(optional)</span>
-            </label>
-            <Input
-              placeholder="e.g. What is your favourite dish here?"
-              value={formData.question}
-              onChange={(e) =>
-                setFormData({
-                  ...formData,
-                  question: e.target.value,
-                })
-              }
-              className="font-poppins"
-              maxLength={500}
             />
           </div>
 
