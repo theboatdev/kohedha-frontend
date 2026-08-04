@@ -20,6 +20,7 @@ import {
   getDashboardAnalytics,
   type DashboardAnalytics,
 } from "@/lib/dashboard";
+import { getMenuVoteSummary, type MenuVoteItem } from "@/lib/menu";
 
 const C = {
   bg: "#F0F0EE",
@@ -41,35 +42,7 @@ export default function VendorDashboardPage() {
   const [dashboardData, setDashboardData] = useState<DashboardAnalytics | null>(
     null,
   );
-
-  // Mock top upvoted menu items (will implement upvote feature later)
-  const topUpvotedItems = [
-    {
-      name: "Grilled Chicken Kottu",
-      category: "Main Course",
-      upvotes: 342,
-      trend: "+12",
-    },
-    {
-      name: "Seafood Rice & Curry",
-      category: "Main Course",
-      upvotes: 298,
-      trend: "+8",
-    },
-    { name: "Mango Lassi", category: "Beverages", upvotes: 267, trend: "+15" },
-    {
-      name: "Chocolate Lava Cake",
-      category: "Desserts",
-      upvotes: 251,
-      trend: "+6",
-    },
-    {
-      name: "Crispy Calamari",
-      category: "Appetizers",
-      upvotes: 189,
-      trend: "+4",
-    },
-  ];
+  const [topUpvotedItems, setTopUpvotedItems] = useState<MenuVoteItem[]>([]);
 
   useEffect(() => {
     const token = searchParams.get("token");
@@ -96,7 +69,15 @@ export default function VendorDashboardPage() {
       setIsLoading(false);
     };
 
+    const fetchTopUpvotedItems = async () => {
+      const result = await getMenuVoteSummary({ sortBy: "upvotes" });
+      if (result.success && result.data) {
+        setTopUpvotedItems(result.data.items.slice(0, 5));
+      }
+    };
+
     fetchDashboard();
+    fetchTopUpvotedItems();
   }, []);
 
   const handleSignOut = async () => {
@@ -562,114 +543,132 @@ export default function VendorDashboardPage() {
                 </Link>
               </div>
               <div style={{ padding: "8px 28px 24px" }}>
-                <div
-                  style={{ display: "flex", flexDirection: "column", gap: "0" }}
-                >
-                  {topUpvotedItems.map((item, index) => (
-                    <div key={item.name}>
-                      <div
-                        style={{
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "space-between",
-                          padding: "16px 0",
-                        }}
-                      >
+                {topUpvotedItems.length === 0 ? (
+                  <p
+                    style={{
+                      fontSize: "13px",
+                      color: C.muted,
+                      padding: "16px 0",
+                      textAlign: "center",
+                    }}
+                  >
+                    No upvotes yet. Once customers vote on your dishes,
+                    they&apos;ll show up here.
+                  </p>
+                ) : (
+                  <div
+                    style={{ display: "flex", flexDirection: "column", gap: "0" }}
+                  >
+                    {topUpvotedItems.map((item, index) => (
+                      <div key={item._id}>
                         <div
                           style={{
                             display: "flex",
                             alignItems: "center",
-                            gap: "16px",
-                            flex: 1,
+                            justifyContent: "space-between",
+                            padding: "16px 0",
                           }}
                         >
                           <div
                             style={{
-                              width: "32px",
-                              height: "32px",
-                              borderRadius: "8px",
-                              background:
-                                index === 0
-                                  ? "rgba(245,230,66,0.2)"
-                                  : "rgba(13,13,13,0.05)",
                               display: "flex",
                               alignItems: "center",
-                              justifyContent: "center",
-                              fontSize: "14px",
-                              fontWeight: 700,
-                              color: index === 0 ? "#0D0D0D" : C.muted,
+                              gap: "16px",
+                              flex: 1,
                             }}
                           >
-                            {index + 1}
-                          </div>
-                          <div style={{ flex: 1 }}>
-                            <p
+                            <div
                               style={{
+                                width: "32px",
+                                height: "32px",
+                                borderRadius: "8px",
+                                background:
+                                  index === 0
+                                    ? "rgba(245,230,66,0.2)"
+                                    : "rgba(13,13,13,0.05)",
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
                                 fontSize: "14px",
-                                fontWeight: 600,
-                                color: C.text,
-                                marginBottom: "2px",
+                                fontWeight: 700,
+                                color: index === 0 ? "#0D0D0D" : C.muted,
                               }}
                             >
-                              {item.name}
-                            </p>
-                            <p style={{ fontSize: "12px", color: C.muted }}>
-                              {item.category}
-                            </p>
-                          </div>
-                        </div>
-                        <div
-                          style={{
-                            display: "flex",
-                            alignItems: "center",
-                            gap: "16px",
-                          }}
-                        >
-                          <div
-                            style={{
-                              padding: "4px 10px",
-                              borderRadius: "20px",
-                              background: "rgba(34,197,94,0.08)",
-                              fontSize: "11px",
-                              fontWeight: 600,
-                              color: "#22C55E",
-                            }}
-                          >
-                            {item.trend} this week
+                              {index + 1}
+                            </div>
+                            <div style={{ flex: 1 }}>
+                              <p
+                                style={{
+                                  fontSize: "14px",
+                                  fontWeight: 600,
+                                  color: C.text,
+                                  marginBottom: "2px",
+                                }}
+                              >
+                                {item.name}
+                              </p>
+                              <p style={{ fontSize: "12px", color: C.muted }}>
+                                {item.category}
+                              </p>
+                            </div>
                           </div>
                           <div
                             style={{
                               display: "flex",
                               alignItems: "center",
-                              gap: "6px",
+                              gap: "16px",
                             }}
                           >
-                            <ThumbsUp
-                              style={{ width: 16, height: 16, color: C.muted }}
-                            />
-                            <span
+                            <div
                               style={{
-                                fontSize: "16px",
-                                fontWeight: 700,
-                                color: C.text,
+                                padding: "4px 10px",
+                                borderRadius: "20px",
+                                background:
+                                  item.netVotes >= 0
+                                    ? "rgba(34,197,94,0.08)"
+                                    : "rgba(220,38,38,0.08)",
+                                fontSize: "11px",
+                                fontWeight: 600,
+                                color: item.netVotes >= 0 ? "#22C55E" : "#DC2626",
                               }}
                             >
-                              {item.upvotes}
-                            </span>
+                              {item.netVotes >= 0 ? "+" : ""}
+                              {item.netVotes} net
+                            </div>
+                            <div
+                              style={{
+                                display: "flex",
+                                alignItems: "center",
+                                gap: "6px",
+                              }}
+                            >
+                              <ThumbsUp
+                                style={{ width: 16, height: 16, color: C.muted }}
+                              />
+                              <span
+                                style={{
+                                  fontSize: "16px",
+                                  fontWeight: 700,
+                                  color: C.text,
+                                }}
+                              >
+                                {item.upvotes}
+                              </span>
+                            </div>
                           </div>
                         </div>
+                        {index < topUpvotedItems.length - 1 && (
+                          <div
+                            style={{
+                              height: "1px",
+                              background: "rgba(13,13,13,0.06)",
+                            }}
+                          />
+                        )}
                       </div>
-                      {index < topUpvotedItems.length - 1 && (
-                        <div
-                          style={{
-                            height: "1px",
-                            background: "rgba(13,13,13,0.06)",
-                          }}
-                        />
-                      )}
-                    </div>
-                  ))}
-                </div>
+                    ))}
+                  </div>
+                )}
               </div>
             </div>
           </>
