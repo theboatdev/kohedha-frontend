@@ -14,8 +14,8 @@ const C = {
   bg: "#0D0D0D",
   text: "#FFFFFF",
   muted: "rgba(255,255,255,0.48)",
-  accent: "#F5E642",
-  accentHover: "#E8D800",
+  accent: "#F0F0EE",
+  accentHover: "#E8E8E4",
   card: "#1A1A1A",
   inputBg: "#262626",
   rule: "rgba(255,255,255,0.09)",
@@ -25,20 +25,20 @@ const benefits = [
   {
     title: "Reach More Customers",
     body: "Showcase your venue to engaged users actively searching for experiences.",
-    color: "rgba(245,230,66,0.15)",
-    iconColor: "#F5E642",
+    color: "#F0F0EE",
+    iconColor: "#3A3A38",
   },
   {
     title: "Manage Deals & Events",
     body: "Create promotional offers and event listings with an intuitive dashboard.",
-    color: "rgba(255,255,255,0.06)",
-    iconColor: "#F5E642",
+    color: "rgba(255,255,255,0.08)",
+    iconColor: "#F6F6F4",
   },
   {
     title: "Track Performance",
     body: "Get insights on views, engagement, and customer interactions.",
-    color: "rgba(245,230,66,0.15)",
-    iconColor: "#F5E642",
+    color: "#F0F0EE",
+    iconColor: "#3A3A38",
   },
 ];
 

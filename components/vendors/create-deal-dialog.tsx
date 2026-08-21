@@ -27,6 +27,33 @@ import {
 } from "@/components/ui/dialog";
 import { ImagePlus, Loader2, X, CalendarIcon } from "lucide-react";
 import { format } from "date-fns";
+import { CompactTimePicker } from "@/components/vendors/compact-time-picker";
+
+export type DealType = "ambient" | "voucher" | "limited-quantity" | "loyalty";
+
+export type ActiveWindow = {
+  daysOfWeek: number[]; // 0=Sun … 6=Sat
+  startTime?: string;   // "HH:mm"
+  endTime?: string;     // "HH:mm"
+};
+
+export type VoucherConfig = {
+  claimExpiryMinutes?: number;
+  rewardLabel?: string;
+};
+
+export type LimitedQuantityConfig = {
+  totalQuantity?: number;
+  remainingQuantity?: number;
+  claimExpiryMinutes?: number;
+  rewardLabel?: string;
+};
+
+export type LoyaltyConfig = {
+  stampsRequired?: number;
+  claimExpiryMinutes?: number;
+  rewardLabel?: string;
+};
 
 export type NewDealData = {
   dealName: string;
@@ -50,6 +77,11 @@ export type NewDealData = {
   isPublished?: boolean;
   startDate?: string;
   endDate?: string;
+  dealType?: DealType;
+  activeWindow?: ActiveWindow;
+  voucherConfig?: VoucherConfig;
+  limitedQuantityConfig?: LimitedQuantityConfig;
+  loyaltyConfig?: LoyaltyConfig;
 };
 
 type CreateDealDialogProps = {
@@ -59,6 +91,8 @@ type CreateDealDialogProps = {
   initialData?: NewDealData;
   mode?: "create" | "edit";
 };
+
+const DAY_LABELS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
 const initialFormData: NewDealData = {
   dealName: "",
@@ -73,6 +107,11 @@ const initialFormData: NewDealData = {
   isPublished: false,
   startDate: undefined,
   endDate: undefined,
+  dealType: "ambient",
+  activeWindow: { daysOfWeek: [], startTime: "", endTime: "" },
+  voucherConfig: { claimExpiryMinutes: 120, rewardLabel: "" },
+  limitedQuantityConfig: { totalQuantity: 50, claimExpiryMinutes: 30, rewardLabel: "" },
+  loyaltyConfig: { stampsRequired: 9, claimExpiryMinutes: 10080, rewardLabel: "" },
 };
 
 export function CreateDealDialog({
@@ -160,6 +199,92 @@ export function CreateDealDialog({
         variant: "destructive",
       });
       return;
+    }
+
+    if (formData.dealType === "limited-quantity") {
+      const totalQuantity = Number(
+        formData.limitedQuantityConfig?.totalQuantity,
+      );
+      if (!totalQuantity || totalQuantity < 1) {
+        toast({
+          title: "Validation Error",
+          description: "Please provide a total quantity of at least 1.",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      const holdMinutes = Number(
+        formData.limitedQuantityConfig?.claimExpiryMinutes,
+      );
+      if (!holdMinutes || holdMinutes < 5) {
+        toast({
+          title: "Validation Error",
+          description: "Hold timeout must be at least 5 minutes.",
+          variant: "destructive",
+        });
+        return;
+      }
+      if (holdMinutes > 10080) {
+        toast({
+          title: "Validation Error",
+          description: "Hold timeout cannot exceed 7 days (10080 minutes).",
+          variant: "destructive",
+        });
+        return;
+      }
+    }
+
+    if (formData.dealType === "voucher") {
+      const expiryMinutes = Number(formData.voucherConfig?.claimExpiryMinutes);
+      if (!expiryMinutes || expiryMinutes < 5) {
+        toast({
+          title: "Validation Error",
+          description: "Claim expiry must be at least 5 minutes.",
+          variant: "destructive",
+        });
+        return;
+      }
+      if (expiryMinutes > 10080) {
+        toast({
+          title: "Validation Error",
+          description: "Claim expiry cannot exceed 7 days (10080 minutes).",
+          variant: "destructive",
+        });
+        return;
+      }
+    }
+
+    if (formData.dealType === "loyalty") {
+      const stampsRequired = Number(formData.loyaltyConfig?.stampsRequired);
+      if (!stampsRequired || stampsRequired < 2 || stampsRequired > 100) {
+        toast({
+          title: "Validation Error",
+          description: "Stamps required must be between 2 and 100.",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      const rewardExpiryMinutes = Number(
+        formData.loyaltyConfig?.claimExpiryMinutes,
+      );
+      if (!rewardExpiryMinutes || rewardExpiryMinutes < 5) {
+        toast({
+          title: "Validation Error",
+          description: "Reward expiry must be at least 5 minutes.",
+          variant: "destructive",
+        });
+        return;
+      }
+      if (rewardExpiryMinutes > 10080) {
+        toast({
+          title: "Validation Error",
+          description: "Reward expiry cannot exceed 7 days (10080 minutes).",
+          variant: "destructive",
+        });
+        return;
+      }
     }
 
     setIsSubmitting(true);
@@ -252,6 +377,374 @@ export function CreateDealDialog({
               </SelectContent>
             </Select>
           </div>
+
+          {/* Deal Type */}
+          <div className="space-y-2">
+            <label className="text-sm font-medium font-poppins">Deal Type</label>
+            <Select
+              value={formData.dealType ?? "ambient"}
+              onValueChange={(value: DealType) =>
+                setFormData({ ...formData, dealType: value })
+              }
+            >
+              <SelectTrigger className="font-poppins">
+                <SelectValue placeholder="Select deal type" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="ambient">Ambient (time-window)</SelectItem>
+                <SelectItem value="voucher">
+                  Voucher (single-use code)
+                </SelectItem>
+                <SelectItem value="limited-quantity">
+                  Limited Quantity (flash deal)
+                </SelectItem>
+                <SelectItem value="loyalty">
+                  Loyalty / Stamps (buy N, get one free)
+                </SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
+          {/* Ambient active window — only shown when dealType === "ambient" */}
+          {(formData.dealType === "ambient" || !formData.dealType) && (
+            <div className="space-y-3 rounded-xl border border-gray-200 bg-gray-50 p-4">
+              <p className="font-poppins text-sm font-medium text-gray-700">
+                Active Window{" "}
+                <span className="text-gray-400 font-normal">(optional)</span>
+              </p>
+              <p className="font-poppins text-xs text-gray-500 -mt-1">
+                Defines when this deal is "valid now". Leave blank to show as
+                always active.
+              </p>
+
+              {/* Days of week */}
+              <div className="space-y-1.5">
+                <label className="font-poppins text-xs font-medium text-gray-600">
+                  Days of week
+                </label>
+                <div className="flex flex-wrap gap-2">
+                  {DAY_LABELS.map((label, idx) => {
+                    const selected = (
+                      formData.activeWindow?.daysOfWeek ?? []
+                    ).includes(idx);
+                    return (
+                      <button
+                        key={label}
+                        type="button"
+                        onClick={() => {
+                          const current =
+                            formData.activeWindow?.daysOfWeek ?? [];
+                          const next = selected
+                            ? current.filter((d) => d !== idx)
+                            : [...current, idx].sort((a, b) => a - b);
+                          setFormData({
+                            ...formData,
+                            activeWindow: {
+                              ...formData.activeWindow,
+                              daysOfWeek: next,
+                            },
+                          });
+                        }}
+                        className={`font-poppins text-xs px-3 py-1.5 rounded-full border transition-colors ${
+                          selected
+                            ? "bg-black text-white border-black"
+                            : "bg-white text-gray-700 border-gray-300 hover:border-gray-500"
+                        }`}
+                      >
+                        {label}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Start / end time */}
+              <div className="grid grid-cols-2 gap-3">
+                <div className="space-y-1">
+                  <label className="font-poppins text-xs font-medium text-gray-600">
+                    Start time
+                  </label>
+                  <CompactTimePicker
+                    value={formData.activeWindow?.startTime ?? ""}
+                    onChange={(startTime) =>
+                      setFormData({
+                        ...formData,
+                        activeWindow: {
+                          ...formData.activeWindow,
+                          daysOfWeek:
+                            formData.activeWindow?.daysOfWeek ?? [],
+                          startTime,
+                        },
+                      })
+                    }
+                    placeholder="Select time"
+                  />
+                </div>
+                <div className="space-y-1">
+                  <label className="font-poppins text-xs font-medium text-gray-600">
+                    End time
+                  </label>
+                  <CompactTimePicker
+                    value={formData.activeWindow?.endTime ?? ""}
+                    onChange={(endTime) =>
+                      setFormData({
+                        ...formData,
+                        activeWindow: {
+                          ...formData.activeWindow,
+                          daysOfWeek:
+                            formData.activeWindow?.daysOfWeek ?? [],
+                          endTime,
+                        },
+                      })
+                    }
+                    placeholder="Select time"
+                  />
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Voucher config — only shown when dealType === "voucher" */}
+          {formData.dealType === "voucher" && (
+            <div className="space-y-3 rounded-xl border border-gray-200 bg-gray-50 p-4">
+              <p className="font-poppins text-sm font-medium text-gray-700">
+                Voucher Settings
+              </p>
+              <p className="font-poppins text-xs text-gray-500 -mt-1">
+                Each customer who claims this deal gets a unique code (e.g.
+                "K7M2-9X4Q"). Staff enter or scan that code on the{" "}
+                <span className="font-medium">Redeem Voucher</span> page to
+                mark it used — a code can only ever be redeemed once.
+              </p>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <div className="space-y-1">
+                  <label className="font-poppins text-xs font-medium text-gray-600">
+                    Reward label
+                  </label>
+                  <Input
+                    placeholder="e.g. BOGO, Free Appetizer, 20% off"
+                    value={formData.voucherConfig?.rewardLabel ?? ""}
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        voucherConfig: {
+                          ...formData.voucherConfig,
+                          rewardLabel: e.target.value,
+                        },
+                      })
+                    }
+                    className="font-poppins"
+                  />
+                </div>
+                <div className="space-y-1">
+                  <label className="font-poppins text-xs font-medium text-gray-600">
+                    Claim expiry (minutes)
+                  </label>
+                  <Input
+                    type="number"
+                    min={5}
+                    max={10080}
+                    placeholder="120"
+                    value={formData.voucherConfig?.claimExpiryMinutes ?? 120}
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        voucherConfig: {
+                          ...formData.voucherConfig,
+                          claimExpiryMinutes: Number(e.target.value) || 120,
+                        },
+                      })
+                    }
+                    className="font-poppins"
+                  />
+                  <p className="font-poppins text-[11px] text-gray-400">
+                    How long a claimed code stays valid before it auto-expires
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Limited quantity config — only shown when dealType === "limited-quantity" */}
+          {formData.dealType === "limited-quantity" && (
+            <div className="space-y-3 rounded-xl border border-gray-200 bg-gray-50 p-4">
+              <p className="font-poppins text-sm font-medium text-gray-700">
+                Limited Quantity Settings
+              </p>
+              <p className="font-poppins text-xs text-gray-500 -mt-1">
+                Only a fixed number of slots are available (e.g. "first 50
+                customers"). Each claim reserves one slot and generates a
+                unique code; if it isn't redeemed before the hold expires,
+                the slot is released back into stock automatically.
+              </p>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <div className="space-y-1">
+                  <label className="font-poppins text-xs font-medium text-gray-600">
+                    Total quantity <span className="text-red-500">*</span>
+                  </label>
+                  <Input
+                    type="number"
+                    min={1}
+                    placeholder="50"
+                    value={formData.limitedQuantityConfig?.totalQuantity ?? 50}
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        limitedQuantityConfig: {
+                          ...formData.limitedQuantityConfig,
+                          totalQuantity: Number(e.target.value) || undefined,
+                        },
+                      })
+                    }
+                    className="font-poppins"
+                  />
+                  {formData.limitedQuantityConfig?.remainingQuantity !=
+                    null && (
+                    <p className="font-poppins text-[11px] text-gray-400">
+                      {formData.limitedQuantityConfig.remainingQuantity}{" "}
+                      remaining right now
+                    </p>
+                  )}
+                </div>
+                <div className="space-y-1">
+                  <label className="font-poppins text-xs font-medium text-gray-600">
+                    Hold timeout (minutes)
+                  </label>
+                  <Input
+                    type="number"
+                    min={5}
+                    max={10080}
+                    placeholder="30"
+                    value={formData.limitedQuantityConfig?.claimExpiryMinutes ?? 30}
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        limitedQuantityConfig: {
+                          ...formData.limitedQuantityConfig,
+                          claimExpiryMinutes: Number(e.target.value) || 30,
+                        },
+                      })
+                    }
+                    className="font-poppins"
+                  />
+                  <p className="font-poppins text-[11px] text-gray-400">
+                    How long a reserved slot is held before it's released
+                  </p>
+                </div>
+              </div>
+
+              <div className="space-y-1">
+                <label className="font-poppins text-xs font-medium text-gray-600">
+                  Reward label
+                </label>
+                <Input
+                  placeholder="e.g. First 50 customers, Daily drop"
+                  value={formData.limitedQuantityConfig?.rewardLabel ?? ""}
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      limitedQuantityConfig: {
+                        ...formData.limitedQuantityConfig,
+                        rewardLabel: e.target.value,
+                      },
+                    })
+                  }
+                  className="font-poppins"
+                />
+              </div>
+            </div>
+          )}
+
+          {/* Loyalty config — only shown when dealType === "loyalty" */}
+          {formData.dealType === "loyalty" && (
+            <div className="space-y-3 rounded-xl border border-gray-200 bg-gray-50 p-4">
+              <p className="font-poppins text-sm font-medium text-gray-700">
+                Loyalty / Stamp Settings
+              </p>
+              <p className="font-poppins text-xs text-gray-500 -mt-1">
+                Customers enroll once to get a persistent loyalty card code.
+                Each qualifying visit adds a stamp; hitting the stamp
+                threshold automatically mints a single-use reward code that
+                staff redeem exactly like a voucher.
+              </p>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <div className="space-y-1">
+                  <label className="font-poppins text-xs font-medium text-gray-600">
+                    Stamps required <span className="text-red-500">*</span>
+                  </label>
+                  <Input
+                    type="number"
+                    min={2}
+                    max={100}
+                    placeholder="9"
+                    value={formData.loyaltyConfig?.stampsRequired ?? 9}
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        loyaltyConfig: {
+                          ...formData.loyaltyConfig,
+                          stampsRequired: Number(e.target.value) || undefined,
+                        },
+                      })
+                    }
+                    className="font-poppins"
+                  />
+                  <p className="font-poppins text-[11px] text-gray-400">
+                    e.g. 9 for "buy 9, get the 10th free"
+                  </p>
+                </div>
+                <div className="space-y-1">
+                  <label className="font-poppins text-xs font-medium text-gray-600">
+                    Reward expiry (minutes)
+                  </label>
+                  <Input
+                    type="number"
+                    min={5}
+                    max={10080}
+                    placeholder="10080"
+                    value={formData.loyaltyConfig?.claimExpiryMinutes ?? 10080}
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        loyaltyConfig: {
+                          ...formData.loyaltyConfig,
+                          claimExpiryMinutes: Number(e.target.value) || 10080,
+                        },
+                      })
+                    }
+                    className="font-poppins"
+                  />
+                  <p className="font-poppins text-[11px] text-gray-400">
+                    How long a minted reward code stays valid before it
+                    auto-expires
+                  </p>
+                </div>
+              </div>
+
+              <div className="space-y-1">
+                <label className="font-poppins text-xs font-medium text-gray-600">
+                  Reward label
+                </label>
+                <Input
+                  placeholder="e.g. Buy 9, get the 10th free"
+                  value={formData.loyaltyConfig?.rewardLabel ?? ""}
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      loyaltyConfig: {
+                        ...formData.loyaltyConfig,
+                        rewardLabel: e.target.value,
+                      },
+                    })
+                  }
+                  className="font-poppins"
+                />
+              </div>
+            </div>
+          )}
 
           <div className="space-y-2">
             <label className="text-sm font-medium font-poppins">

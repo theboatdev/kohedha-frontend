@@ -187,12 +187,12 @@ export default function MenuManagementPage() {
               <Button
                 onClick={() => setAddItemDialogOpen(true)}
                 className="font-poppins"
-                style={{ background: "#F5E642", color: "#0D0D0D" }}
+                style={{ background: "#F0F0EE", color: "#0D0D0D" }}
                 onMouseEnter={(e) =>
-                  (e.currentTarget.style.background = "#E8D800")
+                  (e.currentTarget.style.background = "#E8E8E4")
                 }
                 onMouseLeave={(e) =>
-                  (e.currentTarget.style.background = "#F5E642")
+                  (e.currentTarget.style.background = "#F0F0EE")
                 }
                 size="lg"
               >

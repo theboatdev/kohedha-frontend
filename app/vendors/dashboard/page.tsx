@@ -23,14 +23,12 @@ import {
 import { getMenuVoteSummary, type MenuVoteItem } from "@/lib/menu";
 
 const C = {
-  bg: "#F0F0EE",
-  bg2: "#E8E8E4",
-  text: "#0D0D0D",
-  muted: "rgba(13,13,13,0.48)",
-  accent: "#F5E642",
-  accentHover: "#E8D800",
+  bg: "#F6F6F4",
+  bg2: "#F0F0EE",
+  text: "#3A3A38",
+  muted: "#8A8A86",
   cream: "#ffffff",
-  dark: "#0D0D0D",
+  border: "#E8E8E4",
 };
 
 export default function VendorDashboardPage() {
@@ -99,15 +97,15 @@ export default function VendorDashboardPage() {
       value: dashboardData?.stats.activeDeals ?? 0,
       label: "Active Deals",
       sub: "Currently visible on Kohedha",
-      iconBg: "rgba(245,230,66,0.2)",
-      iconColor: "#0D0D0D",
+      iconBg: "#F0F0EE",
+      iconColor: "#3A3A38",
     },
     {
       icon: Calendar,
       value: dashboardData?.stats.upcomingEvents ?? 0,
       label: "Upcoming Events",
       sub: "In the next 30 days",
-      iconBg: "rgba(13,13,13,0.06)",
+      iconBg: "#F6F6F4",
       iconColor: C.text,
     },
     {
@@ -156,8 +154,8 @@ export default function VendorDashboardPage() {
                 style={{
                   width: "40px",
                   height: "40px",
-                  border: "3px solid rgba(245,230,66,0.3)",
-                  borderTopColor: C.accent,
+                  border: "3px solid #E8E8E4",
+                  borderTopColor: "#C8C8C4",
                   borderRadius: "50%",
                   animation: "spin 1s linear infinite",
                   margin: "0 auto 16px",
@@ -211,7 +209,7 @@ export default function VendorDashboardPage() {
                       background: C.cream,
                       borderRadius: "16px",
                       padding: "24px",
-                      border: "1px solid rgba(13,13,13,0.06)",
+                      border: `1px solid ${C.border}`,
                     }}
                   >
                     <div
@@ -266,14 +264,14 @@ export default function VendorDashboardPage() {
                 style={{
                   background: C.cream,
                   borderRadius: "16px",
-                  border: "1px solid rgba(13,13,13,0.06)",
+                  border: `1px solid ${C.border}`,
                   overflow: "hidden",
                 }}
               >
                 <div
                   style={{
                     padding: "24px 28px",
-                    borderBottom: "1px solid rgba(13,13,13,0.06)",
+                    borderBottom: `1px solid ${C.border}`,
                   }}
                 >
                   <h2
@@ -302,8 +300,8 @@ export default function VendorDashboardPage() {
                   {[
                     {
                       icon: Star,
-                      iconBg: "rgba(245,158,11,0.1)",
-                      iconColor: "#F59E0B",
+                      iconBg: "#F0F0EE",
+                      iconColor: "#8A8A86",
                       label: "Average Rating",
                       sub: "Based on customer reviews",
                       value: dashboardData?.performance.averageRating
@@ -397,7 +395,7 @@ export default function VendorDashboardPage() {
                           <div
                             style={{
                               height: "1px",
-                              background: "rgba(13,13,13,0.06)",
+                              background: C.border,
                             }}
                           />
                         )}
@@ -412,14 +410,14 @@ export default function VendorDashboardPage() {
                 style={{
                   background: C.cream,
                   borderRadius: "16px",
-                  border: "1px solid rgba(13,13,13,0.06)",
+                  border: `1px solid ${C.border}`,
                   overflow: "hidden",
                 }}
               >
                 <div
                   style={{
                     padding: "24px 28px",
-                    borderBottom: "1px solid rgba(13,13,13,0.06)",
+                    borderBottom: `1px solid ${C.border}`,
                   }}
                 >
                   <h2
@@ -455,7 +453,7 @@ export default function VendorDashboardPage() {
                         justifyContent: "space-between",
                         padding: "14px 16px",
                         borderRadius: "12px",
-                        border: "1px solid rgba(13,13,13,0.09)",
+                        border: `1px solid ${C.border}`,
                         textDecoration: "none",
                         fontSize: "13px",
                         fontWeight: 500,
@@ -467,13 +465,13 @@ export default function VendorDashboardPage() {
                         (e.currentTarget as HTMLElement).style.background =
                           C.bg2;
                         (e.currentTarget as HTMLElement).style.borderColor =
-                          "rgba(13,13,13,0.18)";
+                          C.border;
                       }}
                       onMouseLeave={(e) => {
                         (e.currentTarget as HTMLElement).style.background =
                           "transparent";
                         (e.currentTarget as HTMLElement).style.borderColor =
-                          "rgba(13,13,13,0.09)";
+                          C.border;
                       }}
                     >
                       {label}
@@ -492,7 +490,7 @@ export default function VendorDashboardPage() {
                 marginTop: "20px",
                 background: C.cream,
                 borderRadius: "16px",
-                border: "1px solid rgba(13,13,13,0.06)",
+                border: `1px solid ${C.border}`,
                 overflow: "hidden",
               }}
             >
@@ -500,7 +498,7 @@ export default function VendorDashboardPage() {
                 className="flex flex-wrap items-center justify-between gap-2"
                 style={{
                   padding: "20px 24px",
-                  borderBottom: "1px solid rgba(13,13,13,0.06)",
+                  borderBottom: `1px solid ${C.border}`,
                 }}
               >
                 <div>
@@ -582,16 +580,13 @@ export default function VendorDashboardPage() {
                                 width: "32px",
                                 height: "32px",
                                 borderRadius: "8px",
-                                background:
-                                  index === 0
-                                    ? "rgba(245,230,66,0.2)"
-                                    : "rgba(13,13,13,0.05)",
+                                background: index === 0 ? "#F0F0EE" : "#F6F6F4",
                                 display: "flex",
                                 alignItems: "center",
                                 justifyContent: "center",
                                 fontSize: "14px",
                                 fontWeight: 700,
-                                color: index === 0 ? "#0D0D0D" : C.muted,
+                                color: index === 0 ? C.text : C.muted,
                               }}
                             >
                               {index + 1}
@@ -661,7 +656,7 @@ export default function VendorDashboardPage() {
                           <div
                             style={{
                               height: "1px",
-                              background: "rgba(13,13,13,0.06)",
+                              background: C.border,
                             }}
                           />
                         )}

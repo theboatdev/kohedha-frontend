@@ -390,7 +390,7 @@ export default function VendorCompleteProfilePage() {
                 <Button
                   type="submit"
                   className="font-poppins font-semibold rounded-full px-8"
-                  style={{ background: "#F5E642", color: "#0D0D0D", border: "none" }}
+                  style={{ background: "#F0F0EE", color: "#0D0D0D", border: "none" }}
                   disabled={isSubmitting || isLoading}
                 >
                   {isSubmitting ? "Saving..." : "Save Profile"}

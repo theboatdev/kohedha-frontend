@@ -24,6 +24,13 @@ const menuItems = [
   { title: "Manage Deals", icon: Tag, href: "/vendors/deals" },
 ];
 
+const NAV = {
+  idle: "#8A8A86",
+  activeBg: "#F0F0EE",
+  activeText: "#3A3A38",
+  hoverBg: "#F6F6F4",
+};
+
 export function VendorSidebar({ className, onLinkClick }: VendorSidebarProps) {
   const pathname = usePathname();
 
@@ -31,27 +38,32 @@ export function VendorSidebar({ className, onLinkClick }: VendorSidebarProps) {
     <div
       className={cn("flex h-full w-full flex-col font-dm-sans", className)}
       style={{
-        background: "#0D0D0D",
-        borderRight: "1px solid rgba(255,255,255,0.06)",
+        background: "#FFFFFF",
+        borderRight: "1px solid #E8E8E4",
       }}
     >
       {/* Logo */}
       <div
         style={{
           padding: "24px 20px 20px",
-          borderBottom: "1px solid rgba(255,255,255,0.06)",
+          borderBottom: "1px solid #E8E8E4",
         }}
       >
         <div
           className="font-poppins"
-          style={{ fontSize: "22px", fontWeight: 700, color: "white", letterSpacing: "-0.02em" }}
+          style={{
+            fontSize: "22px",
+            fontWeight: 700,
+            color: "#3A3A38",
+            letterSpacing: "-0.02em",
+          }}
         >
           kohedha<span style={{ color: "#C8281A" }}>.</span>
         </div>
         <div
           style={{
             fontSize: "10px",
-            color: "rgba(255,255,255,0.35)",
+            color: "#9A9A96",
             letterSpacing: "0.12em",
             textTransform: "uppercase",
             marginTop: "2px",
@@ -93,22 +105,22 @@ export function VendorSidebar({ className, onLinkClick }: VendorSidebarProps) {
                     fontWeight: isActive ? 600 : 400,
                     textDecoration: "none",
                     transition: "all 0.15s",
-                    background: isActive ? "#F5E642" : "transparent",
-                    color: isActive ? "#0D0D0D" : "rgba(255,255,255,0.55)",
+                    background: isActive ? NAV.activeBg : "transparent",
+                    color: isActive ? NAV.activeText : NAV.idle,
                   }}
                   onMouseEnter={(e) => {
                     if (!isActive) {
                       (e.currentTarget as HTMLElement).style.background =
-                        "rgba(255,255,255,0.06)";
-                      (e.currentTarget as HTMLElement).style.color = "white";
+                        NAV.hoverBg;
+                      (e.currentTarget as HTMLElement).style.color =
+                        NAV.activeText;
                     }
                   }}
                   onMouseLeave={(e) => {
                     if (!isActive) {
                       (e.currentTarget as HTMLElement).style.background =
                         "transparent";
-                      (e.currentTarget as HTMLElement).style.color =
-                        "rgba(255,255,255,0.55)";
+                      (e.currentTarget as HTMLElement).style.color = NAV.idle;
                     }
                   }}
                 >
@@ -125,12 +137,10 @@ export function VendorSidebar({ className, onLinkClick }: VendorSidebarProps) {
       <div
         style={{
           padding: "16px 20px",
-          borderTop: "1px solid rgba(255,255,255,0.06)",
+          borderTop: "1px solid #E8E8E4",
         }}
       >
-        <div style={{ fontSize: "11px", color: "rgba(255,255,255,0.2)" }}>
-          kohedha.lk
-        </div>
+        <div style={{ fontSize: "11px", color: "#B8B8B4" }}>kohedha.lk</div>
       </div>
     </div>
   );

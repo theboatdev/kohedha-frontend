@@ -28,9 +28,9 @@ const COLUMNS: {
   {
     key: "pending",
     label: "Pending",
-    accent: "#F5E642",
-    badgeBg: "rgba(245,230,66,0.2)",
-    badgeText: "#7A6F00",
+    accent: "#F0F0EE",
+    badgeBg: "#F0F0EE",
+    badgeText: "#3A3A38",
     icon: Clock,
   },
   {
@@ -109,7 +109,7 @@ export function GuestListContainer({
       <div className="rounded-2xl border border-black/[0.08] bg-white px-6 py-16 text-center">
         <div
           className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl"
-          style={{ background: "rgba(245,230,66,0.2)" }}
+          style={{ background: "#F0F0EE" }}
         >
           <Inbox className="h-7 w-7 text-gray-700" />
         </div>

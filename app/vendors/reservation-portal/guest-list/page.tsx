@@ -164,8 +164,8 @@ export default function GuestListPage() {
             display: "flex",
             alignItems: "center",
             gap: "6px",
-            background: showToday ? "#F5E642" : "transparent",
-            border: `1px solid ${showToday ? "#F5E642" : "rgba(13,13,13,0.15)"}`,
+            background: showToday ? "#F0F0EE" : "transparent",
+            border: `1px solid ${showToday ? "#F0F0EE" : "rgba(13,13,13,0.15)"}`,
             borderRadius: "40px",
             padding: "6px 14px",
             fontSize: "13px",
@@ -174,15 +174,15 @@ export default function GuestListPage() {
             transition: "all 0.2s ease",
           }}
           onMouseEnter={(e) => {
-            e.currentTarget.style.background = "#F5E642";
+            e.currentTarget.style.background = "#F0F0EE";
             e.currentTarget.style.color = "#0D0D0D";
-            e.currentTarget.style.borderColor = "#F5E642";
+            e.currentTarget.style.borderColor = "#F0F0EE";
           }}
           onMouseLeave={(e) => {
             if (showToday) {
-              e.currentTarget.style.background = "#F5E642";
+              e.currentTarget.style.background = "#F0F0EE";
               e.currentTarget.style.color = "#0D0D0D";
-              e.currentTarget.style.borderColor = "#F5E642";
+              e.currentTarget.style.borderColor = "#F0F0EE";
             } else {
               e.currentTarget.style.background = "transparent";
               e.currentTarget.style.color = "rgba(13,13,13,0.48)";
@@ -214,7 +214,7 @@ export default function GuestListPage() {
             >
               <div
                 className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl"
-                style={{ background: "rgba(245,230,66,0.25)" }}
+                style={{ background: "#F0F0EE" }}
               >
                 <CalendarDays className="h-5 w-5 text-gray-800" />
               </div>

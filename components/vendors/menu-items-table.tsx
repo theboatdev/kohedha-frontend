@@ -263,15 +263,15 @@ export function MenuItemsTable({ menuItems, onRefresh }: MenuItemsTableProps) {
                         {item.upvotes !== undefined && (
                           <div
                             className="flex items-center gap-1 px-2 py-1 rounded-full"
-                            style={{ background: "#FFF7ED" }}
+                            style={{ background: "#F0F0EE" }}
                           >
                             <ThumbsUp
                               className="h-3.5 w-3.5"
-                              style={{ color: "#F5E642" }}
+                              style={{ color: "#8A8A86" }}
                             />
                             <span
                               className="font-poppins text-xs font-semibold"
-                              style={{ color: "#F5E642" }}
+                              style={{ color: "#8A8A86" }}
                             >
                               {item.upvotes}
                             </span>
