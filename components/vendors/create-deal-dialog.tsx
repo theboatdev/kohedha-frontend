@@ -27,6 +27,7 @@ import {
 } from "@/components/ui/dialog";
 import { ImagePlus, Loader2, X, CalendarIcon } from "lucide-react";
 import { format } from "date-fns";
+import { CompactTimePicker } from "@/components/vendors/compact-time-picker";
 
 export type DealType = "ambient" | "voucher" | "limited-quantity" | "loyalty";
 
@@ -463,42 +464,40 @@ export function CreateDealDialog({
                   <label className="font-poppins text-xs font-medium text-gray-600">
                     Start time
                   </label>
-                  <input
-                    type="time"
+                  <CompactTimePicker
                     value={formData.activeWindow?.startTime ?? ""}
-                    onChange={(e) =>
+                    onChange={(startTime) =>
                       setFormData({
                         ...formData,
                         activeWindow: {
                           ...formData.activeWindow,
                           daysOfWeek:
                             formData.activeWindow?.daysOfWeek ?? [],
-                          startTime: e.target.value,
+                          startTime,
                         },
                       })
                     }
-                    className="flex h-10 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm font-poppins text-gray-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+                    placeholder="Select time"
                   />
                 </div>
                 <div className="space-y-1">
                   <label className="font-poppins text-xs font-medium text-gray-600">
                     End time
                   </label>
-                  <input
-                    type="time"
+                  <CompactTimePicker
                     value={formData.activeWindow?.endTime ?? ""}
-                    onChange={(e) =>
+                    onChange={(endTime) =>
                       setFormData({
                         ...formData,
                         activeWindow: {
                           ...formData.activeWindow,
                           daysOfWeek:
                             formData.activeWindow?.daysOfWeek ?? [],
-                          endTime: e.target.value,
+                          endTime,
                         },
                       })
                     }
-                    className="flex h-10 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm font-poppins text-gray-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+                    placeholder="Select time"
                   />
                 </div>
               </div>

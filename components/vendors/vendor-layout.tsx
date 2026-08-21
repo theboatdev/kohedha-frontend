@@ -61,7 +61,7 @@ export function VendorLayout({
           style={{ position: "fixed", inset: 0, zIndex: 40, display: "flex" }}
         >
           <div
-            style={{ position: "absolute", inset: 0, background: "rgba(0,0,0,0.5)" }}
+            style={{ position: "absolute", inset: 0, background: "rgba(246,246,244,0.82)" }}
             onClick={() => setMobileNavOpen(false)}
           />
           <div style={{ position: "relative", width: "256px", height: "100%", flexShrink: 0, zIndex: 1 }}>

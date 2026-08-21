@@ -395,16 +395,16 @@ export default function DealsManagementPage() {
                 onClick={() => setIsDialogOpen(true)}
                 className="h-12 font-poppins font-medium md:w-auto w-full"
                 style={{
-                  background: "#F5E642",
+                  background: "#F0F0EE",
                   color: "#0D0D0D",
                   borderRadius: "40px",
                   padding: "13px 28px",
                 }}
                 onMouseEnter={(e) =>
-                  (e.currentTarget.style.background = "#E8D800")
+                  (e.currentTarget.style.background = "#E8E8E4")
                 }
                 onMouseLeave={(e) =>
-                  (e.currentTarget.style.background = "#F5E642")
+                  (e.currentTarget.style.background = "#F0F0EE")
                 }
               >
                 <Plus className="w-4 h-4 mr-2" />
@@ -460,7 +460,7 @@ export default function DealsManagementPage() {
                 <div className="text-center py-12">
                   <div
                     className="inline-block animate-spin rounded-full border-b-2 w-8 h-8 mb-4"
-                    style={{ borderColor: "#F5E642" }}
+                    style={{ borderColor: "#F0F0EE" }}
                   ></div>
                   <p className="font-poppins" style={{ color: "rgba(13,13,13,0.48)" }}>
                     Loading deals...
@@ -479,16 +479,16 @@ export default function DealsManagementPage() {
                     onClick={() => window.location.reload()}
                     className="font-poppins"
                     style={{
-                      background: "#F5E642",
+                      background: "#F0F0EE",
                       color: "#0D0D0D",
                       borderRadius: "40px",
                       padding: "13px 28px",
                     }}
                     onMouseEnter={(e) =>
-                      (e.currentTarget.style.background = "#E8D800")
+                      (e.currentTarget.style.background = "#E8E8E4")
                     }
                     onMouseLeave={(e) =>
-                      (e.currentTarget.style.background = "#F5E642")
+                      (e.currentTarget.style.background = "#F0F0EE")
                     }
                   >
                     Retry

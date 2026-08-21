@@ -52,7 +52,7 @@ export function ReservationPortalHeader({
         zIndex: 20,
         height: "64px",
         background: "#ffffff",
-        borderBottom: "1px solid rgba(13,13,13,0.1)",
+        borderBottom: "1px solid #E8E8E4",
         display: "flex",
         alignItems: "center",
         justifyContent: "space-between",
@@ -74,7 +74,7 @@ export function ReservationPortalHeader({
             cursor: "pointer",
             padding: "6px",
             borderRadius: "8px",
-            color: "#0D0D0D",
+            color: "#3A3A38",
           }}
           aria-label="Open navigation menu"
         >
@@ -85,7 +85,7 @@ export function ReservationPortalHeader({
           className="font-poppins"
           style={{
             fontSize: "18px",
-            color: "#0D0D0D",
+            color: "#3A3A38",
             letterSpacing: "-0.01em",
             fontWeight: 700,
           }}
@@ -103,23 +103,23 @@ export function ReservationPortalHeader({
             alignItems: "center",
             gap: "6px",
             background: "transparent",
-            border: "1px solid rgba(13,13,13,0.15)",
+            border: "1px solid #E8E8E4",
             borderRadius: "40px",
             padding: "6px 14px",
             fontSize: "13px",
-            color: "rgba(13,13,13,0.48)",
+            color: "#8A8A86",
             cursor: "pointer",
             transition: "all 0.2s ease",
           }}
           onMouseEnter={(e) => {
-            (e.currentTarget as HTMLElement).style.background = "#F5E642";
-            (e.currentTarget as HTMLElement).style.color = "#0D0D0D";
-            (e.currentTarget as HTMLElement).style.borderColor = "#F5E642";
+            (e.currentTarget as HTMLElement).style.background = "#F0F0EE";
+            (e.currentTarget as HTMLElement).style.color = "#3A3A38";
+            (e.currentTarget as HTMLElement).style.borderColor = "#E8E8E4";
           }}
           onMouseLeave={(e) => {
             (e.currentTarget as HTMLElement).style.background = "transparent";
-            (e.currentTarget as HTMLElement).style.color = "rgba(13,13,13,0.48)";
-            (e.currentTarget as HTMLElement).style.borderColor = "rgba(13,13,13,0.15)";
+            (e.currentTarget as HTMLElement).style.color = "#8A8A86";
+            (e.currentTarget as HTMLElement).style.borderColor = "#E8E8E4";
           }}
         >
           <LogOut style={{ width: 13, height: 13 }} />

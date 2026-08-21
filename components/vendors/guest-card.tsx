@@ -45,7 +45,7 @@ export function GuestCard({
       <div className="flex items-start gap-3 mb-4">
         <div
           className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full font-poppins text-sm font-bold"
-          style={{ background: "rgba(245,230,66,0.25)", color: "#0D0D0D" }}
+          style={{ background: "#F0F0EE", color: "#0D0D0D" }}
         >
           {getInitials(reservation.customerName)}
         </div>
@@ -91,7 +91,7 @@ export function GuestCard({
           </div>
           <span
             className="shrink-0 rounded-md px-2 py-0.5 font-semibold text-gray-800"
-            style={{ background: "rgba(245,230,66,0.35)" }}
+            style={{ background: "#E8E8E4" }}
           >
             Table {reservation.tableId.tableNumber}
           </span>
@@ -116,12 +116,12 @@ export function GuestCard({
           <Button
             size="sm"
             className="flex-1 font-poppins h-9 text-xs font-semibold"
-            style={{ background: "#F5E642", color: "#0D0D0D" }}
+            style={{ background: "#F0F0EE", color: "#0D0D0D" }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.background = "#E8D800";
+              e.currentTarget.style.background = "#E8E8E4";
             }}
             onMouseLeave={(e) => {
-              e.currentTarget.style.background = "#F5E642";
+              e.currentTarget.style.background = "#F0F0EE";
             }}
             onClick={() => onStatusChange("confirmed")}
             disabled={isUpdating}

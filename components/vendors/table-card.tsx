@@ -109,7 +109,7 @@ export function TableCard({
             size="sm"
             className={`w-full lg:w-32 font-poppins text-sm ${
               table.isActive
-                ? "border-yellow-300 text-yellow-700 hover:bg-yellow-50"
+                ? "border-gray-300 text-gray-600 hover:bg-gray-50"
                 : "border-green-300 text-green-700 hover:bg-green-50"
             }`}
           >

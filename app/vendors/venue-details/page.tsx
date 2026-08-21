@@ -206,7 +206,7 @@ export default function VenueDetailsPage() {
           <div className="text-center">
             <div
               className="animate-spin rounded-full h-12 w-12 border-b-2 mx-auto mb-4"
-              style={{ borderColor: "#F5E642" }}
+              style={{ borderColor: "#F0F0EE" }}
             />
             <p className="font-poppins text-sm" style={{ color: "rgba(13,13,13,0.48)" }}>
               Loading venue details...
@@ -258,12 +258,12 @@ export default function VenueDetailsPage() {
                 <Button
                   onClick={() => setIsEditing(true)}
                   className="h-10 font-poppins font-medium"
-                  style={{ background: "#F5E642", color: "#0D0D0D" }}
+                  style={{ background: "#F0F0EE", color: "#0D0D0D" }}
                   onMouseEnter={(e) =>
-                    (e.currentTarget.style.background = "#E8D800")
+                    (e.currentTarget.style.background = "#E8E8E4")
                   }
                   onMouseLeave={(e) =>
-                    (e.currentTarget.style.background = "#F5E642")
+                    (e.currentTarget.style.background = "#F0F0EE")
                   }
                 >
                   <Edit2 className="w-4 h-4 mr-2" />
@@ -412,12 +412,12 @@ export default function VenueDetailsPage() {
                     <Button
                       type="submit"
                       className="w-full sm:w-auto h-12 font-poppins font-medium shadow-lg hover:shadow-xl transition-all duration-200"
-                      style={{ background: "#F5E642", color: "#0D0D0D" }}
+                      style={{ background: "#F0F0EE", color: "#0D0D0D" }}
                       onMouseEnter={(e) =>
-                        (e.currentTarget.style.background = "#E8D800")
+                        (e.currentTarget.style.background = "#E8E8E4")
                       }
                       onMouseLeave={(e) =>
-                        (e.currentTarget.style.background = "#F5E642")
+                        (e.currentTarget.style.background = "#F0F0EE")
                       }
                       disabled={isSaving}
                     >

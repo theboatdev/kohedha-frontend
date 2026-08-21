@@ -36,9 +36,9 @@ const getSectionTypeColor = (type: string) => {
       };
     case "vip":
       return {
-        background: "rgba(245,230,66,0.15)",
-        color: "#F5E642",
-        border: "rgba(245,230,66,0.3)",
+        background: "#F0F0EE",
+        color: "#3A3A38",
+        border: "#E8E8E4",
       };
     case "rooftop":
       return {
@@ -119,11 +119,11 @@ export function SectionCard({
                     className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium font-poppins"
                     style={{
                       background: section.isActive
-                        ? "rgba(245,230,66,0.15)"
+                        ? "#F0F0EE"
                         : "rgba(255,255,255,0.3)",
-                      color: section.isActive ? "#F5E642" : "rgba(13,13,13,0.48)",
+                      color: section.isActive ? "#3A3A38" : "rgba(13,13,13,0.48)",
                       border: section.isActive
-                        ? "1px solid rgba(245,230,66,0.3)"
+                        ? "1px solid #E8E8E4"
                         : "1px solid rgba(13,13,13,0.15)",
                     }}
                   >
@@ -165,13 +165,13 @@ export function SectionCard({
               className="w-full lg:w-32 font-poppins text-sm"
               style={{
                 borderColor: "rgba(13,13,13,0.2)",
-                color: section.isActive ? "rgba(13,13,13,0.48)" : "#F5E642",
+                color: section.isActive ? "rgba(13,13,13,0.48)" : "#3A3A38",
                 background: "transparent",
               }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.background = section.isActive
                   ? "rgba(255,255,255,0.3)"
-                  : "rgba(245,230,66,0.1)";
+                  : "#F6F6F4";
               }}
               onMouseLeave={(e) => {
                 e.currentTarget.style.background = "transparent";
@@ -197,12 +197,12 @@ export function SectionCard({
               size="sm"
               className="w-full lg:w-32 font-poppins text-sm"
               style={{
-                borderColor: "rgba(245,230,66,0.3)",
-                color: "#F5E642",
+                borderColor: "#E8E8E4",
+                color: "#8A8A86",
                 background: "transparent",
               }}
               onMouseEnter={(e) =>
-                (e.currentTarget.style.background = "rgba(245,230,66,0.1)")
+                (e.currentTarget.style.background = "#F6F6F4")
               }
               onMouseLeave={(e) =>
                 (e.currentTarget.style.background = "transparent")

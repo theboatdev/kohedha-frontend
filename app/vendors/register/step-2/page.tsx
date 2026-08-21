@@ -305,7 +305,7 @@ export default function RegistrationStep2Page() {
                   type="submit"
                   disabled={isSubmitting}
                   className="font-poppins font-semibold h-12 px-8 transition-all duration-200 gap-2 rounded-full"
-                  style={{ background: isSubmitting ? "rgba(13,13,13,0.08)" : "#F5E642", color: isSubmitting ? "rgba(13,13,13,0.48)" : "#0D0D0D", border: "none" }}
+                  style={{ background: isSubmitting ? "rgba(13,13,13,0.08)" : "#F0F0EE", color: isSubmitting ? "rgba(13,13,13,0.48)" : "#0D0D0D", border: "none" }}
                 >
                   {isSubmitting ? "Saving..." : "Continue"}
                   {!isSubmitting && <ArrowRight className="h-4 w-4" />}
