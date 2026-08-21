@@ -705,7 +705,12 @@ export default function HomePage() {
             push alerts, and exclusive in-app deals.
           </p>
           <div className="store-btns">
-            <Link href="#" className="store">
+            <Link
+              href="https://apps.apple.com/lk/app/kohedha/id6748849700"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="store"
+            >
               <svg viewBox="0 0 24 24" fill="currentColor">
                 <path d="M16.5 1.5c.1 1-.3 2-1 2.7-.7.8-1.7 1.3-2.7 1.2-.1-1 .4-2 1-2.6.7-.8 1.8-1.3 2.7-1.3zM19 17c-.4 1-.6 1.4-1.1 2.3-.8 1.3-1.9 2.9-3.3 2.9-1.2 0-1.5-.8-3.1-.8s-2 .8-3.1.8c-1.4 0-2.4-1.4-3.2-2.7C2.7 16.6 2.4 12.3 4 10c.9-1.4 2.3-2.2 3.7-2.2 1.3 0 2.1.8 3.1.8 1 0 1.6-.8 3.1-.8 1.2 0 2.5.7 3.4 1.8-3 1.6-2.5 5.9 1.7 7.4z" />
               </svg>
@@ -714,7 +719,12 @@ export default function HomePage() {
                 <b>App Store</b>
               </span>
             </Link>
-            <Link href="#" className="store alt">
+            <Link
+              href="https://play.google.com/store/apps/details?id=com.theboat.kohedaapp"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="store alt"
+            >
               <svg viewBox="0 0 24 24" fill="currentColor">
                 <path d="M3.6 2.3 13 11.7 3.6 21.1c-.3-.2-.5-.6-.5-1V3.3c0-.4.2-.8.5-1zM14.7 9.9 5.7 1.6l11 6.4-2 1.9zm0 4.2 2 1.9-11 6.4 9-8.3zM18.4 11.1l2.8 1.6c.6.3.6 1.2 0 1.5l-2.8 1.6L16.1 12l2.3-2.3z" />
               </svg>

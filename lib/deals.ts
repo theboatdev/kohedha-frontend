@@ -13,6 +13,100 @@ export type DealCategory =
   | "events"
   | "other";
 
+export type DealType = "ambient" | "voucher" | "limited-quantity" | "loyalty";
+
+export interface ActiveWindow {
+  daysOfWeek: number[]; // 0=Sun … 6=Sat
+  startTime?: string;   // "HH:mm"
+  endTime?: string;     // "HH:mm"
+}
+
+export interface VoucherConfig {
+  claimExpiryMinutes?: number;
+  rewardLabel?: string;
+}
+
+export interface LimitedQuantityConfig {
+  totalQuantity?: number;
+  remainingQuantity?: number;
+  claimExpiryMinutes?: number;
+  rewardLabel?: string;
+}
+
+export interface LoyaltyConfig {
+  stampsRequired?: number;
+  claimExpiryMinutes?: number;
+  rewardLabel?: string;
+}
+
+export type ClaimStatus = "claimed" | "redeemed" | "expired" | "cancelled";
+
+export interface DealClaim {
+  _id: string;
+  dealId: string | { _id: string; dealName: string; description: string };
+  vendorId: string;
+  userId: string;
+  code: string;
+  status: ClaimStatus;
+  claimedAt: string;
+  expiresAt: string;
+  redeemedAt?: string | null;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface RedeemVoucherResponse {
+  success: boolean;
+  message?: string;
+  data?: DealClaim;
+}
+
+export interface DealClaimsListResponse {
+  success: boolean;
+  data: DealClaim[];
+  pagination?: {
+    total: number;
+    page: number;
+    limit: number;
+    pages: number;
+  };
+}
+
+export interface DealLoyaltyCard {
+  _id: string;
+  dealId: string | { _id: string; dealName: string; description?: string };
+  vendorId: string;
+  userId: string;
+  code: string;
+  stampCount: number;
+  totalStampsEarned: number;
+  rewardsIssuedCount: number;
+  lastStampAt?: string | null;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface RecordLoyaltyStampResponse {
+  success: boolean;
+  message?: string;
+  data?: {
+    card: DealLoyaltyCard;
+    stampsRequired: number;
+    rewardClaim: DealClaim | null;
+  };
+}
+
+export interface DealLoyaltyCardsListResponse {
+  success: boolean;
+  data: DealLoyaltyCard[];
+  pagination?: {
+    total: number;
+    page: number;
+    limit: number;
+    pages: number;
+  };
+}
+
 export type DealStatus =
   | "active"
   | "expired"
@@ -61,6 +155,12 @@ export interface Deal {
   publishedAt?: string;
   startDate?: string;
   endDate?: string;
+  dealType: DealType;
+  activeWindow?: ActiveWindow;
+  voucherConfig?: VoucherConfig;
+  limitedQuantityConfig?: LimitedQuantityConfig;
+  loyaltyConfig?: LoyaltyConfig;
+  isActiveNow?: boolean | null;
   createdAt: string;
   updatedAt: string;
 }
@@ -80,6 +180,11 @@ export interface CreateDealData {
   isPublished?: boolean;
   startDate?: string;
   endDate?: string;
+  dealType?: DealType;
+  activeWindow?: ActiveWindow;
+  voucherConfig?: VoucherConfig;
+  limitedQuantityConfig?: LimitedQuantityConfig;
+  loyaltyConfig?: LoyaltyConfig;
 }
 
 export interface UpdateDealData {
@@ -98,6 +203,11 @@ export interface UpdateDealData {
   isPublished?: boolean;
   startDate?: string;
   endDate?: string;
+  dealType?: DealType;
+  activeWindow?: ActiveWindow;
+  voucherConfig?: VoucherConfig;
+  limitedQuantityConfig?: LimitedQuantityConfig;
+  loyaltyConfig?: LoyaltyConfig;
 }
 
 export interface DealActionResponse {
@@ -164,18 +274,28 @@ function buildDealFormData(data: CreateDealData | UpdateDealData): FormData {
   appendIfDefined("startDate", (data as any).startDate);
   appendIfDefined("endDate", (data as any).endDate);
   appendIfDefined("dealType", (data as any).dealType);
-  appendIfDefined("question", (data as any).question);
-  // Always send as a plain string — multer/multipart can drop non-string values
-  if (
-    (data as any).rallyLocation !== undefined &&
-    (data as any).rallyLocation !== null &&
-    (data as any).rallyLocation !== ""
-  ) {
-    fd.append("rallyLocation", String(Number((data as any).rallyLocation)));
-  }
 
   if ((data as any).tags) {
     fd.append("tags", JSON.stringify((data as any).tags));
+  }
+
+  if ((data as any).activeWindow) {
+    fd.append("activeWindow", JSON.stringify((data as any).activeWindow));
+  }
+
+  if ((data as any).voucherConfig) {
+    fd.append("voucherConfig", JSON.stringify((data as any).voucherConfig));
+  }
+
+  if ((data as any).limitedQuantityConfig) {
+    fd.append(
+      "limitedQuantityConfig",
+      JSON.stringify((data as any).limitedQuantityConfig),
+    );
+  }
+
+  if ((data as any).loyaltyConfig) {
+    fd.append("loyaltyConfig", JSON.stringify((data as any).loyaltyConfig));
   }
 
   // Append image file if provided
@@ -364,4 +484,110 @@ export async function getDealsByCategory(
     console.error("Get deals by category error:", error);
     throw error;
   }
+}
+
+// Redeem a voucher code (staff-side). Server flips the claim to "redeemed".
+export async function redeemVoucherCode(
+  code: string,
+): Promise<RedeemVoucherResponse> {
+  const res = await fetch(`${API_URL}/vendor/deals/redeem`, {
+    method: "POST",
+    credentials: "include",
+    headers: getAuthHeaders(),
+    body: JSON.stringify({ code }),
+  });
+
+  const result = await res.json();
+
+  if (!res.ok) {
+    const error = new Error(result.message || "Failed to redeem voucher") as Error & {
+      data?: DealClaim;
+    };
+    error.data = result.data;
+    throw error;
+  }
+
+  return result;
+}
+
+// Adds a stamp to a customer's loyalty card by its code (staff-side). If this
+// stamp crosses the deal's stampsRequired threshold, the server mints a
+// single-use reward token (returned as rewardClaim) that behaves exactly
+// like a voucher — redeem it via redeemVoucherCode.
+export async function recordLoyaltyStamp(
+  code: string,
+): Promise<RecordLoyaltyStampResponse> {
+  const res = await fetch(`${API_URL}/vendor/deals/loyalty/stamp`, {
+    method: "POST",
+    credentials: "include",
+    headers: getAuthHeaders(),
+    body: JSON.stringify({ code }),
+  });
+
+  const result = await res.json();
+
+  if (!res.ok) {
+    throw new Error(result.message || "Failed to record loyalty stamp");
+  }
+
+  return result;
+}
+
+// Get loyalty cards for a deal (vendor-owned) — auditing/analytics
+export async function getDealLoyaltyCards(
+  dealId: string,
+  filters?: { page?: number; limit?: number },
+): Promise<DealLoyaltyCardsListResponse> {
+  const queryParams = new URLSearchParams();
+  if (filters?.page) queryParams.append("page", String(filters.page));
+  if (filters?.limit) queryParams.append("limit", String(filters.limit));
+
+  const queryString = queryParams.toString();
+  const url = queryString
+    ? `${API_URL}/vendor/deals/${dealId}/loyalty-cards?${queryString}`
+    : `${API_URL}/vendor/deals/${dealId}/loyalty-cards`;
+
+  const res = await fetch(url, {
+    method: "GET",
+    credentials: "include",
+    headers: getAuthHeaders(),
+  });
+
+  const result = await res.json();
+
+  if (!res.ok) {
+    throw new Error(result.message || "Failed to fetch loyalty cards");
+  }
+
+  return result;
+}
+
+// Get voucher claims for a deal (vendor-owned)
+export async function getDealClaims(
+  dealId: string,
+  filters?: { status?: ClaimStatus; page?: number; limit?: number },
+): Promise<DealClaimsListResponse> {
+  const queryParams = new URLSearchParams();
+  if (filters?.status) queryParams.append("status", filters.status);
+  if (filters?.page) queryParams.append("page", String(filters.page));
+  if (filters?.limit) queryParams.append("limit", String(filters.limit));
+
+  const queryString = queryParams.toString();
+  const url = queryString
+    ? `${API_URL}/vendor/deals/${dealId}/claims?${queryString}`
+    : `${API_URL}/vendor/deals/${dealId}/claims`;
+
+  const res = await fetch(url, {
+    method: "GET",
+    credentials: "include",
+    headers: getAuthHeaders(),
+  });
+
+  const result = await res.json();
+
+  if (!res.ok) {
+    throw new Error(result.message || "Failed to fetch deal claims");
+  }
+
+  return result;
 }

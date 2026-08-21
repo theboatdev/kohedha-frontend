@@ -23,7 +23,7 @@ import { MenuSearchFilter } from "@/components/vendors/menu-search-filter";
 import { CSVUploadDialog } from "@/components/vendors/csv-upload-dialog";
 import { PDFUploadDialog } from "@/components/vendors/pdf-upload-dialog";
 import { CreateMenuItemDialog } from "@/components/vendors/create-menu-item-dialog";
-import { getMenuItems } from "@/lib/menu";
+import { getMenuItems, getMenuVoteSummary } from "@/lib/menu";
 import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
 
@@ -38,8 +38,8 @@ export interface MenuItem {
   image?: string | null;
   createdAt: string;
   updatedAt: string;
-  upvotes?: number; // Mock data for now
-  downvotes?: number; // Mock data for now
+  upvotes?: number;
+  downvotes?: number;
 }
 
 export default function MenuManagementPage() {
@@ -55,26 +55,42 @@ export default function MenuManagementPage() {
   const { toast } = useToast();
   const router = useRouter();
 
-  // Generate mock upvote data for each item (deterministic based on item ID)
-  const addMockUpvotes = (items: MenuItem[]): MenuItem[] => {
+  // Merge real upvote/downvote counts (from /vendor/menu/votes) into the menu items
+  const mergeVoteCounts = (
+    items: MenuItem[],
+    votes: Map<string, { upvotes: number; downvotes: number }>,
+  ): MenuItem[] => {
     return items.map((item) => {
-      // Generate deterministic mock upvotes and downvotes based on item ID
-      const hash = item._id
-        .split("")
-        .reduce((acc, char) => acc + char.charCodeAt(0), 0);
-      const upvotes = (hash % 50) + 1; // Between 1 and 50
-      const downvotes = ((hash * 7) % 20) + 1; // Between 1 and 20 (generally fewer downvotes)
-      return { ...item, upvotes, downvotes };
+      const vote = votes.get(item._id);
+      return {
+        ...item,
+        upvotes: vote?.upvotes ?? 0,
+        downvotes: vote?.downvotes ?? 0,
+      };
     });
   };
 
   const fetchMenuItems = async () => {
     try {
       setIsLoading(true);
-      const items = await getMenuItems();
-      const itemsWithUpvotes = addMockUpvotes(items);
-      setMenuItems(itemsWithUpvotes);
-      setFilteredItems(itemsWithUpvotes);
+      const [items, voteResult] = await Promise.all([
+        getMenuItems(),
+        getMenuVoteSummary(),
+      ]);
+
+      const votesById = new Map<string, { upvotes: number; downvotes: number }>();
+      if (voteResult.success && voteResult.data) {
+        for (const voteItem of voteResult.data.items) {
+          votesById.set(voteItem._id, {
+            upvotes: voteItem.upvotes,
+            downvotes: voteItem.downvotes,
+          });
+        }
+      }
+
+      const itemsWithVotes = mergeVoteCounts(items, votesById);
+      setMenuItems(itemsWithVotes);
+      setFilteredItems(itemsWithVotes);
     } catch (error: any) {
       console.error("Failed to fetch menu items:", error);
       toast({
@@ -171,12 +187,12 @@ export default function MenuManagementPage() {
               <Button
                 onClick={() => setAddItemDialogOpen(true)}
                 className="font-poppins"
-                style={{ background: "#F5E642", color: "#0D0D0D" }}
+                style={{ background: "#F0F0EE", color: "#0D0D0D" }}
                 onMouseEnter={(e) =>
-                  (e.currentTarget.style.background = "#E8D800")
+                  (e.currentTarget.style.background = "#E8E8E4")
                 }
                 onMouseLeave={(e) =>
-                  (e.currentTarget.style.background = "#F5E642")
+                  (e.currentTarget.style.background = "#F0F0EE")
                 }
                 size="lg"
               >

@@ -485,8 +485,8 @@ export default function EventsPageClient({ events }: { events: SanityEvent[] }) 
             Get push alerts when venues you follow publish new events. Reserve your seat before it sells out.
           </p>
           <div style={{ display: "flex", gap: "12px", justifyContent: "center", flexWrap: "wrap" }}>
-            {[{ label: "Download on the", strong: "App Store" }, { label: "Get it on", strong: "Google Play" }].map((b) => (
-              <a key={b.strong} href="#" style={{ display: "flex", alignItems: "center", gap: "10px", background: "rgba(255,255,255,0.08)", color: C.cream, padding: "12px 24px", borderRadius: "12px", textDecoration: "none", fontSize: "13px", border: "1px solid rgba(255,255,255,0.1)", transition: "background 0.2s" }}
+            {[{ label: "Download on the", strong: "App Store", href: "https://apps.apple.com/lk/app/kohedha/id6748849700" }, { label: "Get it on", strong: "Google Play", href: "https://play.google.com/store/apps/details?id=com.theboat.kohedaapp" }].map((b) => (
+              <a key={b.strong} href={b.href} target="_blank" rel="noopener noreferrer" style={{ display: "flex", alignItems: "center", gap: "10px", background: "rgba(255,255,255,0.08)", color: C.cream, padding: "12px 24px", borderRadius: "12px", textDecoration: "none", fontSize: "13px", border: "1px solid rgba(255,255,255,0.1)", transition: "background 0.2s" }}
                 onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(255,255,255,0.12)")}
                 onMouseLeave={(e) => (e.currentTarget.style.background = "rgba(255,255,255,0.08)")}
               >

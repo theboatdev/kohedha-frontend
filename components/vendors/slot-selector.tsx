@@ -100,18 +100,18 @@ export function SlotSelector({
               className="self-start inline-flex items-center gap-1.5 rounded-full px-3 py-1 font-poppins text-xs font-semibold"
               style={{
                 background: selectedSlot.isActive
-                  ? "rgba(245,230,66,0.2)"
+                  ? "#F0F0EE"
                   : "rgba(255,255,255,0.1)",
-                color: selectedSlot.isActive ? "#F5E642" : "rgba(255,255,255,0.5)",
-                border: `1px solid ${selectedSlot.isActive ? "rgba(245,230,66,0.35)" : "rgba(255,255,255,0.1)"}`,
+                color: selectedSlot.isActive ? "#3A3A38" : "rgba(255,255,255,0.5)",
+                border: `1px solid ${selectedSlot.isActive ? "#E8E8E4" : "rgba(255,255,255,0.1)"}`,
               }}
             >
               <span
                 className="h-1.5 w-1.5 rounded-full"
                 style={{
-                  background: selectedSlot.isActive ? "#F5E642" : "rgba(255,255,255,0.4)",
+                  background: selectedSlot.isActive ? "#3A3A38" : "rgba(255,255,255,0.4)",
                   boxShadow: selectedSlot.isActive
-                    ? "0 0 6px rgba(245,230,66,0.8)"
+                    ? "0 0 6px rgba(200,200,196,0.5)"
                     : "none",
                 }}
               />
