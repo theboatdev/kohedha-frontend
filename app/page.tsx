@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import Link from "next/link";
 import "./home-landing.css";
 
@@ -13,42 +13,6 @@ const VIBES = [
   "Live music",
   "Late night",
   "Rooftop",
-];
-
-const FEATURES = [
-  {
-    n: "01",
-    title: "Places",
-    desc: "Venue listings filtered by your vibe and location. Browse photos, menus, events, and live deals before you decide.",
-    icon: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
-        <path d="M12 21s7-5.5 7-11a7 7 0 1 0-14 0c0 5.5 7 11 7 11z" />
-        <circle cx="12" cy="10" r="2.5" />
-      </svg>
-    ),
-  },
-  {
-    n: "02",
-    title: "Events",
-    desc: "Live music, themed nights, pop-ups — all hosted at venues on your map. Filter by date, vibe, or distance.",
-    icon: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
-        <rect x="3" y="4.5" width="18" height="16" rx="2" />
-        <path d="M3 9h18M8 2.5v4M16 2.5v4" />
-      </svg>
-    ),
-  },
-  {
-    n: "03",
-    title: "Deals",
-    desc: "Real-time offers from venues near you. Happy hours, set menus, exclusive discounts — active now or coming soon.",
-    icon: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
-        <path d="M20.6 8.4 12 3 3.4 8.4v7.2L12 21l8.6-5.4z" />
-        <path d="M12 3v18M3.4 8.4 12 12l8.6-3.6" />
-      </svg>
-    ),
-  },
 ];
 
 const PINS = [
@@ -65,22 +29,28 @@ const VENUES = [
     bg: "linear-gradient(150deg,#1A1A1A,#3a3320)",
     vibe: "Chill",
     live: true,
-    loc: "Colombo 7 · Opens 11 AM",
+    loc: "Colombo 7",
+    when: "Opens 11 AM",
     name: "The Patio",
+    blurb: "Garden tables, slow lunch, easy music.",
   },
   {
     bg: "linear-gradient(150deg,#2a1410,#5a2018)",
     vibe: "Date night",
     live: false,
-    loc: "Colombo 1 · Opens 6 PM",
+    loc: "Colombo 1",
+    when: "Opens 6 PM",
     name: "Harbour Lights",
+    blurb: "Harbour view, small plates, two-hour sittings.",
   },
   {
     bg: "linear-gradient(150deg,#101b2a,#1f3550)",
     vibe: "Live music",
     live: true,
-    loc: "Colombo 3 · Opens 7 PM",
+    loc: "Colombo 3",
+    when: "Opens 7 PM",
     name: "Rooftop Sessions",
+    blurb: "Sets from 9. Book a table or just the door.",
   },
 ];
 
@@ -128,31 +98,25 @@ const INITIAL_DISHES = [
 
 const FAQS = [
   {
-    q: "Do I need an account to browse venues?",
-    a: "No. You can explore the map, filter by vibe, and browse venues, events, and live deals without an account. You'll only need to sign in when you're ready to reserve a table or save a beacon.",
+    q: "Do I need an account to look around?",
+    a: "No. Browse venues, events, and deals without signing in. You only need an account when you want to book a table or drop a beacon.",
   },
   {
-    q: "Can I book a table on the website?",
-    a: "Yes — full booking is available right here on the web. Pick your venue, time, and table, and your QR token is generated instantly. The app adds push alerts and exclusive in-app deals on top.",
+    q: "Can I book from the website?",
+    a: "Yes. Pick a venue, time, and table here — your QR is ready straight away. The app adds alerts and a few in-app deals on top.",
   },
   {
-    q: "How do menu ratings work?",
-    a: "After your visit you can rate individual dishes up or down. Venues see which items are loved and which to drop, so the menu keeps improving — your taste shapes what stays on it.",
+    q: "How do dish ratings work?",
+    a: "After you eat, you can thumbs-up or thumbs-down individual dishes. Kitchens see what people actually finish — not just a star score for the room.",
   },
   {
-    q: "What cities is Kohedha available in?",
-    a: "We're live across Greater Colombo — including Colombo 1 through 7, Galle Face, and Battaramulla — and expanding to Kandy, Galle, and Negombo next. Set your radius and the map shows what's reachable from you.",
-  },
-  {
-    q: "Can I cancel or modify a reservation?",
-    a: "Absolutely. Head to Manage Your Bookings, open the reservation, and change the time, table size, or cancel — free of charge up to two hours before your slot.",
+    q: "Where does this work?",
+    a: "Greater Colombo for now — 1 through 7, Galle Face, Battaramulla. Kandy, Galle, and Negombo are next. Set your radius and the map only shows what you can actually reach.",
   },
 ];
 
 export default function HomePage() {
-  const [selectedVibes, setSelectedVibes] = useState<Set<string>>(
-    new Set(["Chill", "Live music"]),
-  );
+  const [selectedVibes, setSelectedVibes] = useState<Set<string>>(new Set());
   const [layers, setLayers] = useState({
     places: true,
     events: true,
@@ -180,13 +144,27 @@ export default function HomePage() {
 
   const vote = (index: number, dir: "up" | "down") => {
     setDishes((prev) =>
-      prev.map((d, i) =>
-        i === index ? { ...d, [dir]: d[dir] + 1 } : d,
-      ),
+      prev.map((d, i) => (i === index ? { ...d, [dir]: d[dir] + 1 } : d)),
     );
   };
 
   const ringPct = 30 + (radius / 10) * 62;
+
+  const filteredVenues = useMemo(
+    () =>
+      selectedVibes.size === 0
+        ? VENUES
+        : VENUES.filter((v) => selectedVibes.has(v.vibe)),
+    [selectedVibes],
+  );
+
+  const filteredEvents = useMemo(
+    () =>
+      selectedVibes.size === 0
+        ? EVENTS
+        : EVENTS.filter((e) => selectedVibes.has(e.vibe)),
+    [selectedVibes],
+  );
 
   return (
     <div className="lp-home">
@@ -195,79 +173,73 @@ export default function HomePage() {
         <div className="hero-inner wrap">
           <div className="hero-grid">
             <div className="hero-copy">
-              <div className="hero-eyebrow eyebrow on-dark">Mission</div>
               <h1 className="hero-h1">
-                Every venue,
+                What&apos;s the vibe
                 <br />
-                perfectly matched
-                <br />
-                to your <span className="mood">mood</span>.
+                tonight?
               </h1>
               <p className="hero-sub">
-                Kohedha was built for Sri Lanka&apos;s dining culture — where the
-                vibe matters as much as the menu. We connect you to places that
-                fit how you&apos;re feeling{" "}
-                <em style={{ color: "var(--y)", fontStyle: "normal" }}>
-                  right now
-                </em>
-                , not just what you want to eat.
+                Rooftops in Colombo 3, late kitchens in 7, live sets by the
+                water. Pick a mood — we&apos;ll show what&apos;s actually on
+                within reach.
               </p>
               <div className="hero-actions">
-                <Link href="#explore" className="btn">
-                  Start exploring <span className="arr">→</span>
+                <Link href="#tonight" className="btn">
+                  See tonight <span className="arr">→</span>
                 </Link>
-                <Link href="#app" className="btn btn-ghost on-dark">
+                <Link href="#app" className="hero-textlink">
                   Get the app
                 </Link>
               </div>
-              <div className="hero-stats">
-                <div>
-                  <div className="hstat-n">142</div>
-                  <div className="hstat-l">beacons live now</div>
-                </div>
-                <div>
-                  <div className="hstat-n">38</div>
-                  <div className="hstat-l">venues competing</div>
-                </div>
-                <div>
-                  <div className="hstat-n">12k+</div>
-                  <div className="hstat-l">nights out planned</div>
-                </div>
-              </div>
+              <p className="hero-aside">
+                Or drop a two-hour beacon and let nearby venues send you a deal.
+              </p>
             </div>
 
             <div className="hero-vis">
-              <div className="beacon">
-                <div className="beacon-lbl">
-                  <span className="d"></span>Beacon · live
+              <div className="tonight-board">
+                <div className="tonight-board-h">
+                  <span>Tonight</span>
+                  <span className="tonight-board-sub">Greater Colombo</span>
                 </div>
-                <div className="beacon-h">
-                  Tell the city
-                  <br />
-                  you&apos;re out.
-                </div>
-                <div className="beacon-b">
-                  Broadcast a 2-hour beacon. Nearby venues compete with deals
-                  matched to your vibe. One winning offer arrives.
-                </div>
-              </div>
-              <div className="hero-chips">
-                <span className="tag tag-y">Rooftop</span>
-                <span className="tag tag-k">Live music</span>
-                <span className="tag tag-live">
-                  <span className="dot"></span>Buzzing now
-                </span>
+                {VENUES.map((v) => (
+                  <div className="tonight-row" key={v.name}>
+                    <div className="tonight-row-main">
+                      <div className="tonight-name">{v.name}</div>
+                      <div className="tonight-meta">
+                        {v.loc} · {v.when}
+                      </div>
+                    </div>
+                    <div className="tonight-row-side">
+                      <span className="tag tag-line">{v.vibe}</span>
+                      {v.live && (
+                        <span className="tag tag-live">
+                          <span className="dot"></span>Open
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
           </div>
 
-          {/* vibe band */}
           <div className="vibe-band" id="explore">
             <div className="vibe-head">
-              <div className="vibe-title">Filter by vibe</div>
+              <div className="vibe-title">Mood</div>
               <div className="vibe-note">
-                Pick your mood and the map finds venues, events, and deals that
-                match — all within your chosen radius.
+                Tap to narrow the lists.
+                {selectedVibes.size > 0 && (
+                  <>
+                    {" "}
+                    <button
+                      className="vibe-clear"
+                      onClick={() => setSelectedVibes(new Set())}
+                    >
+                      Clear
+                    </button>
+                  </>
+                )}
               </div>
             </div>
             <div className="chips">
@@ -285,34 +257,106 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ===================== FEATURES ===================== */}
-      <section
-        className="wrap"
-        style={{
-          maxWidth: "none",
-          paddingLeft: "var(--pad)",
-          paddingRight: "var(--pad)",
-        }}
-      >
+      {/* ===================== TONIGHT — VENUES ===================== */}
+      <section className="sec-list" id="tonight">
         <div className="wrap">
-          <div className="sec-head">
-            <div className="eyebrow">Everything you need</div>
-            <h2 className="h-sec">
-              One app for the
-              <br />
-              whole night out.
-            </h2>
+          <div className="row-head">
+            <div>
+              <h2 className="h-sec">Tables worth booking</h2>
+              <p>Rooms that stay busy. Open the full list when you want more of Colombo.</p>
+            </div>
+            <Link href="/places" className="btn btn-ghost">
+              All venues <span className="arr">→</span>
+            </Link>
           </div>
-          <div className="feat-grid">
-            {FEATURES.map((f) => (
-              <div className="feat" key={f.n}>
-                <div className="feat-n">{f.n}</div>
-                <div className="feat-ic">{f.icon}</div>
-                <h3>{f.title}</h3>
-                <p>{f.desc}</p>
-              </div>
-            ))}
+          {filteredVenues.length === 0 ? (
+            <p className="empty-note">
+              Nothing in that mix — add another vibe, or clear a few.
+            </p>
+          ) : (
+            <div
+              className={
+                filteredVenues.length === 3 ? "venues venues-bento" : "venues"
+              }
+            >
+              {filteredVenues.map((v, i) => (
+                <div
+                  className={`venue${i === 0 && filteredVenues.length === 3 ? " featured" : ""}`}
+                  key={v.name}
+                >
+                  <div className="venue-img" style={{ background: v.bg }}>
+                    <span className="tag tag-y vibe">{v.vibe}</span>
+                    {v.live && (
+                      <span className="tag tag-live live">
+                        <span className="dot"></span>Open
+                      </span>
+                    )}
+                    <div className="ph">{v.name}</div>
+                  </div>
+                  <div className="venue-body">
+                    <div className="venue-loc">
+                      {v.loc} · {v.when}
+                    </div>
+                    <h3>{v.name}</h3>
+                    <p className="venue-blurb">{v.blurb}</p>
+                    <div className="venue-acts">
+                      <Link className="va primary" href="/places">
+                        Book a table
+                      </Link>
+                      <Link className="va" href="/events">
+                        Events
+                      </Link>
+                      <Link className="va" href="/deals">
+                        Deals
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      </section>
+
+      {/* ===================== TONIGHT — EVENTS ===================== */}
+      <section className="sec-list sec-warm" id="events">
+        <div className="wrap">
+          <div className="row-head">
+            <div>
+              <h2 className="h-sec">This week</h2>
+              <p>Live sets, a market, a brunch.</p>
+            </div>
+            <Link href="/events" className="btn btn-ghost">
+              All events <span className="arr">→</span>
+            </Link>
           </div>
+          {filteredEvents.length === 0 ? (
+            <p className="empty-note">
+              No events for those vibes this week. Try Live music or Party.
+            </p>
+          ) : (
+            <div
+              className={
+                filteredEvents.length >= 3 ? "events" : "events events-few"
+              }
+            >
+              {filteredEvents.map((ev) => (
+                <Link className="event" href="/events" key={ev.title}>
+                  <div className="event-img" style={{ background: ev.bg }}>
+                    <div className="event-date">
+                      <div className="d">{ev.d}</div>
+                      <div className="m">{ev.m}</div>
+                    </div>
+                  </div>
+                  <div className="event-body">
+                    <div className="event-vibe">{ev.vibe}</div>
+                    <h3>{ev.title}</h3>
+                    <div className="event-meta">{ev.meta}</div>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          )}
         </div>
       </section>
 
@@ -320,16 +364,14 @@ export default function HomePage() {
       <section className="sec-dark">
         <div className="wrap radius-grid">
           <div className="radius-copy">
-            <div className="eyebrow on-dark">Radius explorer</div>
             <h2 className="h-sec">
-              Drop a radius.
+              How far
               <br />
-              Find your <em>scene</em>.
+              will you go?
             </h2>
             <p className="lead on-dark">
-              Set how far you&apos;re willing to go. The map pulls every venue,
-              event, and deal within your reach — toggle layers to see exactly
-              what you want.
+              One to ten kilometres. Toggle places, events, and deals — only
+              what sits inside your circle.
             </p>
             <div className="radius-toggles">
               {(["places", "events", "deals"] as const).map((layer) => (
@@ -405,41 +447,54 @@ export default function HomePage() {
                   min={1}
                   max={10}
                   value={radius}
-                  aria-label="Radius"
+                  aria-label="Radius in kilometres"
                   onChange={(e) => setRadius(Number(e.target.value))}
                 />
               </div>
               <div className="radius-val">
-                <span>{radius}</span> km<small>your reach</small>
+                <span>{radius}</span> km<small>from you</small>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* ===================== BOOKINGS ===================== */}
-      <section className="sec-warm">
+      {/* ===================== BOOKING + STEPS ===================== */}
+      <section className="sec-book">
         <div className="wrap book-grid">
           <div>
-            <div className="eyebrow">Manage your bookings</div>
-            <h2 className="h-sec" style={{ margin: "16px 0 18px" }}>
-              Your night,
+            <h2 className="h-sec" style={{ margin: "0 0 18px" }}>
+              Book here.
               <br />
-              in one place.
+              Walk in with a QR.
             </h2>
             <p className="lead">
-              Every reservation and event in a single view. Your QR token waits
-              on your phone — walk in, scan, sit down.
+              No phone call. Pick a table and a time — the token sits on your
+              phone. Scan at the door, sit down.
             </p>
-            <Link href="#" className="btn" style={{ marginTop: "26px" }}>
-              Reserve your seat <span className="arr">→</span>
+            <div className="steps-inline">
+              <div className="step-inline">
+                <span>1</span>
+                Pick a vibe and a room
+              </div>
+              <div className="step-inline">
+                <span>2</span>
+                Reserve the slot
+              </div>
+              <div className="step-inline">
+                <span>3</span>
+                Scan and sit
+              </div>
+            </div>
+            <Link href="/places" className="btn" style={{ marginTop: "28px" }}>
+              Find a table <span className="arr">→</span>
             </Link>
           </div>
           <div className="book-cards">
             <div className="book-card">
               <div
                 className="bk-thumb"
-                style={{ background: "var(--y)", color: "var(--k)" }}
+                style={{ background: "var(--k)", color: "var(--w)" }}
               >
                 P
               </div>
@@ -449,7 +504,7 @@ export default function HomePage() {
                 <div className="bk-when">Tonight · 7:30 PM · Table 4</div>
               </div>
               <div className="bk-qr">
-                <svg viewBox="0 0 40 40" fill="var(--y)">
+                <svg viewBox="0 0 40 40" fill="var(--w)">
                   <rect x="2" y="2" width="11" height="11" />
                   <rect x="27" y="2" width="11" height="11" />
                   <rect x="2" y="27" width="11" height="11" />
@@ -471,7 +526,7 @@ export default function HomePage() {
             <div className="book-card">
               <div
                 className="bk-thumb"
-                style={{ background: "var(--r)", color: "var(--y)" }}
+                style={{ background: "var(--r)", color: "var(--w)" }}
               >
                 R
               </div>
@@ -488,170 +543,18 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ===================== STEPS ===================== */}
-      <section
-        className="wrap"
-        style={{
-          maxWidth: "none",
-          paddingLeft: "var(--pad)",
-          paddingRight: "var(--pad)",
-        }}
-      >
-        <div className="wrap">
-          <div className="sec-head" style={{ maxWidth: "640px" }}>
-            <div className="eyebrow">Reserve your seat</div>
-            <h2 className="h-sec">
-              Discover dining <em>with ease</em>.
-            </h2>
-            <p className="lead" style={{ marginTop: "18px" }}>
-              No calls. No waiting. Pick your table, pick your time, and your QR
-              token is ready before you leave the house. Walk in, scan, sit
-              down.
-            </p>
-          </div>
-          <div className="steps">
-            <div className="step">
-              <div className="step-n">1</div>
-              <h4>Pick your vibe &amp; venue</h4>
-              <p>
-                Browse the map, filter by mood, and find the spot that fits the
-                night you want.
-              </p>
-            </div>
-            <div className="step s-mid">
-              <div className="step-n">2</div>
-              <h4>Reserve your seat</h4>
-              <p>
-                Choose your table and time slot in seconds — no phone calls, no
-                back-and-forth.
-              </p>
-            </div>
-            <div className="step">
-              <div className="step-n">3</div>
-              <h4>Walk in &amp; scan</h4>
-              <p>
-                Your QR token is ready on the app. Scan at the door and
-                you&apos;re seated.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ===================== TRENDING VENUES ===================== */}
-      <section
-        className="wrap"
-        id="deals"
-        style={{
-          maxWidth: "none",
-          paddingLeft: "var(--pad)",
-          paddingRight: "var(--pad)",
-          background: "var(--ws)",
-        }}
-      >
-        <div className="wrap">
-          <div className="row-head">
-            <div>
-              <div className="eyebrow">Trending venues</div>
-              <h2 className="h-sec" style={{ marginTop: "14px" }}>
-                The most-booked
-                <br />
-                spots right now.
-              </h2>
-            </div>
-            <Link href="#" className="btn btn-ghost">
-              See all venues <span className="arr">→</span>
-            </Link>
-          </div>
-          <div className="venues">
-            {VENUES.map((v) => (
-              <div className="venue" key={v.name}>
-                <div className="venue-img" style={{ background: v.bg }}>
-                  <span className="tag tag-y vibe">{v.vibe}</span>
-                  {v.live && (
-                    <span className="tag tag-live live">
-                      <span className="dot"></span>Live
-                    </span>
-                  )}
-                  <div className="ph">{v.name}</div>
-                </div>
-                <div className="venue-body">
-                  <div className="venue-loc">{v.loc}</div>
-                  <h3>{v.name}</h3>
-                  <div className="venue-acts">
-                    <Link className="va primary" href="#">
-                      Book a table
-                    </Link>
-                    <Link className="va" href="#">
-                      Events
-                    </Link>
-                    <Link className="va" href="#">
-                      Deals
-                    </Link>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ===================== TRENDING EVENTS ===================== */}
-      <section
-        className="wrap"
-        id="events"
-        style={{
-          maxWidth: "none",
-          paddingLeft: "var(--pad)",
-          paddingRight: "var(--pad)",
-        }}
-      >
-        <div className="wrap">
-          <div className="row-head">
-            <div>
-              <div className="eyebrow">Trending events</div>
-              <h2 className="h-sec" style={{ marginTop: "14px" }}>
-                What&apos;s on this week.
-              </h2>
-              <p>Across Sri Lanka, hand-picked by vibe.</p>
-            </div>
-            <Link href="#" className="btn btn-ghost">
-              See all events <span className="arr">→</span>
-            </Link>
-          </div>
-          <div className="events">
-            {EVENTS.map((ev) => (
-              <div className="event" key={ev.title}>
-                <div className="event-img" style={{ background: ev.bg }}>
-                  <div className="event-date">
-                    <div className="d">{ev.d}</div>
-                    <div className="m">{ev.m}</div>
-                  </div>
-                </div>
-                <div className="event-body">
-                  <div className="event-vibe">{ev.vibe}</div>
-                  <h3>{ev.title}</h3>
-                  <div className="event-meta">{ev.meta}</div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* ===================== MENU RATINGS ===================== */}
       <section className="sec-warm" id="about">
         <div className="wrap taste-grid">
           <div>
-            <div className="eyebrow">Taste · Menu ratings</div>
-            <h2 className="h-sec" style={{ margin: "16px 0 18px" }}>
-              Restaurants competing
+            <h2 className="h-sec" style={{ margin: "0 0 18px" }}>
+              Rate the dish,
               <br />
-              with <em>themselves</em>.
+              not the room.
             </h2>
             <p className="lead">
-              After your visit, rate individual dishes. Venues see which items
-              are loved — and which to drop. Your taste shapes the menu.
+              After you eat, thumbs on individual plates. Kitchens see what
+              people finish — and what to take off.
             </p>
           </div>
           <div className="dishes">
@@ -661,7 +564,11 @@ export default function HomePage() {
                 <span className="dish-bar">
                   <i style={{ width: `${dish.pct}%` }}></i>
                 </span>
-                <button className="vote up" onClick={() => vote(i, "up")}>
+                <button
+                  className="vote up"
+                  onClick={() => vote(i, "up")}
+                  aria-label={`Upvote ${dish.name}`}
+                >
                   <svg
                     viewBox="0 0 24 24"
                     fill="none"
@@ -672,7 +579,11 @@ export default function HomePage() {
                   </svg>
                   <b>{dish.up}</b>
                 </button>
-                <button className="vote down" onClick={() => vote(i, "down")}>
+                <button
+                  className="vote down"
+                  onClick={() => vote(i, "down")}
+                  aria-label={`Downvote ${dish.name}`}
+                >
                   <svg
                     viewBox="0 0 24 24"
                     fill="none"
@@ -692,17 +603,14 @@ export default function HomePage() {
       {/* ===================== APP CTA ===================== */}
       <section className="sec-dark app-cta" id="app">
         <div className="inner">
-          <div className="eyebrow on-dark" style={{ justifyContent: "center" }}>
-            App
-          </div>
           <h2 className="h-sec">
-            Reserve your seat.
+            On the phone
             <br />
-            <em>Save the hassle.</em>
+            for the door.
           </h2>
           <p className="lead on-dark" style={{ margin: "0 auto" }}>
-            Full booking available on web — or download the app for QR entry,
-            push alerts, and exclusive in-app deals.
+            Booking works in the browser. The app is for the QR, the ping when
+            your table&apos;s ready, and a few deals that stay in-app.
           </p>
           <div className="store-btns">
             <Link
@@ -738,33 +646,9 @@ export default function HomePage() {
       </section>
 
       {/* ===================== FAQ ===================== */}
-      <section
-        className="wrap"
-        style={{
-          maxWidth: "none",
-          paddingLeft: "var(--pad)",
-          paddingRight: "var(--pad)",
-        }}
-      >
+      <section className="sec-list">
         <div className="faq-wrap">
-          <div
-            className="sec-head"
-            style={{
-              textAlign: "center",
-              maxWidth: "none",
-              marginBottom: "clamp(32px,4vw,52px)",
-            }}
-          >
-            <div className="eyebrow" style={{ justifyContent: "center" }}>
-              FAQ
-            </div>
-            <h2 className="h-sec" style={{ marginTop: "14px" }}>
-              Frequently asked questions
-            </h2>
-            <p className="lead" style={{ margin: "14px auto 0" }}>
-              Everything you need to know before your first booking.
-            </p>
-          </div>
+          <h2 className="h-sec faq-h">Before you go out</h2>
           <div>
             {FAQS.map((faq, i) => {
               const open = openFaq === i;

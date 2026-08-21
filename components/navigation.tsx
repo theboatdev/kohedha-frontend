@@ -73,13 +73,13 @@ export function Navigation() {
       {/* Right side: CTA + mobile toggle */}
       <div style={{ display: "flex", alignItems: "center", gap: "14px" }}>
         <Link
-          href="/#app"
+          href="/vendors/register"
           className="hidden md:inline-block font-poppins"
           style={{
             fontSize: "13px",
             fontWeight: 700,
-            color: "#0D0D0D",
-            background: "#F5E642",
+            color: "#F5E642",
+            background: "#0D0D0D",
             padding: "10px 18px",
             borderRadius: "10px",
             textDecoration: "none",
@@ -89,7 +89,7 @@ export function Navigation() {
           onMouseEnter={(e) => (e.currentTarget.style.opacity = "0.88")}
           onMouseLeave={(e) => (e.currentTarget.style.opacity = "1")}
         >
-          Get the app
+          List your venue
         </Link>
 
         {/* Mobile toggle */}
@@ -181,22 +181,22 @@ export function Navigation() {
             </Link>
           ))}
           <Link
-            href="/#app"
+            href="/vendors/register"
             onClick={() => setIsOpen(false)}
             className="font-poppins"
             style={{
               display: "inline-block",
               fontSize: "13px",
               fontWeight: 700,
-              color: "#0D0D0D",
-              background: "#F5E642",
+              color: "#F5E642",
+              background: "#0D0D0D",
               padding: "10px 18px",
               borderRadius: "10px",
               textDecoration: "none",
               textAlign: "center",
             }}
           >
-            Get the app
+            List your venue
           </Link>
         </div>
       )}
