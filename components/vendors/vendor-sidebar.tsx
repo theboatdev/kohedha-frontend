@@ -8,20 +8,60 @@ import {
   CalendarDays,
   Tag,
   LayoutDashboard,
+  Users,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useVendorSession } from "./vendor-session-provider";
+import type { VendorPermission } from "@/lib/auth";
 
 interface VendorSidebarProps {
   className?: string;
   onLinkClick?: () => void;
 }
 
-const menuItems = [
-  { title: "Dashboard", icon: LayoutDashboard, href: "/vendors/dashboard" },
-  { title: "Venue Details", icon: Building2, href: "/vendors/venue-details" },
-  { title: "Menu Details", icon: UtensilsCrossed, href: "/vendors/menu" },
-  { title: "Manage Events", icon: CalendarDays, href: "/vendors/events" },
-  { title: "Manage Deals", icon: Tag, href: "/vendors/deals" },
+const menuItems: {
+  title: string;
+  icon: typeof LayoutDashboard;
+  href: string;
+  permissions?: VendorPermission[];
+  ownerOnly?: boolean;
+}[] = [
+  {
+    title: "Dashboard",
+    icon: LayoutDashboard,
+    href: "/vendors/dashboard",
+    permissions: ["dashboard"],
+  },
+  {
+    title: "Venue Details",
+    icon: Building2,
+    href: "/vendors/venue-details",
+    permissions: ["venue"],
+  },
+  {
+    title: "Menu Details",
+    icon: UtensilsCrossed,
+    href: "/vendors/menu",
+    permissions: ["menu"],
+  },
+  {
+    title: "Manage Events",
+    icon: CalendarDays,
+    href: "/vendors/events",
+    permissions: ["events"],
+  },
+  {
+    title: "Manage Deals",
+    icon: Tag,
+    href: "/vendors/deals",
+    permissions: ["deals", "redeem"],
+  },
+  {
+    title: "Team",
+    icon: Users,
+    href: "/vendors/team",
+    ownerOnly: true,
+  },
 ];
 
 const NAV = {
@@ -33,6 +73,14 @@ const NAV = {
 
 export function VendorSidebar({ className, onLinkClick }: VendorSidebarProps) {
   const pathname = usePathname();
+  const { isOwner, hasPermission, isLoading } = useVendorSession();
+
+  const visibleItems = menuItems.filter((item) => {
+    if (isLoading) return false;
+    if (item.ownerOnly) return isOwner;
+    if (!item.permissions || item.permissions.length === 0) return true;
+    return item.permissions.some((key) => hasPermission(key));
+  });
 
   return (
     <div
@@ -85,7 +133,7 @@ export function VendorSidebar({ className, onLinkClick }: VendorSidebarProps) {
             gap: "2px",
           }}
         >
-          {menuItems.map((item) => {
+          {visibleItems.map((item) => {
             const Icon = item.icon;
             const isActive =
               pathname === item.href || pathname?.startsWith(item.href + "/");

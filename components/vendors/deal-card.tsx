@@ -57,6 +57,7 @@ type DealCardProps = {
   onStatusChange: (id: string, status: DealStatus) => void;
   onEdit: (id: string) => void;
   onDelete: (id: string) => void;
+  canManage?: boolean;
 };
 
 const statusConfig: Record<
@@ -104,9 +105,10 @@ const categoryLabels: Record<DealCategory, string> = {
 
 export function DealCard({
   deal,
-  onStatusChange,
+  onStatusChange: _onStatusChange,
   onEdit,
   onDelete,
+  canManage = true,
 }: DealCardProps) {
   const cfg = statusConfig[deal.status];
 
@@ -197,7 +199,7 @@ export function DealCard({
             </h3>
           </div>
 
-          {/* Actions */}
+          {canManage && (
           <div className="flex items-center gap-1.5 flex-shrink-0">
             <button
               onClick={() => onEdit(deal.id)}
@@ -214,6 +216,7 @@ export function DealCard({
               <Trash2 className="w-4 h-4" />
             </button>
           </div>
+          )}
         </div>
 
         {/* Description */}

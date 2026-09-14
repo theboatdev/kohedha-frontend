@@ -4,6 +4,7 @@ import { LogOut, CalendarClock, Menu } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useVendorSession } from "./vendor-session-provider";
 
 interface VendorHeaderProps {
   pageTitle?: string;
@@ -20,6 +21,8 @@ export function VendorHeader({
 }: VendorHeaderProps) {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
+  const { hasPermission, isLoading: sessionLoading } = useVendorSession();
+  const showReservations = !sessionLoading && hasPermission("reservations");
 
   const handleSignOut = async () => {
     if (onSignOut) {
@@ -85,6 +88,7 @@ export function VendorHeader({
       </div>
 
       <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+        {showReservations && (
         <button
           onClick={handleReservationPortal}
           title="Reservation Portal"
@@ -116,6 +120,7 @@ export function VendorHeader({
           <CalendarClock style={{ width: 15, height: 15 }} />
           <span className="hidden sm:inline">Reservations</span>
         </button>
+        )}
 
         <button
           onClick={handleSignOut}

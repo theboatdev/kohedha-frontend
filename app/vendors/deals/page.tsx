@@ -1,7 +1,6 @@
 "use client";
 
 import { useMemo, useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
 import { VendorLayout } from "@/components/vendors/vendor-layout";
 import {
   CreateDealDialog,
@@ -25,8 +24,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Tag, Search, Filter, Plus, Ticket, Stamp } from "lucide-react";
-import { signOutVendor } from "@/lib/auth";
 import { useToast } from "@/hooks/use-toast";
+import { useVendorSession } from "@/components/vendors/vendor-session-provider";
 import {
   createDeal,
   getVendorDeals,
@@ -130,8 +129,18 @@ function transformToBackendDeal(frontendDeal: NewDealData) {
 }
 
 export default function DealsManagementPage() {
-  const router = useRouter();
+  return (
+    <VendorLayout pageTitle="Manage Deals">
+      <DealsManagementContent />
+    </VendorLayout>
+  );
+}
+
+function DealsManagementContent() {
   const { toast } = useToast();
+  const { hasPermission } = useVendorSession();
+  const canManageDeals = hasPermission("deals");
+  const canRedeem = hasPermission("redeem");
   const [deals, setDeals] = useState<DealItem[]>(initialDeals);
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState<string>("all");
@@ -168,16 +177,6 @@ export default function DealsManagementPage() {
 
     loadDeals();
   }, []);
-
-  const handleSignOut = async () => {
-    try {
-      await signOutVendor();
-      router.push("/vendors/login");
-    } catch (error) {
-      console.error("Sign out error:", error);
-      router.push("/vendors/login");
-    }
-  };
 
   const filteredDeals = useMemo(() => {
     return deals.filter((deal) => {
@@ -340,7 +339,7 @@ export default function DealsManagementPage() {
   };
 
   return (
-    <VendorLayout onSignOut={handleSignOut} pageTitle="Manage Deals">
+    <>
       <div style={{ minHeight: "100vh", background: "#F0F0EE" }}>
         <div className="max-w-7xl mx-auto px-4 py-6 sm:px-6 sm:py-8 lg:py-12">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-12">
@@ -361,6 +360,7 @@ export default function DealsManagementPage() {
             </div>
 
             <div className="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
+              {canRedeem && (
               <Button
                 onClick={() => setRedeemDialogOpen(true)}
                 variant="outline"
@@ -376,6 +376,8 @@ export default function DealsManagementPage() {
                 <Ticket className="w-4 h-4 mr-2" />
                 Redeem Vouchers
               </Button>
+              )}
+              {canRedeem && (
               <Button
                 onClick={() => setStampDialogOpen(true)}
                 variant="outline"
@@ -391,6 +393,8 @@ export default function DealsManagementPage() {
                 <Stamp className="w-4 h-4 mr-2" />
                 Add Stamp
               </Button>
+              )}
+              {canManageDeals && (
               <Button
                 onClick={() => setIsDialogOpen(true)}
                 className="h-12 font-poppins font-medium md:w-auto w-full"
@@ -410,6 +414,7 @@ export default function DealsManagementPage() {
                 <Plus className="w-4 h-4 mr-2" />
                 Create Deal
               </Button>
+              )}
             </div>
           </div>
 
@@ -513,6 +518,7 @@ export default function DealsManagementPage() {
                       onStatusChange={handleStatusChange}
                       onEdit={handleEdit}
                       onDelete={handleDelete}
+                      canManage={canManageDeals}
                     />
                   ))}
                 </div>
@@ -522,6 +528,8 @@ export default function DealsManagementPage() {
         </div>
       </div>
 
+      {canManageDeals && (
+        <>
       <CreateDealDialog
         open={isDialogOpen}
         onOpenChange={(open) => {
@@ -581,6 +589,8 @@ export default function DealsManagementPage() {
         title="Delete Deal"
         description="Are you sure you want to delete this deal? This action cannot be undone."
       />
+        </>
+      )}
 
       <RedeemVoucherDialog
         open={redeemDialogOpen}
@@ -591,6 +601,6 @@ export default function DealsManagementPage() {
         open={stampDialogOpen}
         onOpenChange={setStampDialogOpen}
       />
-    </VendorLayout>
+    </>
   );
 }

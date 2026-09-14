@@ -3,6 +3,10 @@
 import { useState } from "react";
 import { ReservationPortalSidebar } from "./reservation-portal-sidebar";
 import { ReservationPortalHeader } from "./reservation-portal-header";
+import {
+  VendorRouteGuard,
+  VendorSessionProvider,
+} from "./vendor-session-provider";
 
 interface ReservationPortalLayoutProps {
   children: React.ReactNode;
@@ -24,6 +28,7 @@ export function ReservationPortalLayout({
   const contentMargin = sidebarOpen ? "md:ml-48" : "md:ml-14";
 
   return (
+    <VendorSessionProvider>
     <div
       className="font-dm-sans"
       style={{
@@ -90,9 +95,10 @@ export function ReservationPortalLayout({
           actions={headerActions}
         />
         <main style={{ flex: 1, overflowY: "auto", background: "#F0F0EE" }}>
-          {children}
+          <VendorRouteGuard>{children}</VendorRouteGuard>
         </main>
       </div>
     </div>
+    </VendorSessionProvider>
   );
 }

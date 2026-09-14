@@ -4,6 +4,10 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { VendorSidebar } from "./vendor-sidebar";
 import { VendorHeader } from "./vendor-header";
+import {
+  VendorRouteGuard,
+  VendorSessionProvider,
+} from "./vendor-session-provider";
 import { signOutVendor } from "@/lib/auth";
 
 interface VendorLayoutProps {
@@ -32,6 +36,7 @@ export function VendorLayout({
   const handleSignOut = onSignOut ?? defaultSignOut;
 
   return (
+    <VendorSessionProvider>
     <div
       className="font-dm-sans"
       style={{
@@ -87,9 +92,10 @@ export function VendorLayout({
           onMobileMenuToggle={() => setMobileNavOpen((prev) => !prev)}
         />
         <main style={{ flex: 1, overflowY: "auto", background: "#F0F0EE" }}>
-          {children}
+          <VendorRouteGuard>{children}</VendorRouteGuard>
         </main>
       </div>
     </div>
+    </VendorSessionProvider>
   );
 }

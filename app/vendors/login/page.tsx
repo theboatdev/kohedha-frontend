@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Input } from "@/components/ui/input";
 import { GoogleSignInButton } from "@/components/vendors/google-signin-button";
-import { loginVendor } from "@/lib/auth";
+import { loginVendor, resolveVendorPostLoginPath } from "@/lib/auth";
 import { Mail, Lock } from "lucide-react";
 
 const C = {
@@ -49,15 +49,7 @@ export default function VendorLoginPage() {
       const result = await loginVendor(trimmedEmail, password);
 
       if (result.success) {
-        const registrationStep = result.data?.registrationStep || 3;
-
-        if (registrationStep === 1) {
-          router.push("/vendors/register/step-2");
-        } else if (registrationStep === 2) {
-          router.push("/vendors/register/step-3");
-        } else {
-          router.push("/vendors/dashboard");
-        }
+        router.push(resolveVendorPostLoginPath(result.data));
         return;
       }
 
