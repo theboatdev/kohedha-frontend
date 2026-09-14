@@ -163,16 +163,16 @@ export default function SettingsPage() {
                 onClick={() => setIsCreateDialogOpen(true)}
                 className="font-poppins flex items-center gap-2"
                 style={{
-                  background: "#F5E642",
+                  background: "#F0F0EE",
                   color: "#0D0D0D",
                   borderRadius: "40px",
                   padding: "13px 28px",
                 }}
                 onMouseEnter={(e) =>
-                  (e.currentTarget.style.background = "#E8D800")
+                  (e.currentTarget.style.background = "#E8E8E4")
                 }
                 onMouseLeave={(e) =>
-                  (e.currentTarget.style.background = "#F5E642")
+                  (e.currentTarget.style.background = "#F0F0EE")
                 }
               >
                 <Plus className="h-4 w-4" />

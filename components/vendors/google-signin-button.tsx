@@ -23,7 +23,7 @@ export function GoogleSignInButton({
       type="button"
       variant="outline"
       onClick={handleGoogleSignIn}
-      className={`w-full font-poppins font-medium border-2 border-[#F5E642] transition-all duration-200 ${
+      className={`w-full font-poppins font-medium border-2 border-[#F0F0EE] transition-all duration-200 ${
         dark
           ? "bg-transparent text-white hover:bg-white/10"
           : "hover:bg-gray-50"

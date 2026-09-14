@@ -199,8 +199,8 @@ export default function ReservationsPage() {
               icon={AlertCircle}
               value={stats.pending}
               label="Pending"
-              iconBgColor="bg-yellow-50"
-              iconColor="text-yellow-600"
+              iconBgColor="#F0F0EE"
+              iconColor="#8A8A86"
             />
             <StatsCard
               icon={CheckCircle}

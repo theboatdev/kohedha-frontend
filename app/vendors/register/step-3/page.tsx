@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, FormEvent, useEffect } from "react";
+import { useState, FormEvent, useEffect, useRef } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -15,6 +15,8 @@ import {
   FileText,
   CheckCircle2,
   ArrowLeft,
+  ImagePlus,
+  X,
 } from "lucide-react";
 
 type Step3Draft = {
@@ -39,9 +41,40 @@ export default function RegistrationStep3Page() {
   const [website, setWebsite] = useState("");
   const [description, setDescription] = useState("");
 
+  const [mainImageFile, setMainImageFile] = useState<File | undefined>(
+    undefined,
+  );
+  const [mainImagePreview, setMainImagePreview] = useState<
+    string | undefined
+  >(undefined);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [generalError, setGeneralError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleImageFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (mainImagePreview) URL.revokeObjectURL(mainImagePreview);
+    setMainImageFile(file);
+    setMainImagePreview(URL.createObjectURL(file));
+  };
+
+  const handleRemoveImage = () => {
+    if (mainImagePreview) URL.revokeObjectURL(mainImagePreview);
+    setMainImageFile(undefined);
+    setMainImagePreview(undefined);
+    if (fileInputRef.current) fileInputRef.current.value = "";
+  };
+
+  // Revoke the preview object URL on unmount to avoid leaking memory
+  useEffect(() => {
+    return () => {
+      if (mainImagePreview) URL.revokeObjectURL(mainImagePreview);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- cleanup only
+  }, []);
 
   // Load saved draft from localStorage on mount
   useEffect(() => {
@@ -101,24 +134,27 @@ export default function RegistrationStep3Page() {
     setIsSubmitting(true);
 
     try {
-      const result = await completeRegistrationStep({
-        currentStep: 3,
-        location: location
-          ? {
-              streetAddress: location.streetAddress,
-              city: location.city,
-              district: location.district,
-              postalCode: location.postalCode,
-              country: location.country || "Sri Lanka",
-              coordinates: {
-                lat: location.coordinates.lat,
-                lng: location.coordinates.lng,
-              },
-            }
-          : undefined,
-        website: website.trim() || undefined,
-        description: description.trim() || undefined,
-      });
+      const result = await completeRegistrationStep(
+        {
+          currentStep: 3,
+          location: location
+            ? {
+                streetAddress: location.streetAddress,
+                city: location.city,
+                district: location.district,
+                postalCode: location.postalCode,
+                country: location.country || "Sri Lanka",
+                coordinates: {
+                  lat: location.coordinates.lat,
+                  lng: location.coordinates.lng,
+                },
+              }
+            : undefined,
+          website: website.trim() || undefined,
+          description: description.trim() || undefined,
+        },
+        mainImageFile,
+      );
 
       if (result.success) {
         localStorage.removeItem("registration_step2");
@@ -191,6 +227,72 @@ export default function RegistrationStep3Page() {
                 />
               </div>
 
+              {/* Venue Photo Section */}
+              <div className="space-y-5">
+                <div className="pb-2 border-b border-gray-200">
+                  <h3 className="font-poppins font-semibold text-lg flex items-center gap-2" style={{ color: "#0D0D0D" }}>
+                    <ImagePlus className="h-5 w-5" />
+                    Venue Photo
+                  </h3>
+                  <p className="font-poppins text-sm text-gray-600 mt-1">
+                    Add a photo of your venue{" "}
+                    <span className="text-gray-400">(optional)</span>
+                  </p>
+                </div>
+
+                <div className="space-y-2">
+                  {mainImagePreview ? (
+                    <div
+                      className="relative rounded-xl overflow-hidden border border-gray-200 bg-gray-50"
+                      style={{ height: "180px" }}
+                    >
+                      <img
+                        src={mainImagePreview}
+                        alt="Venue preview"
+                        className="w-full h-full object-cover"
+                      />
+                      <button
+                        type="button"
+                        onClick={handleRemoveImage}
+                        className="absolute top-2 right-2 p-1.5 rounded-full bg-black/60 text-white hover:bg-black/80 transition-colors"
+                      >
+                        <X className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={() => fileInputRef.current?.click()}
+                      className="w-full border-2 border-dashed border-gray-200 rounded-xl p-8 flex flex-col items-center gap-2 text-gray-400 hover:border-gray-400 hover:text-gray-600 transition-colors bg-gray-50"
+                    >
+                      <ImagePlus className="w-8 h-8" />
+                      <span className="font-poppins text-sm">
+                        Click to upload a photo of your venue
+                      </span>
+                      <span className="font-poppins text-xs">
+                        JPG, PNG, WebP · max 5 MB
+                      </span>
+                    </button>
+                  )}
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    accept="image/jpeg,image/png,image/webp"
+                    className="hidden"
+                    onChange={handleImageFileChange}
+                  />
+                  {mainImagePreview && (
+                    <button
+                      type="button"
+                      onClick={() => fileInputRef.current?.click()}
+                      className="font-poppins text-xs text-gray-500 hover:text-gray-700 underline"
+                    >
+                      Replace image
+                    </button>
+                  )}
+                </div>
+              </div>
+
               {/* Additional Information Section */}
               <div className="space-y-5">
                 <div className="pb-2 border-b border-gray-200">
@@ -260,7 +362,7 @@ export default function RegistrationStep3Page() {
                   type="submit"
                   disabled={isSubmitting}
                   className="font-poppins font-semibold h-12 px-8 transition-all duration-200 gap-2 rounded-full"
-                  style={{ background: isSubmitting ? "rgba(13,13,13,0.08)" : "#F5E642", color: isSubmitting ? "rgba(13,13,13,0.48)" : "#0D0D0D", border: "none" }}
+                  style={{ background: isSubmitting ? "rgba(13,13,13,0.08)" : "#F0F0EE", color: isSubmitting ? "rgba(13,13,13,0.48)" : "#0D0D0D", border: "none" }}
                 >
                   {isSubmitting ? "Completing..." : "Complete Registration"}
                   {!isSubmitting && <CheckCircle2 className="h-4 w-4" />}

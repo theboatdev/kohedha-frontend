@@ -8,6 +8,8 @@ import {
   type NewDealData,
 } from "@/components/vendors/create-deal-dialog";
 import { DeleteConfirmationDialog } from "@/components/vendors/delete-confirmation-dialog";
+import { RedeemVoucherDialog } from "@/components/vendors/redeem-voucher-dialog";
+import { StampLoyaltyDialog } from "@/components/vendors/stamp-loyalty-dialog";
 import {
   DealCard,
   type DealItem,
@@ -22,7 +24,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Tag, Search, Filter, Plus } from "lucide-react";
+import { Tag, Search, Filter, Plus, Ticket, Stamp } from "lucide-react";
 import { signOutVendor } from "@/lib/auth";
 import { useToast } from "@/hooks/use-toast";
 import {
@@ -61,11 +63,26 @@ function transformDeal(backendDeal: Deal): DealItem {
     createdAt: backendDeal.createdAt,
     startDate: backendDeal.startDate,
     endDate: backendDeal.endDate,
+    dealType: backendDeal.dealType,
+    activeWindow: backendDeal.activeWindow,
+    voucherConfig: backendDeal.voucherConfig,
+    limitedQuantityConfig: backendDeal.limitedQuantityConfig,
+    loyaltyConfig: backendDeal.loyaltyConfig,
+    isActiveNow: backendDeal.isActiveNow,
   };
 }
 
 // Helper function to transform frontend NewDealData to backend CreateDealData
 function transformToBackendDeal(frontendDeal: NewDealData) {
+  // Strip empty activeWindow so the server uses its schema defaults
+  const activeWindow =
+    frontendDeal.activeWindow &&
+    (frontendDeal.activeWindow.daysOfWeek.length > 0 ||
+      frontendDeal.activeWindow.startTime ||
+      frontendDeal.activeWindow.endTime)
+      ? frontendDeal.activeWindow
+      : undefined;
+
   return {
     dealName: frontendDeal.dealName,
     description: frontendDeal.description,
@@ -80,6 +97,35 @@ function transformToBackendDeal(frontendDeal: NewDealData) {
     isPublished: frontendDeal.isPublished || false,
     startDate: frontendDeal.startDate,
     endDate: frontendDeal.endDate,
+    dealType: frontendDeal.dealType || "ambient",
+    activeWindow,
+    voucherConfig:
+      frontendDeal.dealType === "voucher"
+        ? frontendDeal.voucherConfig
+        : undefined,
+    limitedQuantityConfig:
+      frontendDeal.dealType === "limited-quantity"
+        ? {
+            totalQuantity: Number(
+              frontendDeal.limitedQuantityConfig?.totalQuantity,
+            ),
+            claimExpiryMinutes: Number(
+              frontendDeal.limitedQuantityConfig?.claimExpiryMinutes,
+            ) || 30,
+            rewardLabel:
+              frontendDeal.limitedQuantityConfig?.rewardLabel || "",
+          }
+        : undefined,
+    loyaltyConfig:
+      frontendDeal.dealType === "loyalty"
+        ? {
+            stampsRequired:
+              Number(frontendDeal.loyaltyConfig?.stampsRequired) || 9,
+            claimExpiryMinutes:
+              Number(frontendDeal.loyaltyConfig?.claimExpiryMinutes) || 10080,
+            rewardLabel: frontendDeal.loyaltyConfig?.rewardLabel || "",
+          }
+        : undefined,
   };
 }
 
@@ -95,6 +141,8 @@ export default function DealsManagementPage() {
   const [editingDeal, setEditingDeal] = useState<DealItem | null>(null);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [dealToDelete, setDealToDelete] = useState<string | null>(null);
+  const [redeemDialogOpen, setRedeemDialogOpen] = useState(false);
+  const [stampDialogOpen, setStampDialogOpen] = useState(false);
 
   // Load deals on mount
   useEffect(() => {
@@ -171,8 +219,11 @@ export default function DealsManagementPage() {
     } catch (err) {
       console.error("Failed to create deal:", err);
       toast({
-        title: "Error",
-        description: "Failed to create deal. Please try again.",
+        title: "Couldn't create deal",
+        description:
+          err instanceof Error
+            ? err.message
+            : "Failed to create deal. Please try again.",
         variant: "destructive",
       });
     }
@@ -278,8 +329,11 @@ export default function DealsManagementPage() {
     } catch (err) {
       console.error("Failed to update deal:", err);
       toast({
-        title: "Error",
-        description: "Failed to update deal. Please try again.",
+        title: "Couldn't update deal",
+        description:
+          err instanceof Error
+            ? err.message
+            : "Failed to update deal. Please try again.",
         variant: "destructive",
       });
     }
@@ -306,25 +360,57 @@ export default function DealsManagementPage() {
               </div>
             </div>
 
-            <Button
-              onClick={() => setIsDialogOpen(true)}
-              className="h-12 font-poppins font-medium md:w-auto w-full"
-              style={{
-                background: "#F5E642",
-                color: "#0D0D0D",
-                borderRadius: "40px",
-                padding: "13px 28px",
-              }}
-              onMouseEnter={(e) =>
-                (e.currentTarget.style.background = "#E8D800")
-              }
-              onMouseLeave={(e) =>
-                (e.currentTarget.style.background = "#F5E642")
-              }
-            >
-              <Plus className="w-4 h-4 mr-2" />
-              Create Deal
-            </Button>
+            <div className="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
+              <Button
+                onClick={() => setRedeemDialogOpen(true)}
+                variant="outline"
+                className="h-12 font-poppins font-medium md:w-auto w-full"
+                style={{
+                  background: "#ffffff",
+                  color: "#0D0D0D",
+                  border: "1px solid rgba(13,13,13,0.15)",
+                  borderRadius: "40px",
+                  padding: "13px 28px",
+                }}
+              >
+                <Ticket className="w-4 h-4 mr-2" />
+                Redeem Vouchers
+              </Button>
+              <Button
+                onClick={() => setStampDialogOpen(true)}
+                variant="outline"
+                className="h-12 font-poppins font-medium md:w-auto w-full"
+                style={{
+                  background: "#ffffff",
+                  color: "#0D0D0D",
+                  border: "1px solid rgba(13,13,13,0.15)",
+                  borderRadius: "40px",
+                  padding: "13px 28px",
+                }}
+              >
+                <Stamp className="w-4 h-4 mr-2" />
+                Add Stamp
+              </Button>
+              <Button
+                onClick={() => setIsDialogOpen(true)}
+                className="h-12 font-poppins font-medium md:w-auto w-full"
+                style={{
+                  background: "#F0F0EE",
+                  color: "#0D0D0D",
+                  borderRadius: "40px",
+                  padding: "13px 28px",
+                }}
+                onMouseEnter={(e) =>
+                  (e.currentTarget.style.background = "#E8E8E4")
+                }
+                onMouseLeave={(e) =>
+                  (e.currentTarget.style.background = "#F0F0EE")
+                }
+              >
+                <Plus className="w-4 h-4 mr-2" />
+                Create Deal
+              </Button>
+            </div>
           </div>
 
           <div
@@ -374,7 +460,7 @@ export default function DealsManagementPage() {
                 <div className="text-center py-12">
                   <div
                     className="inline-block animate-spin rounded-full border-b-2 w-8 h-8 mb-4"
-                    style={{ borderColor: "#F5E642" }}
+                    style={{ borderColor: "#F0F0EE" }}
                   ></div>
                   <p className="font-poppins" style={{ color: "rgba(13,13,13,0.48)" }}>
                     Loading deals...
@@ -393,16 +479,16 @@ export default function DealsManagementPage() {
                     onClick={() => window.location.reload()}
                     className="font-poppins"
                     style={{
-                      background: "#F5E642",
+                      background: "#F0F0EE",
                       color: "#0D0D0D",
                       borderRadius: "40px",
                       padding: "13px 28px",
                     }}
                     onMouseEnter={(e) =>
-                      (e.currentTarget.style.background = "#E8D800")
+                      (e.currentTarget.style.background = "#E8E8E4")
                     }
                     onMouseLeave={(e) =>
-                      (e.currentTarget.style.background = "#F5E642")
+                      (e.currentTarget.style.background = "#F0F0EE")
                     }
                   >
                     Retry
@@ -458,6 +544,30 @@ export default function DealsManagementPage() {
                 isPublished: (editingDeal as any).backendData.isPublished,
                 startDate: (editingDeal as any).backendData.startDate,
                 endDate: (editingDeal as any).backendData.endDate,
+                dealType:
+                  (editingDeal as any).backendData.dealType ?? "ambient",
+                activeWindow: (editingDeal as any).backendData.activeWindow ?? {
+                  daysOfWeek: [],
+                  startTime: "",
+                  endTime: "",
+                },
+                voucherConfig: (editingDeal as any).backendData
+                  .voucherConfig ?? {
+                  claimExpiryMinutes: 120,
+                  rewardLabel: "",
+                },
+                limitedQuantityConfig: (editingDeal as any).backendData
+                  .limitedQuantityConfig ?? {
+                  totalQuantity: 50,
+                  claimExpiryMinutes: 30,
+                  rewardLabel: "",
+                },
+                loyaltyConfig: (editingDeal as any).backendData
+                  .loyaltyConfig ?? {
+                  stampsRequired: 9,
+                  claimExpiryMinutes: 10080,
+                  rewardLabel: "",
+                },
               }
             : undefined
         }
@@ -470,6 +580,16 @@ export default function DealsManagementPage() {
         onConfirm={confirmDeleteDeal}
         title="Delete Deal"
         description="Are you sure you want to delete this deal? This action cannot be undone."
+      />
+
+      <RedeemVoucherDialog
+        open={redeemDialogOpen}
+        onOpenChange={setRedeemDialogOpen}
+      />
+
+      <StampLoyaltyDialog
+        open={stampDialogOpen}
+        onOpenChange={setStampDialogOpen}
       />
     </VendorLayout>
   );

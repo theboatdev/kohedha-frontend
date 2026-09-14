@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, FormEvent } from "react";
+import { useState, useEffect, useRef, FormEvent } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { VendorLayout } from "@/components/vendors/vendor-layout";
@@ -9,14 +9,18 @@ import { FormSection } from "@/components/vendors/form-section";
 import { AlertMessage } from "@/components/vendors/alert-message";
 import { VenueFormField } from "@/components/vendors/venue-form-field";
 import { LocationMapSelector } from "@/components/vendors/location-map-selector";
-import { MapPin, Edit2, Save, X } from "lucide-react";
+import { MapPin, Edit2, Save, X, Image as ImageIcon, ImagePlus, Loader2 } from "lucide-react";
 import { signOutVendor } from "@/lib/auth";
 import { validateSriLankanMobile, SL_MOBILE_ERROR } from "@/lib/validators";
 import { useToast } from "@/hooks/use-toast";
 import {
   getVenueDetails,
   updateVenueDetails,
+  updateVenueMainImage,
+  addVenueImages,
+  deleteVenueImage,
   type VenueDetailsData,
+  type VenueImage,
 } from "@/lib/venue";
 import type { SelectedLocation } from "@/types/location";
 
@@ -53,10 +57,20 @@ export default function VenueDetailsPage() {
     website: "",
     description: "",
     location: { country: "Sri Lanka" },
+    mainImage: undefined,
+    images: [],
   });
 
   // Derived SelectedLocation state — kept in sync with venueData.location
   const [selectedLocation, setSelectedLocation] = useState<SelectedLocation | null>(null);
+
+  // Venue photo state — these actions apply immediately, independent of the
+  // Edit Details/Save Changes flow used for the text fields above.
+  const [isUploadingMainImage, setIsUploadingMainImage] = useState(false);
+  const [isUploadingGalleryImages, setIsUploadingGalleryImages] = useState(false);
+  const [deletingImageId, setDeletingImageId] = useState<string | null>(null);
+  const mainImageInputRef = useRef<HTMLInputElement>(null);
+  const galleryInputRef = useRef<HTMLInputElement>(null);
 
   // Load venue data on mount
   useEffect(() => {
@@ -73,6 +87,8 @@ export default function VenueDetailsPage() {
             website: result.data.website || "",
             description: result.data.description || "",
             location: result.data.location || { country: "Sri Lanka" },
+            mainImage: result.data.mainImage,
+            images: result.data.images || [],
           });
           setSelectedLocation(locationDataToSelected(result.data.location));
         } else {
@@ -190,6 +206,102 @@ export default function VenueDetailsPage() {
     router.push("/vendors/login");
   };
 
+  const handleMainImageFileChange = async (
+    e: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setIsUploadingMainImage(true);
+    try {
+      const result = await updateVenueMainImage(file);
+      if (result.success && result.data) {
+        setVenueData((prev) => ({ ...prev, mainImage: result.data!.mainImage }));
+        toast({
+          title: "Saved",
+          description: result.message || "Main image updated successfully!",
+        });
+      } else {
+        toast({
+          title: "Error",
+          description: result.message || "Failed to update main image.",
+          variant: "destructive",
+        });
+      }
+    } catch {
+      toast({
+        title: "Error",
+        description: "Unable to update main image. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsUploadingMainImage(false);
+      if (mainImageInputRef.current) mainImageInputRef.current.value = "";
+    }
+  };
+
+  const handleAddGalleryImages = async (
+    e: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    const files = e.target.files ? Array.from(e.target.files) : [];
+    if (files.length === 0) return;
+
+    setIsUploadingGalleryImages(true);
+    try {
+      const result = await addVenueImages(files);
+      if (result.success && result.data) {
+        setVenueData((prev) => ({ ...prev, images: result.data!.images }));
+        toast({
+          title: "Saved",
+          description: result.message || "Photos added successfully!",
+        });
+      } else {
+        toast({
+          title: "Error",
+          description: result.message || "Failed to add photos.",
+          variant: "destructive",
+        });
+      }
+    } catch {
+      toast({
+        title: "Error",
+        description: "Unable to add photos. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsUploadingGalleryImages(false);
+      if (galleryInputRef.current) galleryInputRef.current.value = "";
+    }
+  };
+
+  const handleDeleteGalleryImage = async (image: VenueImage) => {
+    setDeletingImageId(image._id);
+    try {
+      const result = await deleteVenueImage(image._id);
+      if (result.success && result.data) {
+        setVenueData((prev) => ({ ...prev, images: result.data!.images }));
+        toast({
+          title: "Removed",
+          description: result.message || "Photo removed successfully!",
+        });
+      } else {
+        toast({
+          title: "Error",
+          description: result.message || "Failed to remove photo.",
+          variant: "destructive",
+        });
+      }
+    } catch {
+      toast({
+        title: "Error",
+        description: "Unable to remove photo. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setDeletingImageId(null);
+    }
+  };
+
   if (isLoading) {
     return (
       <VendorLayout onSignOut={handleSignOut} pageTitle="Venue Details">
@@ -206,7 +318,7 @@ export default function VenueDetailsPage() {
           <div className="text-center">
             <div
               className="animate-spin rounded-full h-12 w-12 border-b-2 mx-auto mb-4"
-              style={{ borderColor: "#F5E642" }}
+              style={{ borderColor: "#F0F0EE" }}
             />
             <p className="font-poppins text-sm" style={{ color: "rgba(13,13,13,0.48)" }}>
               Loading venue details...
@@ -258,12 +370,12 @@ export default function VenueDetailsPage() {
                 <Button
                   onClick={() => setIsEditing(true)}
                   className="h-10 font-poppins font-medium"
-                  style={{ background: "#F5E642", color: "#0D0D0D" }}
+                  style={{ background: "#F0F0EE", color: "#0D0D0D" }}
                   onMouseEnter={(e) =>
-                    (e.currentTarget.style.background = "#E8D800")
+                    (e.currentTarget.style.background = "#E8E8E4")
                   }
                   onMouseLeave={(e) =>
-                    (e.currentTarget.style.background = "#F5E642")
+                    (e.currentTarget.style.background = "#F0F0EE")
                   }
                 >
                   <Edit2 className="w-4 h-4 mr-2" />
@@ -371,6 +483,155 @@ export default function VenueDetailsPage() {
                   </div>
                 </FormSection>
 
+                {/* Venue Photos Section — image add/change/delete controls are
+                    only shown while editing, like the rest of the form. */}
+                <FormSection title="Venue Photos" icon={ImageIcon}>
+                  <div className="space-y-6">
+                    {/* Main image */}
+                    <div className="space-y-2">
+                      <p className="text-sm font-medium font-poppins text-gray-900">
+                        Main Photo
+                      </p>
+                      <div className="flex items-center gap-4">
+                        <div
+                          className="relative rounded-xl overflow-hidden border border-gray-200 bg-gray-50 flex items-center justify-center"
+                          style={{ width: "160px", height: "120px" }}
+                        >
+                          {venueData.mainImage?.url ? (
+                            <img
+                              src={venueData.mainImage.url}
+                              alt="Venue main"
+                              className="w-full h-full object-cover"
+                            />
+                          ) : (
+                            <div className="flex flex-col items-center gap-1 text-gray-400">
+                              <ImageIcon className="w-6 h-6" />
+                              <span className="font-poppins text-xs">
+                                No photo set
+                              </span>
+                            </div>
+                          )}
+                          {isUploadingMainImage && (
+                            <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
+                              <Loader2 className="w-5 h-5 text-white animate-spin" />
+                            </div>
+                          )}
+                        </div>
+                        {isEditing ? (
+                          <div className="space-y-1">
+                            <Button
+                              type="button"
+                              variant="outline"
+                              onClick={() => mainImageInputRef.current?.click()}
+                              disabled={isUploadingMainImage}
+                              className="h-9 font-poppins text-sm"
+                              style={{
+                                borderColor: "rgba(13,13,13,0.18)",
+                                color: "#0D0D0D",
+                              }}
+                            >
+                              {venueData.mainImage?.url
+                                ? "Change Photo"
+                                : "Add Photo"}
+                            </Button>
+                            <p className="text-xs text-gray-400 font-poppins">
+                              JPG, PNG, WebP · max 5 MB
+                            </p>
+                          </div>
+                        ) : (
+                          !venueData.mainImage?.url && (
+                            <p className="text-sm font-poppins text-gray-500">
+                              No photo set yet. Click Edit Details to add one.
+                            </p>
+                          )
+                        )}
+                        <input
+                          ref={mainImageInputRef}
+                          type="file"
+                          accept="image/jpeg,image/png,image/webp"
+                          className="hidden"
+                          onChange={handleMainImageFileChange}
+                        />
+                      </div>
+                    </div>
+
+                    {/* Gallery */}
+                    <div className="space-y-2">
+                      <div className="flex items-center justify-between">
+                        <p className="text-sm font-medium font-poppins text-gray-900">
+                          Photo Gallery
+                        </p>
+                        {isEditing && (
+                          <Button
+                            type="button"
+                            variant="outline"
+                            onClick={() => galleryInputRef.current?.click()}
+                            disabled={isUploadingGalleryImages}
+                            className="h-9 font-poppins text-sm gap-2"
+                            style={{
+                              borderColor: "rgba(13,13,13,0.18)",
+                              color: "#0D0D0D",
+                            }}
+                          >
+                            {isUploadingGalleryImages ? (
+                              <Loader2 className="w-4 h-4 animate-spin" />
+                            ) : (
+                              <ImagePlus className="w-4 h-4" />
+                            )}
+                            Add Photos
+                          </Button>
+                        )}
+                        <input
+                          ref={galleryInputRef}
+                          type="file"
+                          accept="image/jpeg,image/png,image/webp"
+                          multiple
+                          className="hidden"
+                          onChange={handleAddGalleryImages}
+                        />
+                      </div>
+
+                      {venueData.images && venueData.images.length > 0 ? (
+                        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+                          {venueData.images.map((image) => (
+                            <div
+                              key={image._id}
+                              className="relative rounded-xl overflow-hidden border border-gray-200 bg-gray-50"
+                              style={{ aspectRatio: "1 / 1" }}
+                            >
+                              <img
+                                src={image.url}
+                                alt={image.caption || "Venue photo"}
+                                className="w-full h-full object-cover"
+                              />
+                              {isEditing && (
+                                <button
+                                  type="button"
+                                  onClick={() => handleDeleteGalleryImage(image)}
+                                  disabled={deletingImageId === image._id}
+                                  className="absolute top-1.5 right-1.5 p-1.5 rounded-full bg-black/60 text-white hover:bg-black/80 transition-colors disabled:opacity-60"
+                                >
+                                  {deletingImageId === image._id ? (
+                                    <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                                  ) : (
+                                    <X className="w-3.5 h-3.5" />
+                                  )}
+                                </button>
+                              )}
+                            </div>
+                          ))}
+                        </div>
+                      ) : (
+                        <p className="text-sm font-poppins text-gray-500">
+                          {isEditing
+                            ? "No gallery photos yet. Add some to showcase your venue."
+                            : "No gallery photos yet. Click Edit Details to add some."}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                </FormSection>
+
                 {/* Location Section */}
                 <FormSection title="Business Location" icon={MapPin}>
                   <div className="space-y-3">
@@ -412,12 +673,12 @@ export default function VenueDetailsPage() {
                     <Button
                       type="submit"
                       className="w-full sm:w-auto h-12 font-poppins font-medium shadow-lg hover:shadow-xl transition-all duration-200"
-                      style={{ background: "#F5E642", color: "#0D0D0D" }}
+                      style={{ background: "#F0F0EE", color: "#0D0D0D" }}
                       onMouseEnter={(e) =>
-                        (e.currentTarget.style.background = "#E8D800")
+                        (e.currentTarget.style.background = "#E8E8E4")
                       }
                       onMouseLeave={(e) =>
-                        (e.currentTarget.style.background = "#F5E642")
+                        (e.currentTarget.style.background = "#F0F0EE")
                       }
                       disabled={isSaving}
                     >

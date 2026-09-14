@@ -239,7 +239,7 @@ export default function BookingSlotsPage() {
               </span>
             </div>
             <div className="flex items-center gap-2 bg-white border border-gray-200 rounded-full px-4 py-1.5 shadow-sm">
-              <span className="w-2 h-2 rounded-full bg-[#F5E642]" />
+              <span className="w-2 h-2 rounded-full bg-[#F0F0EE]" />
               <span className="font-poppins text-xs text-[rgba(13,13,13,0.48)]">
                 Active
               </span>
@@ -261,7 +261,7 @@ export default function BookingSlotsPage() {
             onClick={() =>
               router.push("/vendors/reservation-portal/booking-slots/create")
             }
-            className="font-poppins shrink-0 bg-[#F5E642] hover:bg-[#E8D800] text-[#0D0D0D] rounded-full px-6"
+            className="font-poppins shrink-0 bg-[#F0F0EE] hover:bg-[#E8E8E4] text-[#0D0D0D] rounded-full px-6"
           >
             <Plus className="h-4 w-4 mr-2" />
             Create Booking Slot
@@ -385,7 +385,7 @@ export default function BookingSlotsPage() {
                     "/vendors/reservation-portal/booking-slots/create",
                   )
                 }
-                className="font-poppins mt-2 bg-[#F5E642] hover:bg-[#E8D800] text-[#0D0D0D] rounded-full px-6"
+                className="font-poppins mt-2 bg-[#F0F0EE] hover:bg-[#E8E8E4] text-[#0D0D0D] rounded-full px-6"
               >
                 <Plus className="h-4 w-4 mr-2" />
                 Create First Booking Slot
@@ -401,7 +401,7 @@ export default function BookingSlotsPage() {
               >
                 {/* Left accent bar */}
                 <div
-                  className={`w-1 shrink-0 ${slot.isActive ? "bg-[#F5E642]" : "bg-gray-200"}`}
+                  className={`w-1 shrink-0 ${slot.isActive ? "bg-[#F0F0EE]" : "bg-gray-200"}`}
                 />
 
                 <div className="flex-1 p-5 flex flex-col lg:flex-row lg:items-center justify-between gap-4 min-w-0">
@@ -417,7 +417,7 @@ export default function BookingSlotsPage() {
                         }`}
                       >
                         <span
-                          className={`w-1.5 h-1.5 rounded-full ${slot.isActive ? "bg-[#F5E642]" : "bg-gray-400"}`}
+                          className={`w-1.5 h-1.5 rounded-full ${slot.isActive ? "bg-[#F0F0EE]" : "bg-gray-400"}`}
                         />
                         {slot.isActive ? "Active" : "Inactive"}
                       </span>
