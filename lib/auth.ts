@@ -152,27 +152,30 @@ export async function checkVendorAuth(): Promise<boolean> {
 }
 
 // Complete registration step (Step 2 or Step 3)
-export async function completeRegistrationStep(stepData: {
-  currentStep: number;
-  companyName?: string;
-  businessRegistrationNo?: string;
-  vendorMobile?: string;
-  businessCategory?: string;
-  location?: {
-    businessName?: string;
-    streetAddress?: string;
-    city?: string;
-    district?: string;
-    postalCode?: string;
-    country?: string;
-    coordinates?: {
-      lat?: number;
-      lng?: number;
+export async function completeRegistrationStep(
+  stepData: {
+    currentStep: number;
+    companyName?: string;
+    businessRegistrationNo?: string;
+    vendorMobile?: string;
+    businessCategory?: string;
+    location?: {
+      businessName?: string;
+      streetAddress?: string;
+      city?: string;
+      district?: string;
+      postalCode?: string;
+      country?: string;
+      coordinates?: {
+        lat?: number;
+        lng?: number;
+      };
     };
-  };
-  website?: string;
-  description?: string;
-}): Promise<{
+    website?: string;
+    description?: string;
+  },
+  mainImageFile?: File,
+): Promise<{
   success: boolean;
   message?: string;
   data?: any;
@@ -180,11 +183,46 @@ export async function completeRegistrationStep(stepData: {
 }> {
   try {
     const token = localStorage.getItem("auth_token");
-    const headers: Record<string, string> = {
-      "Content-Type": "application/json",
-    };
+    const headers: Record<string, string> = {};
     if (token) {
       headers["Authorization"] = `Bearer ${token}`;
+    }
+
+    let body: BodyInit;
+    if (mainImageFile) {
+      // Multipart request — used when an optional venue photo is attached.
+      // Do NOT set Content-Type; the browser sets the multipart boundary.
+      const formData = new FormData();
+      formData.append("currentStep", String(stepData.currentStep));
+      if (stepData.companyName !== undefined) {
+        formData.append("companyName", stepData.companyName);
+      }
+      if (stepData.businessRegistrationNo !== undefined) {
+        formData.append(
+          "businessRegistrationNo",
+          stepData.businessRegistrationNo,
+        );
+      }
+      if (stepData.vendorMobile !== undefined) {
+        formData.append("vendorMobile", stepData.vendorMobile);
+      }
+      if (stepData.businessCategory !== undefined) {
+        formData.append("businessCategory", stepData.businessCategory);
+      }
+      if (stepData.location !== undefined) {
+        formData.append("location", JSON.stringify(stepData.location));
+      }
+      if (stepData.website !== undefined) {
+        formData.append("website", stepData.website);
+      }
+      if (stepData.description !== undefined) {
+        formData.append("description", stepData.description);
+      }
+      formData.append("mainImage", mainImageFile);
+      body = formData;
+    } else {
+      headers["Content-Type"] = "application/json";
+      body = JSON.stringify(stepData);
     }
 
     const res = await fetch(
@@ -193,7 +231,7 @@ export async function completeRegistrationStep(stepData: {
         method: "PUT",
         credentials: "include",
         headers,
-        body: JSON.stringify(stepData),
+        body,
       },
     );
 
