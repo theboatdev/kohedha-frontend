@@ -26,13 +26,13 @@ import {
 import { Calendar } from "@/components/ui/calendar";
 import {
   Calendar as CalendarIcon,
-  Clock,
   ImagePlus,
   Loader2,
   X,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
+import { CompactTimePicker } from "@/components/vendors/compact-time-picker";
 
 export type NewEventData = {
   eventName: string;
@@ -336,79 +336,16 @@ export function CreateEventDialog({
               <label className="text-sm font-medium font-poppins">
                 Start Time <span className="text-red-500">*</span>
               </label>
-              <Popover>
-                <PopoverTrigger asChild>
-                  <Button
-                    variant="outline"
-                    className={cn(
-                      "h-10 w-full justify-start text-left font-poppins font-normal rounded-md border-gray-300 bg-white hover:bg-white hover:border-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-blue-500",
-                      !formData.eventTime && "text-gray-400",
-                    )}
-                  >
-                    <Clock className="mr-2 h-4 w-4 text-gray-500" />
-                    {formData.eventTime || <span>Select time</span>}
-                  </Button>
-                </PopoverTrigger>
-                <PopoverContent className="w-auto p-0" align="start">
-                  <div className="p-4 space-y-4">
-                    <div className="flex items-center gap-2">
-                      <Select
-                        value={formData.eventTime.split(":")[0] || ""}
-                        onValueChange={(hour) => {
-                          const minute =
-                            formData.eventTime.split(":")[1] || "00";
-                          setFormData({
-                            ...formData,
-                            eventTime: `${hour}:${minute}`,
-                          });
-                        }}
-                      >
-                        <SelectTrigger className="w-20 font-poppins">
-                          <SelectValue placeholder="HH" />
-                        </SelectTrigger>
-                        <SelectContent className="max-h-[200px]">
-                          {Array.from({ length: 24 }, (_, i) => {
-                            const hour = i.toString().padStart(2, "0");
-                            return (
-                              <SelectItem key={hour} value={hour}>
-                                {hour}
-                              </SelectItem>
-                            );
-                          })}
-                        </SelectContent>
-                      </Select>
-                      <span className="text-xl font-bold">:</span>
-                      <Select
-                        value={formData.eventTime.split(":")[1] || ""}
-                        onValueChange={(minute) => {
-                          const hour = formData.eventTime.split(":")[0] || "00";
-                          setFormData({
-                            ...formData,
-                            eventTime: `${hour}:${minute}`,
-                          });
-                        }}
-                      >
-                        <SelectTrigger className="w-20 font-poppins">
-                          <SelectValue placeholder="MM" />
-                        </SelectTrigger>
-                        <SelectContent className="max-h-[200px]">
-                          {Array.from({ length: 12 }, (_, i) => {
-                            const minute = (i * 5).toString().padStart(2, "0");
-                            return (
-                              <SelectItem key={minute} value={minute}>
-                                {minute}
-                              </SelectItem>
-                            );
-                          })}
-                        </SelectContent>
-                      </Select>
-                    </div>
-                    <div className="text-xs text-gray-500 font-poppins">
-                      Time in 24-hour format
-                    </div>
-                  </div>
-                </PopoverContent>
-              </Popover>
+              <CompactTimePicker
+                value={formData.eventTime}
+                onChange={(eventTime) =>
+                  setFormData({
+                    ...formData,
+                    eventTime,
+                  })
+                }
+                placeholder="Select time"
+              />
             </div>
 
             <div className="space-y-2">

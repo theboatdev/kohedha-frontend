@@ -15,7 +15,7 @@ interface PasswordStrengthHelperProps {
 const DEFAULT_COLORS = {
   text: "#0D0D0D",
   muted: "rgba(13,13,13,0.48)",
-  accent: "#F5E642",
+  accent: "#F0F0EE",
 };
 
 export function PasswordStrengthHelper({

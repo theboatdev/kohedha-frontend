@@ -65,8 +65,8 @@ export function ReservationPortalSidebar({
     <div
       className={cn("flex h-full w-full flex-col font-dm-sans", className)}
       style={{
-        background: "#0D0D0D",
-        borderRight: "1px solid rgba(255,255,255,0.06)",
+        background: "#FFFFFF",
+        borderRight: "1px solid #E8E8E4",
         overflow: "hidden",
       }}
     >
@@ -74,7 +74,7 @@ export function ReservationPortalSidebar({
       <div
         style={{
           padding: "20px 16px 16px",
-          borderBottom: "1px solid rgba(255,255,255,0.06)",
+          borderBottom: "1px solid #E8E8E4",
           display: "flex",
           alignItems: "center",
           justifyContent: isCollapsed ? "center" : "space-between",
@@ -96,7 +96,7 @@ export function ReservationPortalSidebar({
             style={{
               fontSize: "16px",
               fontWeight: 700,
-              color: "white",
+              color: "#3A3A38",
               letterSpacing: "-0.02em",
             }}
           >
@@ -105,7 +105,7 @@ export function ReservationPortalSidebar({
           <div
             style={{
               fontSize: "10px",
-              color: "rgba(255,255,255,0.3)",
+              color: "#9A9A96",
               letterSpacing: "0.12em",
               textTransform: "uppercase",
               marginTop: "2px",
@@ -125,7 +125,7 @@ export function ReservationPortalSidebar({
             cursor: "pointer",
             padding: "6px",
             borderRadius: "6px",
-            color: "rgba(255,255,255,0.4)",
+            color: "#8A8A86",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
@@ -134,13 +134,13 @@ export function ReservationPortalSidebar({
           }}
           onMouseEnter={(e) => {
             (e.currentTarget as HTMLElement).style.background =
-              "rgba(255,255,255,0.06)";
-            (e.currentTarget as HTMLElement).style.color = "white";
+              "#F6F6F4";
+            (e.currentTarget as HTMLElement).style.color = "#3A3A38";
           }}
           onMouseLeave={(e) => {
             (e.currentTarget as HTMLElement).style.background = "transparent";
             (e.currentTarget as HTMLElement).style.color =
-              "rgba(255,255,255,0.4)";
+              "#8A8A86";
           }}
         >
           <Menu style={{ width: 16, height: 16 }} />
@@ -181,22 +181,21 @@ export function ReservationPortalSidebar({
                     fontWeight: isActive ? 600 : 400,
                     textDecoration: "none",
                     transition: "all 0.15s",
-                    background: isActive ? "#F5E642" : "transparent",
-                    color: isActive ? "#0D0D0D" : "rgba(255,255,255,0.5)",
+                    background: isActive ? "#F0F0EE" : "transparent",
+                    color: isActive ? "#3A3A38" : "#8A8A86",
                   }}
                   onMouseEnter={(e) => {
                     if (!isActive) {
                       (e.currentTarget as HTMLElement).style.background =
-                        "rgba(255,255,255,0.06)";
-                      (e.currentTarget as HTMLElement).style.color = "white";
+                        "#F6F6F4";
+                      (e.currentTarget as HTMLElement).style.color = "#3A3A38";
                     }
                   }}
                   onMouseLeave={(e) => {
                     if (!isActive) {
                       (e.currentTarget as HTMLElement).style.background =
                         "transparent";
-                      (e.currentTarget as HTMLElement).style.color =
-                        "rgba(255,255,255,0.5)";
+                      (e.currentTarget as HTMLElement).style.color = "#8A8A86";
                     }
                   }}
                 >
@@ -219,7 +218,7 @@ export function ReservationPortalSidebar({
 
           <li
             style={{
-              borderTop: "1px solid rgba(255,255,255,0.06)",
+              borderTop: "1px solid #E8E8E4",
               marginTop: "8px",
               paddingTop: "8px",
             }}
@@ -240,19 +239,19 @@ export function ReservationPortalSidebar({
                 cursor: "pointer",
                 background: "transparent",
                 border: "none",
-                color: "rgba(255,255,255,0.4)",
+                color: "#8A8A86",
                 transition: "all 0.15s",
               }}
               onMouseEnter={(e) => {
                 (e.currentTarget as HTMLElement).style.background =
-                  "rgba(255,255,255,0.06)";
-                (e.currentTarget as HTMLElement).style.color = "white";
+                  "#F6F6F4";
+                (e.currentTarget as HTMLElement).style.color = "#3A3A38";
               }}
               onMouseLeave={(e) => {
                 (e.currentTarget as HTMLElement).style.background =
                   "transparent";
                 (e.currentTarget as HTMLElement).style.color =
-                  "rgba(255,255,255,0.4)";
+                  "#8A8A86";
               }}
             >
               <ArrowLeft style={{ width: 14, height: 14, flexShrink: 0 }} />

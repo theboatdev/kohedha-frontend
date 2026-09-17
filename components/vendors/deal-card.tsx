@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Tag, Edit, Trash2, ImageOff, CalendarRange } from "lucide-react";
+import { Tag, Edit, Trash2, ImageOff, CalendarRange, Clock, Ticket, Zap, Stamp } from "lucide-react";
 import { format } from "date-fns";
 
 export type DealStatus =
@@ -34,6 +34,21 @@ export type DealItem = {
   createdAt: string;
   startDate?: string;
   endDate?: string;
+  dealType?: string;
+  activeWindow?: { daysOfWeek: number[]; startTime?: string; endTime?: string };
+  voucherConfig?: { claimExpiryMinutes?: number; rewardLabel?: string };
+  limitedQuantityConfig?: {
+    totalQuantity?: number;
+    remainingQuantity?: number;
+    claimExpiryMinutes?: number;
+    rewardLabel?: string;
+  };
+  loyaltyConfig?: {
+    stampsRequired?: number;
+    claimExpiryMinutes?: number;
+    rewardLabel?: string;
+  };
+  isActiveNow?: boolean | null;
   backendData?: any;
 };
 
@@ -143,6 +158,37 @@ export function DealCard({
               {deal.isPublished && (
                 <span className="font-poppins text-xs font-medium px-2 py-0.5 rounded-full border bg-blue-50 text-blue-700 border-blue-200">
                   Published
+                </span>
+              )}
+              {deal.dealType === "ambient" && deal.isActiveNow != null && (
+                <span
+                  className={`inline-flex items-center gap-1 font-poppins text-xs font-medium px-2 py-0.5 rounded-full border ${
+                    deal.isActiveNow
+                      ? "bg-green-50 text-green-700 border-green-200"
+                      : "bg-gray-50 text-gray-500 border-gray-200"
+                  }`}
+                >
+                  <Clock className="w-3 h-3" />
+                  {deal.isActiveNow ? "Valid now" : "Not active"}
+                </span>
+              )}
+              {deal.dealType === "voucher" && (
+                <span className="inline-flex items-center gap-1 font-poppins text-xs font-medium px-2 py-0.5 rounded-full border bg-violet-50 text-violet-700 border-violet-200">
+                  <Ticket className="w-3 h-3" />
+                  Voucher
+                </span>
+              )}
+              {deal.dealType === "limited-quantity" && (
+                <span className="inline-flex items-center gap-1 font-poppins text-xs font-medium px-2 py-0.5 rounded-full border bg-orange-50 text-orange-700 border-orange-200">
+                  <Zap className="w-3 h-3" />
+                  {deal.limitedQuantityConfig?.remainingQuantity ?? "—"} /{" "}
+                  {deal.limitedQuantityConfig?.totalQuantity ?? "—"} left
+                </span>
+              )}
+              {deal.dealType === "loyalty" && (
+                <span className="inline-flex items-center gap-1 font-poppins text-xs font-medium px-2 py-0.5 rounded-full border bg-pink-50 text-pink-700 border-pink-200">
+                  <Stamp className="w-3 h-3" />
+                  Buy {deal.loyaltyConfig?.stampsRequired ?? "—"}, get 1 free
                 </span>
               )}
             </div>

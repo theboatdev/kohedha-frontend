@@ -14,8 +14,8 @@ export function StatsCard({
   value,
   label,
   sublabel,
-  iconBgColor = "rgba(245,230,66,0.12)",
-  iconColor = "#F5E642",
+  iconBgColor = "#F0F0EE",
+  iconColor = "#8A8A86",
 }: StatsCardProps) {
   return (
     <div
@@ -24,7 +24,7 @@ export function StatsCard({
         background: "#ffffff",
         borderRadius: "16px",
         padding: "24px",
-        border: "1px solid rgba(13,13,13,0.08)",
+        border: "1px solid #E8E8E4",
       }}
     >
       <div
@@ -45,7 +45,7 @@ export function StatsCard({
         className="font-poppins"
         style={{
           fontSize: "36px",
-          color: "#0D0D0D",
+          color: "#3A3A38",
           lineHeight: 1,
           marginBottom: "6px",
         }}
@@ -56,14 +56,14 @@ export function StatsCard({
         style={{
           fontSize: "13px",
           fontWeight: 500,
-          color: "#0D0D0D",
+          color: "#3A3A38",
           marginBottom: "2px",
         }}
       >
         {label}
       </p>
       {sublabel && (
-        <p style={{ fontSize: "12px", color: "rgba(13,13,13,0.48)" }}>{sublabel}</p>
+        <p style={{ fontSize: "12px", color: "#8A8A86" }}>{sublabel}</p>
       )}
     </div>
   );
