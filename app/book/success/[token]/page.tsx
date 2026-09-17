@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import { useParams, useRouter } from "next/navigation";
 import {
   getReservationDetails,
@@ -19,6 +19,8 @@ import {
   Loader2,
   XCircle,
   AlertCircle,
+  CreditCard,
+  RefreshCw,
 } from "lucide-react";
 import {
   AlertDialog,
@@ -43,28 +45,60 @@ export default function BookingSuccessPage() {
   const [reservation, setReservation] = useState<ReservationDetails | null>(null);
   const [cancelling, setCancelling] = useState(false);
   const [cancelled, setCancelled] = useState(false);
+  // Polling state for pending_payment — polls until confirmed or max attempts reached
+  const [pollAttempts, setPollAttempts] = useState(0);
+  const pollTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const MAX_POLL_ATTEMPTS = 10;
+  const POLL_INTERVAL_MS = 3000;
 
-  useEffect(() => {
-    fetchReservation();
-  }, [confirmationToken]);
-
-  const fetchReservation = async () => {
+  const fetchReservation = useCallback(async (isPolling = false) => {
     try {
-      setLoading(true);
+      if (!isPolling) setLoading(true);
       const data = await getReservationDetails(confirmationToken);
       setReservation(data);
       setCancelled(data.status === "cancelled");
+      return data;
     } catch (err: any) {
       setError(err.message || "Failed to load reservation");
+      return null;
     } finally {
-      setLoading(false);
+      if (!isPolling) setLoading(false);
     }
-  };
+  }, [confirmationToken]);
+
+  // Start polling when status is pending_payment
+  const startPolling = useCallback(() => {
+    if (pollTimerRef.current) return; // already polling
+    const poll = async (attempt: number) => {
+      if (attempt >= MAX_POLL_ATTEMPTS) {
+        pollTimerRef.current = null;
+        return;
+      }
+      const data = await fetchReservation(true);
+      if (data && data.status !== "pending_payment") {
+        pollTimerRef.current = null;
+        return;
+      }
+      setPollAttempts(attempt + 1);
+      pollTimerRef.current = setTimeout(() => poll(attempt + 1), POLL_INTERVAL_MS);
+    };
+    pollTimerRef.current = setTimeout(() => poll(0), POLL_INTERVAL_MS);
+  }, [fetchReservation]);
+
+  useEffect(() => {
+    fetchReservation().then((data) => {
+      if (data?.status === "pending_payment") startPolling();
+    });
+    return () => {
+      if (pollTimerRef.current) clearTimeout(pollTimerRef.current);
+    };
+  }, [confirmationToken, fetchReservation, startPolling]);
 
   const canCancel =
     reservation &&
     reservation.status !== "cancelled" &&
     reservation.status !== "completed" &&
+    reservation.status !== "pending_payment" &&
     new Date(reservation.reservationDate) > new Date();
 
   const handleCancelReservation = async () => {
@@ -114,6 +148,8 @@ export default function BookingSuccessPage() {
 
   const isConfirmed = reservation.status === "confirmed";
   const isPending = reservation.status === "pending";
+  const isPendingPayment = reservation.status === "pending_payment";
+  const isPollingDone = isPendingPayment && pollAttempts >= MAX_POLL_ATTEMPTS;
 
   return (
     <div className="font-dm-sans" style={{ minHeight: "100vh", background: C.bg, padding: "48px 24px" }}>
@@ -124,15 +160,21 @@ export default function BookingSuccessPage() {
           <div style={{ background: C.cream, borderRadius: "20px", border: "1px solid rgba(13,13,13,0.08)", padding: "40px", textAlign: "center", marginBottom: "20px" }}>
             <div style={{
               width: "72px", height: "72px", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 20px",
-              background: isConfirmed ? "rgba(76,175,80,0.12)" : "rgba(251,140,0,0.12)",
+              background: isConfirmed ? "rgba(76,175,80,0.12)" : isPendingPayment ? "rgba(245,158,11,0.12)" : "rgba(251,140,0,0.12)",
             }}>
-              <CheckCircle2 style={{ width: 40, height: 40, color: isConfirmed ? "#4CAF50" : "#FB8C00" }} />
+              {isPendingPayment
+                ? <CreditCard style={{ width: 40, height: 40, color: "#D97706" }} />
+                : <CheckCircle2 style={{ width: 40, height: 40, color: isConfirmed ? "#4CAF50" : "#FB8C00" }} />}
             </div>
             <h1 className="font-display" style={{ fontSize: "32px", color: C.text, marginBottom: "8px" }}>
-              {isConfirmed ? "Reservation Confirmed!" : "Reservation Received!"}
+              {isPendingPayment ? "Payment Processing..." : isConfirmed ? "Reservation Confirmed!" : "Reservation Received!"}
             </h1>
             <p style={{ color: C.muted, fontSize: "15px", lineHeight: 1.7, marginBottom: "20px" }}>
-              {isConfirmed ? "Your table has been confirmed by the restaurant." : "Awaiting confirmation from the restaurant."}
+              {isPendingPayment
+                ? "We are waiting for your payment to be confirmed. This may take a moment."
+                : isConfirmed
+                  ? "Your table has been confirmed by the restaurant."
+                  : "Awaiting confirmation from the restaurant."}
             </p>
             <div style={{ display: "inline-block", background: C.bg2, borderRadius: "12px", padding: "12px 24px" }}>
               <p style={{ fontSize: "12px", color: C.muted, marginBottom: "4px" }}>Confirmation Number</p>
@@ -140,14 +182,22 @@ export default function BookingSuccessPage() {
                 {reservation._id.slice(-8).toUpperCase()}
               </p>
             </div>
-            {isPending && (
+            {/* Status badge */}
+            {isPendingPayment ? (
+              <div style={{ display: "inline-flex", alignItems: "center", gap: "8px", background: "rgba(245,158,11,0.12)", color: "#D97706", borderRadius: "40px", padding: "8px 18px", fontSize: "13px", fontWeight: 600, marginTop: "16px", marginLeft: "12px" }}>
+                {isPollingDone
+                  ? <RefreshCw style={{ width: 16, height: 16 }} />
+                  : <Loader2 style={{ width: 16, height: 16, animation: "spin 1s linear infinite" }} />}
+                {isPollingDone ? "Payment Verification Pending" : "Verifying Payment..."}
+              </div>
+            ) : isPending ? (
               <div style={{ display: "inline-flex", alignItems: "center", gap: "8px", background: "rgba(251,140,0,0.1)", color: "#FB8C00", borderRadius: "40px", padding: "8px 18px", fontSize: "13px", fontWeight: 600, marginTop: "16px", marginLeft: "12px" }}>
                 <svg style={{ width: 16, height: 16 }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
                 Status: Pending Confirmation
               </div>
-            )}
+            ) : null}
           </div>
         ) : (
           <div style={{ background: C.cream, borderRadius: "20px", border: "1px solid rgba(13,13,13,0.08)", padding: "40px", textAlign: "center", marginBottom: "20px" }}>
@@ -182,8 +232,8 @@ export default function BookingSuccessPage() {
               <h3 style={{ fontWeight: 600, color: C.text, fontSize: "16px" }}>Booking Details</h3>
               <span style={{
                 padding: "5px 14px", borderRadius: "40px", fontSize: "12px", fontWeight: 600,
-                background: isConfirmed ? "rgba(76,175,80,0.1)" : isPending ? "rgba(251,140,0,0.1)" : "rgba(229,57,53,0.1)",
-                color: isConfirmed ? "#4CAF50" : isPending ? "#FB8C00" : "#E53935",
+                background: isConfirmed ? "rgba(76,175,80,0.1)" : isPendingPayment ? "rgba(245,158,11,0.1)" : isPending ? "rgba(251,140,0,0.1)" : "rgba(229,57,53,0.1)",
+                color: isConfirmed ? "#4CAF50" : isPendingPayment ? "#D97706" : isPending ? "#FB8C00" : "#E53935",
               }}>
                 {reservation.status.charAt(0).toUpperCase() + reservation.status.slice(1)}
               </span>
@@ -234,36 +284,43 @@ export default function BookingSuccessPage() {
 
         {/* Info notice */}
         <div style={{
-          borderRadius: "16px", padding: "20px 24px", marginBottom: "24px",
-          background: isPending ? "rgba(251,140,0,0.08)" : "rgba(245,230,66,0.08)",
-          border: `1px solid ${isPending ? "rgba(251,140,0,0.2)" : "rgba(245,230,66,0.2)"}`,
-        }}>
-          <div style={{ display: "flex", alignItems: "flex-start", gap: "12px" }}>
-            <AlertCircle style={{ width: 18, height: 18, flexShrink: 0, marginTop: "2px", color: isPending ? "#FB8C00" : C.accent }} />
-            <div>
-              <h3 style={{ fontWeight: 600, fontSize: "14px", marginBottom: "10px", color: isPending ? "#B45309" : C.accent }}>
-                {isPending ? "Next Steps" : "What to Expect"}
-              </h3>
-              <ul style={{ fontSize: "13px", color: C.muted, lineHeight: 1.8, paddingLeft: "16px" }}>
-                {isPending ? (
-                  <>
-                    <li>The restaurant will review and confirm your reservation</li>
-                    <li>You will receive a call or message once confirmed</li>
-                    <li>Save this page URL to check your reservation status</li>
-                    <li>Please arrive on time once confirmed</li>
-                  </>
-                ) : (
-                  <>
-                    <li>Please arrive on time for your reservation</li>
-                    <li>Save this page URL to view your reservation details later</li>
-                    <li>The restaurant may call you to confirm your booking</li>
-                    <li>Please inform the staff about any dietary requirements upon arrival</li>
-                  </>
-                )}
-              </ul>
+            borderRadius: "16px", padding: "20px 24px", marginBottom: "24px",
+            background: isPendingPayment ? "rgba(245,158,11,0.08)" : isPending ? "rgba(251,140,0,0.08)" : "rgba(245,230,66,0.08)",
+            border: `1px solid ${isPendingPayment ? "rgba(245,158,11,0.25)" : isPending ? "rgba(251,140,0,0.2)" : "rgba(245,230,66,0.2)"}`,
+          }}>
+            <div style={{ display: "flex", alignItems: "flex-start", gap: "12px" }}>
+              <AlertCircle style={{ width: 18, height: 18, flexShrink: 0, marginTop: "2px", color: isPendingPayment ? "#D97706" : isPending ? "#FB8C00" : C.accent }} />
+              <div>
+                <h3 style={{ fontWeight: 600, fontSize: "14px", marginBottom: "10px", color: isPendingPayment ? "#92400E" : isPending ? "#B45309" : C.accent }}>
+                  {isPendingPayment ? "Payment Verification" : isPending ? "Next Steps" : "What to Expect"}
+                </h3>
+                <ul style={{ fontSize: "13px", color: C.muted, lineHeight: 1.8, paddingLeft: "16px" }}>
+                  {isPendingPayment ? (
+                    <>
+                      <li>Your payment is being verified by the payment gateway</li>
+                      <li>This page auto-refreshes — please keep it open</li>
+                      <li>You will receive confirmation once payment is processed</li>
+                      {isPollingDone && <li style={{ color: "#D97706", fontWeight: 600 }}>If payment was completed, contact the restaurant with your confirmation number</li>}
+                    </>
+                  ) : isPending ? (
+                    <>
+                      <li>The restaurant will review and confirm your reservation</li>
+                      <li>You will receive a call or message once confirmed</li>
+                      <li>Save this page URL to check your reservation status</li>
+                      <li>Please arrive on time once confirmed</li>
+                    </>
+                  ) : (
+                    <>
+                      <li>Please arrive on time for your reservation</li>
+                      <li>Save this page URL to view your reservation details later</li>
+                      <li>The restaurant may call you to confirm your booking</li>
+                      <li>Please inform the staff about any dietary requirements upon arrival</li>
+                    </>
+                  )}
+                </ul>
+              </div>
             </div>
           </div>
-        </div>
 
         {/* Actions */}
         <div style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
