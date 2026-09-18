@@ -23,6 +23,8 @@ export type BookingSlot = {
   dateRange?: { start: string; end: string | null };
   excludedDates?: string[];
   description?: string;
+  requiresDeposit?: boolean;
+  depositAmount?: number;
   createdAt: string;
   updatedAt: string;
 };
@@ -36,6 +38,8 @@ export type CreateBookingSlotData = {
   sectionId: string;
   description?: string;
   maxBookings?: number;
+  requiresDeposit?: boolean;
+  depositAmount?: number;
 };
 
 export type UpdateBookingSlotData = {
@@ -50,6 +54,8 @@ export type UpdateBookingSlotData = {
   description?: string;
   maxBookings?: number;
   isActive?: boolean;
+  requiresDeposit?: boolean;
+  depositAmount?: number;
 };
 
 export type BookingSlotsResponse = {
@@ -102,6 +108,8 @@ export type CreateRecurringBookingSlotData = {
   recurrence: RecurrenceRule;
   rangeStart: string; // YYYY-MM-DD
   rangeEnd: string; // YYYY-MM-DD
+  requiresDeposit?: boolean;
+  depositAmount?: number;
 };
 
 export type RecurringBookingSlotsResponse = {

@@ -42,6 +42,8 @@ export interface BookingSlotDetails {
   totalBookings: number;
   maxBookings: number | null;
   spotsAvailable: boolean;
+  requiresDeposit?: boolean;
+  depositAmount?: number;
 }
 
 export interface Table {
@@ -68,6 +70,12 @@ export interface ReservationResponse {
     reservation: any;
     confirmationLink: string;
     confirmationToken: string;
+    requiresPayment?: boolean;
+    checkoutData?: {
+      checkoutUrl: string;
+      formFields: Record<string, string>;
+      hash: string;
+    };
   };
 }
 
@@ -101,6 +109,13 @@ export interface ReservationDetails {
     sectionType?: string;
   };
   canCancel?: boolean;
+  paymentId?: {
+    _id: string;
+    status: string;
+    amount: number;
+    paidAt?: string;
+  };
+  paymentExpiresAt?: string;
 }
 
 // Get booking slot details

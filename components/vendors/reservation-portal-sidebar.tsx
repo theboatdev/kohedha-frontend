@@ -9,6 +9,7 @@ import {
   ArrowLeft,
   Clock,
   Menu,
+  CreditCard,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -39,6 +40,11 @@ const menuItems = [
     title: "Settings",
     icon: Settings,
     href: "/vendors/reservation-portal/settings",
+  },
+  {
+    title: "Payment Settings",
+    icon: CreditCard,
+    href: "/vendors/reservation-portal/payment-settings",
   },
 ];
 
