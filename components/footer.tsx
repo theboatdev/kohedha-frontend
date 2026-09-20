@@ -1,233 +1,198 @@
-import Link from "next/link"
+import Link from "next/link";
 
 export function Footer() {
   return (
-    <footer
-      style={{
-        background: "#0D0D0D",
-        color: "#FFFFFF",
-        padding: "clamp(56px,7vw,84px) clamp(20px,5vw,64px) 36px",
-      }}
-    >
-      <div style={{ maxWidth: "1240px", margin: "0 auto" }}>
-        {/* Top grid */}
-        <div
-          className="foot-grid"
-          style={{
-            display: "grid",
-            gridTemplateColumns: "1.4fr 1fr 1fr 1fr",
-            gap: "40px",
-            paddingBottom: "48px",
-            borderBottom: "1px solid rgba(255,255,255,0.08)",
-          }}
-        >
-          {/* Brand column */}
+    <footer style={{ background: "#0D0D0D", color: "#F6F6F4" }}>
+      <div
+        className="om-pad"
+        style={{
+          maxWidth: "1240px",
+          margin: "0 auto",
+          padding: "110px 48px 48px",
+        }}
+      >
+        <div className="om-footer-grid">
           <div>
-            <Link
-              href="/"
-              className="font-poppins"
+            <div
               style={{
-                display: "inline-flex",
-                alignItems: "center",
-                fontWeight: 800,
-                fontSize: "26px",
-                letterSpacing: "-0.02em",
-                color: "#FFFFFF",
-                textDecoration: "none",
-                marginBottom: "16px",
+                fontSize: "21px",
+                fontWeight: 500,
+                letterSpacing: "-0.03em",
               }}
             >
               kohedha<span style={{ color: "#C8281A" }}>.</span>
-            </Link>
+            </div>
             <p
-              className="font-poppins"
               style={{
-                color: "rgba(255,255,255,0.42)",
-                fontSize: "14px",
-                maxWidth: "30ch",
-                lineHeight: 1.65,
-                marginBottom: "22px",
+                margin: "20px 0 0",
+                maxWidth: "34ch",
+                fontSize: "16px",
+                lineHeight: 1.7,
+                fontWeight: 300,
+                color: "rgba(246,246,244,0.55)",
               }}
             >
-              Sri Lanka&apos;s restaurant &amp; event discovery app — every venue, perfectly matched to your mood.
+              Sri Lanka&apos;s restaurant &amp; event discovery app — every
+              venue, perfectly matched to your mood.
             </p>
             <Link
               href="/vendors/register"
-              className="font-poppins"
               style={{
-                fontWeight: 700,
-                fontSize: "14px",
-                color: "#F5E642",
-                textDecoration: "none",
                 display: "inline-flex",
                 alignItems: "center",
-                gap: "8px",
+                height: "44px",
+                padding: "0 22px",
+                marginTop: "32px",
+                borderRadius: "999px",
+                border: "1px solid rgba(246,246,244,0.24)",
+                color: "#F6F6F4",
+                fontSize: "14px",
+                textDecoration: "none",
+                transition: "border-color 0.15s",
               }}
-              onMouseEnter={(e) => (e.currentTarget.style.opacity = "0.8")}
-              onMouseLeave={(e) => (e.currentTarget.style.opacity = "1")}
             >
-              List your venue <span>→</span>
+              List your venue →
             </Link>
           </div>
 
-          {/* Discover column */}
           <div>
-            <h5
-              className="font-poppins"
+            <div
               style={{
-                fontWeight: 600,
                 fontSize: "12px",
-                letterSpacing: "0.1em",
+                letterSpacing: "0.14em",
                 textTransform: "uppercase",
-                color: "#F5E642",
-                marginBottom: "16px",
+                color: "rgba(246,246,244,0.4)",
               }}
             >
               Discover
-            </h5>
-            {[
-              { label: "Places", href: "/" },
-              { label: "Events", href: "/events" },
-              { label: "Deals", href: "/deals" },
-              { label: "Radius explorer", href: "/#explore" },
-            ].map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className="font-poppins"
-                style={{
-                  display: "block",
-                  fontSize: "14px",
-                  color: "rgba(255,255,255,0.42)",
-                  textDecoration: "none",
-                  marginBottom: "11px",
-                  transition: "color 0.14s",
-                }}
-                onMouseEnter={(e) => (e.currentTarget.style.color = "#FFFFFF")}
-                onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(255,255,255,0.42)")}
-              >
-                {link.label}
-              </Link>
-            ))}
+            </div>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                gap: "14px",
+                marginTop: "22px",
+                fontSize: "15px",
+              }}
+            >
+              {[
+                { label: "Places", href: "/places" },
+                { label: "Events", href: "/events" },
+                { label: "Deals", href: "/deals" },
+                { label: "Radius explorer", href: "/#explore" },
+              ].map((link) => (
+                <Link
+                  key={link.label}
+                  href={link.href}
+                  style={{
+                    color: "rgba(246,246,244,0.75)",
+                    textDecoration: "none",
+                  }}
+                >
+                  {link.label}
+                </Link>
+              ))}
+            </div>
           </div>
 
-          {/* Company column */}
           <div>
-            <h5
-              className="font-poppins"
+            <div
               style={{
-                fontWeight: 600,
                 fontSize: "12px",
-                letterSpacing: "0.1em",
+                letterSpacing: "0.14em",
                 textTransform: "uppercase",
-                color: "#F5E642",
-                marginBottom: "16px",
+                color: "rgba(246,246,244,0.4)",
               }}
             >
               Company
-            </h5>
-            {[
-              { label: "About", href: "/about" },
-              { label: "Get the app", href: "/#app" },
-              { label: "For vendors", href: "/vendors" },
-              { label: "Careers", href: "#" },
-            ].map((link) => (
-              <Link
-                key={link.label}
-                href={link.href}
-                className="font-poppins"
-                style={{
-                  display: "block",
-                  fontSize: "14px",
-                  color: "rgba(255,255,255,0.42)",
-                  textDecoration: "none",
-                  marginBottom: "11px",
-                  transition: "color 0.14s",
-                }}
-                onMouseEnter={(e) => (e.currentTarget.style.color = "#FFFFFF")}
-                onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(255,255,255,0.42)")}
-              >
-                {link.label}
-              </Link>
-            ))}
+            </div>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                gap: "14px",
+                marginTop: "22px",
+                fontSize: "15px",
+              }}
+            >
+              {[
+                { label: "About", href: "/about" },
+                { label: "Get the app", href: "/#app" },
+                { label: "For vendors", href: "/vendors" },
+                { label: "Careers", href: "#" },
+              ].map((link) => (
+                <Link
+                  key={link.label}
+                  href={link.href}
+                  style={{
+                    color: "rgba(246,246,244,0.75)",
+                    textDecoration: "none",
+                  }}
+                >
+                  {link.label}
+                </Link>
+              ))}
+            </div>
           </div>
 
-          {/* Legal column */}
           <div>
-            <h5
-              className="font-poppins"
+            <div
               style={{
-                fontWeight: 600,
                 fontSize: "12px",
-                letterSpacing: "0.1em",
+                letterSpacing: "0.14em",
                 textTransform: "uppercase",
-                color: "#F5E642",
-                marginBottom: "16px",
+                color: "rgba(246,246,244,0.4)",
               }}
             >
               Legal
-            </h5>
-            {[
-              { label: "Privacy", href: "/privacy" },
-              { label: "Terms", href: "/terms" },
-              { label: "Cookies", href: "#" },
-              { label: "Contact", href: "#" },
-            ].map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className="font-poppins"
-                style={{
-                  display: "block",
-                  fontSize: "14px",
-                  color: "rgba(255,255,255,0.42)",
-                  textDecoration: "none",
-                  marginBottom: "11px",
-                  transition: "color 0.14s",
-                }}
-                onMouseEnter={(e) => (e.currentTarget.style.color = "#FFFFFF")}
-                onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(255,255,255,0.42)")}
-              >
-                {link.label}
-              </Link>
-            ))}
+            </div>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                gap: "14px",
+                marginTop: "22px",
+                fontSize: "15px",
+              }}
+            >
+              {[
+                { label: "Privacy", href: "/privacy" },
+                { label: "Terms", href: "/terms" },
+                { label: "Cookies", href: "#" },
+                { label: "Contact", href: "#" },
+              ].map((link) => (
+                <Link
+                  key={link.label}
+                  href={link.href}
+                  style={{
+                    color: "rgba(246,246,244,0.75)",
+                    textDecoration: "none",
+                  }}
+                >
+                  {link.label}
+                </Link>
+              ))}
+            </div>
           </div>
         </div>
 
-        {/* Bottom bar */}
         <div
           style={{
             display: "flex",
-            alignItems: "center",
             justifyContent: "space-between",
-            gap: "20px",
+            gap: "24px",
+            marginTop: "88px",
             paddingTop: "28px",
+            borderTop: "1px solid rgba(246,246,244,0.12)",
+            fontSize: "13px",
+            color: "rgba(246,246,244,0.45)",
             flexWrap: "wrap",
           }}
         >
-          <span
-            className="font-poppins"
-            style={{
-              fontSize: "12px",
-              color: "rgba(255,255,255,0.20)",
-              letterSpacing: "0.04em",
-            }}
-          >
-            © 2025 Kohedha · Made for Sri Lanka&apos;s nights out
-          </span>
-          <span
-            className="font-poppins"
-            style={{
-              fontSize: "12px",
-              color: "rgba(255,255,255,0.20)",
-              letterSpacing: "0.04em",
-            }}
-          >
-            Colombo · Kandy · Galle
-          </span>
+          <span>© 2025 Kohedha · Made for Sri Lanka&apos;s nights out</span>
+          <span>Colombo · Kandy · Galle</span>
         </div>
       </div>
-
     </footer>
-  )
+  );
 }

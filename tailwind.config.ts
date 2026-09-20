@@ -20,7 +20,8 @@ const config = {
     },
     extend: {
       fontFamily: {
-        sans: ["var(--font-league-spartan)"],
+        sans: ["var(--font-space-grotesk)", "var(--font-league-spartan)", "system-ui", "sans-serif"],
+        grotesk: ["var(--font-space-grotesk)", "system-ui", "sans-serif"],
       },
       colors: {
         border: "hsl(var(--border))",

@@ -2,178 +2,172 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
+
+const NAV_LINKS = [
+  { label: "Discover", href: "/" },
+  { label: "Deals", href: "/deals" },
+  { label: "About", href: "/about" },
+  { label: "Events", href: "/events" },
+];
 
 export function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
+  const pathname = usePathname();
+
+  const isActive = (href: string) => {
+    if (href === "/") return pathname === "/";
+    return pathname.startsWith(href);
+  };
 
   return (
-    <nav
+    <header
       style={{
         position: "sticky",
         top: 0,
-        zIndex: 200,
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "space-between",
-        height: "64px",
-        padding: "0 clamp(20px, 5vw, 64px)",
-        background: "rgba(255,255,255,0.86)",
+        zIndex: 20,
+        background: "rgba(246,246,244,0.88)",
         backdropFilter: "blur(14px)",
-        borderBottom: "1px solid rgba(13,13,13,0.09)",
+        WebkitBackdropFilter: "blur(14px)",
+        borderBottom: "1px solid rgba(13,13,13,0.08)",
       }}
     >
-      {/* Logo */}
-      <Link
-        href="/"
-        className="font-poppins"
+      <div
+        className="om-nav-inner"
         style={{
-          fontWeight: 800,
-          fontSize: "21px",
-          letterSpacing: "-0.02em",
-          color: "#0D0D0D",
-          textDecoration: "none",
+          maxWidth: "1240px",
+          margin: "0 auto",
+          padding: "0 48px",
+          height: "76px",
           display: "flex",
           alignItems: "center",
+          justifyContent: "space-between",
         }}
       >
-        kohedha<span style={{ color: "#C8281A" }}>.</span>
-      </Link>
-
-      {/* Desktop Nav Links */}
-      <div className="hidden md:flex" style={{ gap: "30px", alignItems: "center" }}>
-        {[
-          { label: "Discover", href: "/" },
-          { label: "Deals", href: "/deals" },
-          { label: "About", href: "/about" },
-          { label: "Events", href: "/events" },
-        ].map((link) => (
-          <Link
-            key={link.href}
-            href={link.href}
-            className="font-poppins"
-            style={{
-              fontSize: "13px",
-              fontWeight: 500,
-              color: "rgba(13,13,13,0.48)",
-              textDecoration: "none",
-              transition: "color 0.15s",
-            }}
-            onMouseEnter={(e) =>
-              (e.currentTarget.style.color = "#0D0D0D")
-            }
-            onMouseLeave={(e) =>
-              (e.currentTarget.style.color = "rgba(13,13,13,0.48)")
-            }
-          >
-            {link.label}
-          </Link>
-        ))}
-      </div>
-
-      {/* Right side: CTA + mobile toggle */}
-      <div style={{ display: "flex", alignItems: "center", gap: "14px" }}>
         <Link
-          href="/#app"
-          className="hidden md:inline-block font-poppins"
+          href="/"
           style={{
-            fontSize: "13px",
-            fontWeight: 700,
+            fontSize: "21px",
+            fontWeight: 500,
+            letterSpacing: "-0.03em",
             color: "#0D0D0D",
-            background: "#F5E642",
-            padding: "10px 18px",
-            borderRadius: "10px",
             textDecoration: "none",
-            transition: "opacity 0.12s",
-            whiteSpace: "nowrap",
           }}
-          onMouseEnter={(e) => (e.currentTarget.style.opacity = "0.88")}
-          onMouseLeave={(e) => (e.currentTarget.style.opacity = "1")}
         >
-          Get the app
+          kohedha<span style={{ color: "#C8281A" }}>.</span>
         </Link>
 
-        {/* Mobile toggle */}
-        <button
-          className="md:hidden flex flex-col"
-          onClick={() => setIsOpen(!isOpen)}
-          aria-label="Menu"
-          style={{
-            background: "none",
-            border: "none",
-            cursor: "pointer",
-            padding: "8px",
-            gap: "4px",
-          }}
-        >
-          <span
+        <nav className="om-nav-links">
+          {NAV_LINKS.map((link) => (
+            <Link
+              key={link.href}
+              href={link.href}
+              style={{
+                color: isActive(link.href) ? "#0D0D0D" : "rgba(13,13,13,0.62)",
+                textDecoration: "none",
+                fontSize: "15px",
+                transition: "color 0.15s",
+              }}
+            >
+              {link.label}
+            </Link>
+          ))}
+        </nav>
+
+        <div style={{ display: "flex", alignItems: "center", gap: "20px" }}>
+          <div className="om-live-badge">
+            <span
+              style={{
+                width: "6px",
+                height: "6px",
+                borderRadius: "999px",
+                background: "#C8281A",
+                flexShrink: 0,
+              }}
+            />
+            <span style={{ whiteSpace: "nowrap" }}>142 live now</span>
+          </div>
+
+          <Link href="/#app" className="om-nav-cta">
+            Get the app
+          </Link>
+
+          <button
+            className="om-nav-burger"
+            onClick={() => setIsOpen(!isOpen)}
+            aria-label="Menu"
             style={{
-              display: "block",
-              width: "20px",
-              height: "2px",
-              background: "#0D0D0D",
-              borderRadius: "2px",
-              transition: "transform 0.2s, opacity 0.2s",
-              transform: isOpen ? "translateY(6px) rotate(45deg)" : "none",
+              background: "none",
+              border: "none",
+              cursor: "pointer",
+              padding: "8px",
+              gap: "4px",
+              flexDirection: "column",
             }}
-          />
-          <span
-            style={{
-              display: "block",
-              width: "20px",
-              height: "2px",
-              background: "#0D0D0D",
-              borderRadius: "2px",
-              opacity: isOpen ? 0 : 1,
-              transition: "opacity 0.2s",
-            }}
-          />
-          <span
-            style={{
-              display: "block",
-              width: "20px",
-              height: "2px",
-              background: "#0D0D0D",
-              borderRadius: "2px",
-              transition: "transform 0.2s",
-              transform: isOpen ? "translateY(-6px) rotate(-45deg)" : "none",
-            }}
-          />
-        </button>
+          >
+            <span
+              style={{
+                display: "block",
+                width: "20px",
+                height: "2px",
+                background: "#0D0D0D",
+                borderRadius: "2px",
+                transition: "transform 0.2s, opacity 0.2s",
+                transform: isOpen ? "translateY(6px) rotate(45deg)" : "none",
+              }}
+            />
+            <span
+              style={{
+                display: "block",
+                width: "20px",
+                height: "2px",
+                background: "#0D0D0D",
+                borderRadius: "2px",
+                opacity: isOpen ? 0 : 1,
+                transition: "opacity 0.2s",
+              }}
+            />
+            <span
+              style={{
+                display: "block",
+                width: "20px",
+                height: "2px",
+                background: "#0D0D0D",
+                borderRadius: "2px",
+                transition: "transform 0.2s",
+                transform: isOpen ? "translateY(-6px) rotate(-45deg)" : "none",
+              }}
+            />
+          </button>
+        </div>
       </div>
 
-      {/* Mobile menu */}
       {isOpen && (
         <div
-          className="md:hidden"
+          className="om-nav-mobile"
           style={{
             position: "absolute",
             top: "100%",
             left: 0,
             right: 0,
-            background: "rgba(255,255,255,0.97)",
+            background: "rgba(246,246,244,0.97)",
             backdropFilter: "blur(14px)",
-            borderBottom: "1px solid rgba(13,13,13,0.09)",
-            padding: "16px clamp(20px,5vw,64px)",
+            borderBottom: "1px solid rgba(13,13,13,0.08)",
+            padding: "16px 28px 24px",
             display: "flex",
             flexDirection: "column",
             gap: "16px",
           }}
         >
-          {[
-            { label: "Discover", href: "/" },
-            { label: "Deals", href: "/deals" },
-            { label: "About", href: "/about" },
-            { label: "Events", href: "/events" },
-          ].map((link) => (
+          {NAV_LINKS.map((link) => (
             <Link
               key={link.href}
               href={link.href}
               onClick={() => setIsOpen(false)}
-              className="font-poppins"
               style={{
-                fontSize: "14px",
-                fontWeight: 500,
-                color: "#0D0D0D",
+                fontSize: "15px",
+                fontWeight: 400,
+                color: isActive(link.href) ? "#0D0D0D" : "rgba(13,13,13,0.62)",
                 textDecoration: "none",
               }}
             >
@@ -183,23 +177,24 @@ export function Navigation() {
           <Link
             href="/#app"
             onClick={() => setIsOpen(false)}
-            className="font-poppins"
             style={{
-              display: "inline-block",
-              fontSize: "13px",
-              fontWeight: 700,
+              display: "inline-flex",
+              alignItems: "center",
+              justifyContent: "center",
+              height: "40px",
+              padding: "0 20px",
+              borderRadius: "999px",
+              border: "1px solid rgba(13,13,13,0.22)",
+              fontSize: "14px",
               color: "#0D0D0D",
-              background: "#F5E642",
-              padding: "10px 18px",
-              borderRadius: "10px",
               textDecoration: "none",
-              textAlign: "center",
+              marginTop: "4px",
             }}
           >
             Get the app
           </Link>
         </div>
       )}
-    </nav>
+    </header>
   );
 }

@@ -1,97 +1,145 @@
-import Link from "next/link"
-import Image from "next/image"
-import { Star, MapPin, ArrowRight } from "lucide-react"
-import { getPlaces } from "@/lib/sanity-places"
-import StructuredData from "@/components/structured-data"
-import { C } from "@/lib/brand-theme"
+import Link from "next/link";
+import Image from "next/image";
+import { getPlaces } from "@/lib/sanity-places";
+import StructuredData from "@/components/structured-data";
+import { C } from "@/lib/brand-theme";
 
 interface Place {
-  id: string
-  name: string
-  description: string
-  image: string
-  rating?: number
-  priceRange?: string
-  cuisine?: string[]
-  vibe?: string[]
-  formattedLocation: string
-  category: string
-  categoryColor?: string
-  status: string
-  featured: boolean
-  isOpen: boolean | null
-  publishedAt?: string
+  id: string;
+  name: string;
+  description: string;
+  image: string;
+  rating?: number;
+  priceRange?: string;
+  cuisine?: string[];
+  vibe?: string[];
+  formattedLocation: string;
+  category: string;
+  categoryColor?: string;
+  status: string;
+  featured: boolean;
+  isOpen: boolean | null;
+  publishedAt?: string;
 }
 
 export const metadata = {
   title: "Places & Venues | Kohedha",
-  description: "Discover amazing restaurants, cafes, and dining venues across Sri Lanka. Find the perfect place for your next meal or coffee break.",
-  keywords: ["Sri Lanka restaurants", "Colombo cafes", "Sri Lankan dining", "restaurants Sri Lanka", "cafes Colombo", "food venues", "dining places Sri Lanka", "best restaurants"],
+  description:
+    "Discover amazing restaurants, cafes, and dining venues across Sri Lanka. Find the perfect place for your next meal or coffee break.",
+  keywords: [
+    "Sri Lanka restaurants",
+    "Colombo cafes",
+    "Sri Lankan dining",
+    "restaurants Sri Lanka",
+    "cafes Colombo",
+    "food venues",
+    "dining places Sri Lanka",
+    "best restaurants",
+  ],
   openGraph: {
     title: "Places & Venues | Kohedha",
-    description: "Discover amazing restaurants, cafes, and dining venues across Sri Lanka.",
+    description:
+      "Discover amazing restaurants, cafes, and dining venues across Sri Lanka.",
     type: "website",
     url: "https://kohedha.lk/places",
   },
   twitter: {
     card: "summary_large_image",
     title: "Places & Venues | Kohedha",
-    description: "Discover amazing restaurants, cafes, and dining venues across Sri Lanka.",
+    description:
+      "Discover amazing restaurants, cafes, and dining venues across Sri Lanka.",
   },
-}
+};
 
 export default async function PlacesPage() {
-  const allPlaces = await getPlaces()
-  const featuredPlaces = allPlaces.filter((place: Place) => place.featured)
-  const regularPlaces = allPlaces.filter((place: Place) => !place.featured)
+  const allPlaces = await getPlaces();
+  const featuredPlaces = allPlaces.filter((place: Place) => place.featured);
+  const regularPlaces = allPlaces.filter((place: Place) => !place.featured);
 
   return (
-    <div className="font-dm-sans" style={{ background: C.bg, color: C.text, minHeight: "100vh" }}>
+    <div
+      className="font-grotesk"
+      style={{
+        background: C.bg,
+        color: C.text,
+        minHeight: "100vh",
+        fontFamily:
+          "var(--font-space-grotesk), 'Space Grotesk', system-ui, sans-serif",
+      }}
+    >
       <StructuredData type="website" data={{}} />
 
       {/* Hero */}
-      <section style={{ background: C.dark, color: "white", padding: "80px 48px 72px" }}>
-        <div style={{ maxWidth: "800px", margin: "0 auto", textAlign: "center" }}>
-          <p style={{ fontSize: "11px", fontWeight: 500, letterSpacing: "0.15em", textTransform: "uppercase", color: C.accent, marginBottom: "16px" }}>
-            Explore
-          </p>
-          <h1 className="font-display" style={{ fontSize: "clamp(36px,5vw,60px)", letterSpacing: "-0.02em", marginBottom: "20px", lineHeight: 1.15 }}>
-            Places & Venues
-          </h1>
-          <p style={{ fontSize: "17px", color: "rgba(255,255,255,0.65)", maxWidth: "520px", margin: "0 auto", lineHeight: 1.7 }}>
-            Discover amazing restaurants, cafes, and dining venues across Sri Lanka.
-          </p>
-          <div style={{ display: "flex", justifyContent: "center", gap: "10px", marginTop: "28px", flexWrap: "wrap" }}>
-            {["Restaurants", "Cafes", "Dining Venues"].map((tag) => (
-              <span key={tag} style={{ border: "1px solid rgba(255,255,255,0.2)", borderRadius: "40px", padding: "6px 16px", fontSize: "13px", color: "rgba(255,255,255,0.7)" }}>
-                {tag}
-              </span>
-            ))}
+      <section style={{ background: "#0D0D0D", color: "#F6F6F4" }}>
+        <div
+          className="om-pad"
+          style={{
+            maxWidth: "1240px",
+            margin: "0 auto",
+            paddingTop: "120px",
+            paddingBottom: "100px",
+          }}
+        >
+          <div
+            style={{
+              fontSize: "12px",
+              letterSpacing: "0.14em",
+              textTransform: "uppercase",
+              color: "rgba(246,246,244,0.5)",
+            }}
+          >
+            Discover
           </div>
+          <h1
+            className="om-hero-h1"
+            style={{ margin: "28px 0 0", maxWidth: "14ch", fontSize: "72px" }}
+          >
+            Places & venues.
+          </h1>
+          <p
+            style={{
+              margin: "28px 0 0",
+              maxWidth: "48ch",
+              fontSize: "17px",
+              lineHeight: 1.7,
+              fontWeight: 300,
+              color: "rgba(246,246,244,0.6)",
+            }}
+          >
+            Discover restaurants, cafes, and dining venues across Sri Lanka —
+            filtered by vibe and location.
+          </p>
         </div>
       </section>
 
-      {/* Content */}
-      <div style={{ padding: "72px 48px", maxWidth: "1200px", margin: "0 auto" }}>
-
-        {/* Featured */}
+      <div
+        className="om-pad"
+        style={{
+          maxWidth: "1240px",
+          margin: "0 auto",
+          paddingTop: "80px",
+          paddingBottom: "120px",
+        }}
+      >
         {featuredPlaces.length > 0 && (
           <section style={{ marginBottom: "80px" }}>
-            <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", marginBottom: "36px" }}>
-              <div>
-                <p style={{ fontSize: "11px", fontWeight: 500, letterSpacing: "0.15em", textTransform: "uppercase", color: C.accent, marginBottom: "8px" }}>
-                  Editor's picks
-                </p>
-                <h2 className="font-display" style={{ fontSize: "34px", letterSpacing: "-0.02em", color: C.text }}>
-                  Featured Places
-                </h2>
-              </div>
-              <span style={{ border: `1px solid ${C.accent}`, borderRadius: "40px", padding: "5px 14px", fontSize: "12px", color: C.accent, display: "flex", alignItems: "center", gap: "6px" }}>
-                <Star size={12} />
-                Featured
-              </span>
+            <div
+              style={{
+                fontSize: "12px",
+                letterSpacing: "0.14em",
+                textTransform: "uppercase",
+                color: "rgba(13,13,13,0.5)",
+              }}
+            >
+              Editor&apos;s picks
             </div>
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))", gap: "24px" }}>
+            <h2 className="om-h2" style={{ margin: "20px 0 0" }}>
+              Featured places
+            </h2>
+            <div
+              className="om-3col"
+              style={{ gap: "28px", marginTop: "48px" }}
+            >
               {featuredPlaces.map((place: Place) => (
                 <PlaceCard key={place.id} place={place} featured />
               ))}
@@ -99,145 +147,237 @@ export default async function PlacesPage() {
           </section>
         )}
 
-        {/* All Places */}
         <section>
-          <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", marginBottom: "36px" }}>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "flex-end",
+              gap: "24px",
+              flexWrap: "wrap",
+            }}
+          >
             <div>
-              <p style={{ fontSize: "11px", fontWeight: 500, letterSpacing: "0.15em", textTransform: "uppercase", color: C.accent, marginBottom: "8px" }}>
-                Discover
-              </p>
-              <h2 className="font-display" style={{ fontSize: "34px", letterSpacing: "-0.02em", color: C.text }}>
-                All Places
+              <div
+                style={{
+                  fontSize: "12px",
+                  letterSpacing: "0.14em",
+                  textTransform: "uppercase",
+                  color: "rgba(13,13,13,0.5)",
+                }}
+              >
+                Browse
+              </div>
+              <h2 className="om-h2" style={{ margin: "20px 0 0" }}>
+                All places
               </h2>
             </div>
-            <span style={{ fontSize: "13px", color: C.muted }}>{allPlaces.length} places</span>
+            <span
+              style={{ fontSize: "14px", color: "rgba(13,13,13,0.5)" }}
+            >
+              {allPlaces.length} places
+            </span>
           </div>
 
           {allPlaces.length === 0 ? (
             <div style={{ textAlign: "center", padding: "80px 0" }}>
-              <MapPin size={48} style={{ color: C.muted, margin: "0 auto 16px" }} />
-              <h3 className="font-display" style={{ fontSize: "26px", color: C.text, marginBottom: "12px" }}>
+              <h3
+                style={{
+                  fontSize: "26px",
+                  letterSpacing: "-0.02em",
+                  marginBottom: "12px",
+                }}
+              >
                 No places available yet
               </h3>
-              <p style={{ color: C.muted, marginBottom: "28px" }}>Check back soon for amazing restaurants and cafes.</p>
-              <Link href="/blog" style={{ background: C.accent, color: C.text, padding: "12px 28px", borderRadius: "40px", textDecoration: "none", fontSize: "14px", fontWeight: 500 }}>
-                Read Our Blog
+              <p
+                style={{
+                  color: "rgba(13,13,13,0.55)",
+                  marginBottom: "28px",
+                  fontWeight: 300,
+                }}
+              >
+                Check back soon for amazing restaurants and cafes.
+              </p>
+              <Link
+                href="/"
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  height: "48px",
+                  padding: "0 24px",
+                  borderRadius: "999px",
+                  background: "#F5E642",
+                  color: "#0D0D0D",
+                  fontSize: "15px",
+                  textDecoration: "none",
+                }}
+              >
+                Back to home
               </Link>
             </div>
           ) : (
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))", gap: "24px" }}>
-              {regularPlaces.map((place: Place) => (
-                <PlaceCard key={place.id} place={place} featured={false} />
-              ))}
+            <div
+              className="om-3col"
+              style={{ gap: "28px", marginTop: "48px" }}
+            >
+              {(regularPlaces.length > 0 ? regularPlaces : allPlaces).map(
+                (place: Place) => (
+                  <PlaceCard key={place.id} place={place} featured={false} />
+                )
+              )}
             </div>
           )}
         </section>
       </div>
     </div>
-  )
+  );
 }
 
-function PlaceCard({ place, featured }: { place: Place; featured: boolean }) {
-  const getPriceRangeLabel = (range?: string) => {
-    if (!range) return ""
-    const labels: { [key: string]: string } = {
-      budget: "Under LKR 1,000",
-      moderate: "LKR 1,000–3,000",
-      expensive: "LKR 3,000–7,000",
-      "fine-dining": "Above LKR 7,000",
-    }
-    return labels[range] || range
-  }
-
+function PlaceCard({
+  place,
+  featured,
+}: {
+  place: Place;
+  featured: boolean;
+}) {
   return (
-    <div
-      className="group"
-      style={{
-        background: C.cream,
-        borderRadius: "16px",
-        overflow: "hidden",
-        border: featured ? `2px solid ${C.accent}` : "1px solid rgba(13,13,13,0.08)",
-        transition: "box-shadow 0.2s, transform 0.2s",
-      }}
-    >
-      <div style={{ position: "relative", height: "200px", overflow: "hidden" }}>
-        <Image
-          src={place.image || "/placeholder.svg"}
-          alt={place.name}
-          fill
-          className="object-cover transition-transform duration-500 group-hover:scale-105"
-        />
-        <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(0,0,0,0.35) 0%, transparent 60%)" }} />
-        <div style={{ position: "absolute", top: "14px", left: "14px", background: C.dark, color: "white", borderRadius: "40px", padding: "4px 12px", fontSize: "11px", fontWeight: 500 }}>
-          {place.category}
-        </div>
-        {featured && (
-          <div style={{ position: "absolute", top: "14px", right: "14px", background: C.accent, color: C.text, borderRadius: "40px", padding: "4px 12px", fontSize: "11px", fontWeight: 500, display: "flex", alignItems: "center", gap: "4px" }}>
-            <Star size={10} />
-            Featured
+    <div>
+      <div
+        style={{
+          position: "relative",
+          aspectRatio: "4/3",
+          background: "rgba(13,13,13,0.055)",
+          borderRadius: "16px",
+          overflow: "hidden",
+          border: featured
+            ? "1px solid rgba(13,13,13,0.16)"
+            : "1px solid rgba(13,13,13,0.08)",
+        }}
+      >
+        {place.image ? (
+          <Image
+            src={place.image}
+            alt={place.name}
+            fill
+            className="object-cover"
+          />
+        ) : (
+          <div
+            style={{
+              position: "absolute",
+              inset: 0,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              fontSize: "12px",
+              color: "rgba(13,13,13,0.32)",
+            }}
+          >
+            Venue photo
           </div>
         )}
-        {place.isOpen !== null && (
-          <div style={{ position: "absolute", bottom: "14px", right: "14px", background: place.isOpen ? "#4CAF50" : "#E53935", color: "white", borderRadius: "40px", padding: "4px 10px", fontSize: "11px", fontWeight: 500 }}>
-            {place.isOpen ? "Open Now" : "Closed"}
-          </div>
-        )}
-      </div>
-
-      <div style={{ padding: "20px 22px 22px" }}>
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "8px" }}>
-          <h3 className="font-display" style={{ fontSize: "20px", color: C.text, lineHeight: 1.2 }}>{place.name}</h3>
-          {place.rating && (
-            <div style={{ display: "flex", alignItems: "center", gap: "4px", flexShrink: 0, marginLeft: "8px" }}>
-              <Star size={14} style={{ fill: "#F59E0B", color: "#F59E0B" }} />
-              <span style={{ fontSize: "13px", fontWeight: 600, color: C.text }}>{place.rating}</span>
-            </div>
+        <div
+          style={{
+            position: "absolute",
+            left: "16px",
+            top: "16px",
+            right: "16px",
+            display: "flex",
+            flexWrap: "wrap",
+            gap: "6px",
+          }}
+        >
+          {place.category && (
+            <span
+              style={{
+                padding: "6px 12px",
+                borderRadius: "999px",
+                background: "rgba(255,255,255,0.92)",
+                fontSize: "12px",
+                whiteSpace: "nowrap",
+              }}
+            >
+              {place.category}
+            </span>
+          )}
+          {place.isOpen && (
+            <span
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "6px",
+                padding: "6px 12px",
+                borderRadius: "999px",
+                background: "rgba(255,255,255,0.92)",
+                fontSize: "12px",
+                whiteSpace: "nowrap",
+              }}
+            >
+              <span
+                style={{
+                  width: "5px",
+                  height: "5px",
+                  borderRadius: "999px",
+                  background: "#C8281A",
+                }}
+              />
+              Live
+            </span>
           )}
         </div>
-
-        <p style={{ fontSize: "13px", color: C.muted, lineHeight: 1.65, marginBottom: "14px", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden" }}>
-          {place.description}
-        </p>
-
-        {place.formattedLocation && (
-          <div style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "12px", color: C.muted, marginBottom: "12px" }}>
-            <MapPin size={12} />
-            <span style={{ overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{place.formattedLocation}</span>
-          </div>
-        )}
-
-        {place.cuisine && place.cuisine.length > 0 && (
-          <div style={{ display: "flex", flexWrap: "wrap", gap: "6px", marginBottom: "12px" }}>
-            {place.cuisine.slice(0, 2).map((c: string, i: number) => (
-              <span key={i} style={{ background: C.bg2, borderRadius: "40px", padding: "3px 10px", fontSize: "11px", color: C.muted }}>
-                {c}
-              </span>
-            ))}
-            {place.cuisine.length > 2 && (
-              <span style={{ background: C.bg2, borderRadius: "40px", padding: "3px 10px", fontSize: "11px", color: C.muted }}>
-                +{place.cuisine.length - 2}
-              </span>
-            )}
-          </div>
-        )}
-
-        {place.priceRange && (
-          <div style={{ fontSize: "12px", color: C.muted, marginBottom: "16px" }}>
-            <span style={{ fontWeight: 600, color: C.text }}>Price: </span>
-            {getPriceRangeLabel(place.priceRange)}
-          </div>
-        )}
-
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "flex-end", borderTop: "1px solid rgba(13,13,13,0.08)", paddingTop: "14px" }}>
-          <Link
-            href={`/places/${place.id}`}
-            style={{ display: "flex", alignItems: "center", gap: "4px", fontSize: "13px", fontWeight: 600, color: C.accent, textDecoration: "none" }}
-          >
-            View Details
-            <ArrowRight size={13} />
-          </Link>
-        </div>
+      </div>
+      <h3
+        style={{
+          margin: "22px 0 0",
+          fontSize: "22px",
+          fontWeight: 400,
+          letterSpacing: "-0.02em",
+        }}
+      >
+        {place.name}
+      </h3>
+      <div
+        style={{
+          marginTop: "7px",
+          fontSize: "14px",
+          color: "rgba(13,13,13,0.5)",
+        }}
+      >
+        {place.formattedLocation || place.category}
+      </div>
+      <div
+        style={{
+          display: "flex",
+          gap: "18px",
+          marginTop: "20px",
+          fontSize: "14px",
+        }}
+      >
+        <Link
+          href={`/places/${place.id}`}
+          style={{
+            borderBottom: "1px solid rgba(13,13,13,0.25)",
+            paddingBottom: "2px",
+            color: "#0D0D0D",
+            textDecoration: "none",
+          }}
+        >
+          View details
+        </Link>
+        <Link
+          href="/events"
+          style={{ color: "rgba(13,13,13,0.55)", textDecoration: "none" }}
+        >
+          Events
+        </Link>
+        <Link
+          href="/deals"
+          style={{ color: "rgba(13,13,13,0.55)", textDecoration: "none" }}
+        >
+          Deals
+        </Link>
       </div>
     </div>
-  )
+  );
 }
