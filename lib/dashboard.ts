@@ -38,6 +38,7 @@ export async function getDashboardAnalytics(): Promise<{
   success: boolean;
   data?: DashboardAnalytics;
   error?: string;
+  impersonationEnded?: boolean;
 }> {
   try {
     const token = localStorage.getItem("auth_token");
@@ -63,6 +64,7 @@ export async function getDashboardAnalytics(): Promise<{
     return {
       success: false,
       error: responseData.message || "Failed to fetch dashboard analytics",
+      impersonationEnded: Boolean(responseData.impersonationEnded),
     };
   } catch (error) {
     console.error("Dashboard analytics error:", error);

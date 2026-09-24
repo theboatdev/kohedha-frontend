@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { VendorSidebar } from "./vendor-sidebar";
 import { VendorHeader } from "./vendor-header";
+import { ImpersonationBanner } from "./impersonation-banner";
 import { signOutVendor } from "@/lib/auth";
 
 interface VendorLayoutProps {
@@ -81,6 +82,7 @@ export function VendorLayout({
           minWidth: 0,
         }}
       >
+        <ImpersonationBanner />
         <VendorHeader
           pageTitle={pageTitle}
           onSignOut={handleSignOut}
