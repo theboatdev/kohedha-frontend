@@ -92,7 +92,7 @@ export function Footer() {
               { label: "Radius explorer", href: "/#explore" },
             ].map((link) => (
               <Link
-                key={link.href}
+                key={link.label}
                 href={link.href}
                 className="font-poppins"
                 style={{
@@ -174,7 +174,7 @@ export function Footer() {
               { label: "Contact", href: "#" },
             ].map((link) => (
               <Link
-                key={link.href}
+                key={link.label}
                 href={link.href}
                 className="font-poppins"
                 style={{
