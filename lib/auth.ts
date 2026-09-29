@@ -258,6 +258,91 @@ export async function completeRegistrationStep(
   }
 }
 
+// Check whether the current session is an admin impersonating this vendor.
+// Used to show the "you're being viewed by an admin" banner. Uses
+// `authenticate` (not `protect`) server-side, so it also works mid
+// registration.
+export async function getImpersonationStatus(): Promise<{
+  isImpersonating: boolean;
+  adminEmail?: string;
+  adminName?: string;
+}> {
+  try {
+    const token = localStorage.getItem("auth_token");
+    const headers: Record<string, string> = {
+      "Content-Type": "application/json",
+    };
+    if (token) {
+      headers["Authorization"] = `Bearer ${token}`;
+    }
+
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/vendor/impersonation-status`,
+      {
+        method: "GET",
+        credentials: "include",
+        headers,
+      },
+    );
+
+    if (!res.ok) return { isImpersonating: false };
+
+    const data = await res.json().catch(() => ({}));
+
+    return {
+      isImpersonating: Boolean(data.isImpersonating),
+      adminEmail: data.adminEmail,
+      adminName: data.adminName,
+    };
+  } catch (error) {
+    console.error("Impersonation status check error:", error);
+    return { isImpersonating: false };
+  }
+}
+
+// Ends the current impersonation session (called from the vendor side,
+// e.g. from the impersonation banner's "End Session" button).
+export async function endImpersonationSession(): Promise<{
+  success: boolean;
+  error?: string;
+}> {
+  try {
+    const token = localStorage.getItem("auth_token");
+    const headers: Record<string, string> = {
+      "Content-Type": "application/json",
+    };
+    if (token) {
+      headers["Authorization"] = `Bearer ${token}`;
+    }
+
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/vendor/impersonate/end`,
+      {
+        method: "POST",
+        credentials: "include",
+        headers,
+      },
+    );
+
+    const data = await res.json().catch(() => ({}));
+
+    if (res.ok && data.success) {
+      return { success: true };
+    }
+
+    return {
+      success: false,
+      error: data.message || "Failed to end impersonation session",
+    };
+  } catch (error) {
+    console.error("End impersonation error:", error);
+    return {
+      success: false,
+      error: "Unable to reach server. Please check your connection.",
+    };
+  }
+}
+
 // Get current vendor profile
 export async function getCurrentVendor(): Promise<{
   success: boolean;

@@ -73,7 +73,7 @@ export function ReservationPortalLayout({
 
       {/* Content column — offset by sidebar on desktop */}
       <div
-        className={`${contentMargin} transition-[margin-left] duration-[250ms]`}
+        className={`${contentMargin} transition-[margin-left] duration-200`}
         style={{
           display: "flex",
           flex: 1,

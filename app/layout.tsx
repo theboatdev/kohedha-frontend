@@ -117,7 +117,6 @@ export const metadata: Metadata = {
   generator: 'Next.js',
   applicationName: 'Kohedha',
   referrer: 'origin-when-cross-origin',
-  colorScheme: 'light dark',
   other: {
     'mobile-web-app-capable': 'yes',
     'apple-mobile-web-app-capable': 'yes',
@@ -133,6 +132,7 @@ export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
   maximumScale: 1,
+  colorScheme: 'light dark',
   themeColor: [
     { media: '(prefers-color-scheme: light)', color: '#ffffff' },
     { media: '(prefers-color-scheme: dark)', color: '#000000' },

@@ -259,6 +259,8 @@ export default function CreateBookingSlotPage() {
     endTime: "",
     sectionId: "",
     description: "",
+    requiresDeposit: false,
+    depositAmount: 0,
     maxBookings: "",
   });
 
@@ -349,6 +351,10 @@ export default function CreateBookingSlotPage() {
           maxBookings: parseInt(formData.maxBookings),
           ...(formData.slotName && { slotName: formData.slotName }),
           ...(formData.description && { description: formData.description }),
+          ...(formData.requiresDeposit && {
+            requiresDeposit: formData.requiresDeposit,
+            depositAmount: Number(formData.depositAmount) || 0,
+          }),
         };
 
         const response = await createRecurringBookingSlot(recurringData);
@@ -378,6 +384,10 @@ export default function CreateBookingSlotPage() {
           maxBookings: parseInt(formData.maxBookings),
           ...(formData.slotName && { slotName: formData.slotName }),
           ...(formData.description && { description: formData.description }),
+          ...(formData.requiresDeposit && {
+            requiresDeposit: formData.requiresDeposit,
+            depositAmount: Number(formData.depositAmount) || 0,
+          }),
         };
 
         const response = await createBookingSlot(bookingSlotData);
@@ -750,6 +760,52 @@ export default function CreateBookingSlotPage() {
                 <p className="text-xs text-gray-500 font-poppins">
                   Select which section this booking slot applies to
                 </p>
+              </div>
+
+              {/* Deposit Settings */}
+              <div className="pt-4 border-t border-gray-100">
+                <h3 className="font-poppins font-semibold text-gray-900 mb-4">Payment Settings</h3>
+                <div className="space-y-4">
+                  <div className="flex flex-row items-center justify-between p-4 bg-gray-50 rounded-lg border border-gray-200">
+                    <div className="space-y-0.5">
+                      <Label className="font-poppins font-semibold">
+                        Require Deposit
+                      </Label>
+                      <p className="text-sm text-gray-500 font-poppins">
+                        Customers must pay a deposit to secure this booking.
+                      </p>
+                    </div>
+                    <Switch
+                      checked={formData.requiresDeposit}
+                      onCheckedChange={(checked) =>
+                        handleChange("requiresDeposit", checked)
+                      }
+                    />
+                  </div>
+                  
+                  {formData.requiresDeposit && (
+                    <div className="space-y-2">
+                      <Label
+                        htmlFor="depositAmount"
+                        className="font-poppins font-semibold"
+                      >
+                        Deposit Amount (LKR)
+                      </Label>
+                      <Input
+                        id="depositAmount"
+                        type="number"
+                        min="0"
+                        value={formData.depositAmount}
+                        onChange={(e) =>
+                          handleChange("depositAmount", parseFloat(e.target.value))
+                        }
+                        placeholder="e.g. 1000"
+                        className="font-poppins"
+                        required
+                      />
+                    </div>
+                  )}
+                </div>
               </div>
 
               {/* Max Bookings */}

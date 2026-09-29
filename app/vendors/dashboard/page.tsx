@@ -37,6 +37,7 @@ export default function VendorDashboardPage() {
   const [isSigningOut, setIsSigningOut] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [sessionEnded, setSessionEnded] = useState(false);
   const [dashboardData, setDashboardData] = useState<DashboardAnalytics | null>(
     null,
   );
@@ -60,6 +61,13 @@ export default function VendorDashboardPage() {
 
       if (result.success && result.data) {
         setDashboardData(result.data);
+      } else if (result.impersonationEnded) {
+        // The admin session viewing this account ended (or a stale
+        // impersonation cookie was cleared). This isn't a real error for
+        // the vendor to act on - just bounce back to login rather than
+        // showing a confusing "impersonation" message.
+        setSessionEnded(true);
+        localStorage.removeItem("auth_token");
       } else {
         setError(result.error || "Failed to load dashboard data");
       }
@@ -77,6 +85,16 @@ export default function VendorDashboardPage() {
     fetchDashboard();
     fetchTopUpvotedItems();
   }, []);
+
+  // Give the "session ended" message a beat to render before redirecting,
+  // so it doesn't look like the page just silently bounced.
+  useEffect(() => {
+    if (!sessionEnded) return;
+    const timeout = setTimeout(() => {
+      router.push("/vendors/login");
+    }, 2500);
+    return () => clearTimeout(timeout);
+  }, [sessionEnded, router]);
 
   const handleSignOut = async () => {
     try {
@@ -163,6 +181,33 @@ export default function VendorDashboardPage() {
               />
               <p style={{ color: C.muted, fontSize: "14px" }}>
                 Loading dashboard...
+              </p>
+            </div>
+          </div>
+        )}
+
+        {/* Session Ended State (admin's impersonation session ended) */}
+        {sessionEnded && !isLoading && (
+          <div
+            style={{
+              background: "rgba(99,102,241,0.08)",
+              border: "1px solid rgba(99,102,241,0.2)",
+              borderRadius: "12px",
+              padding: "20px",
+              marginBottom: "24px",
+              display: "flex",
+              alignItems: "center",
+              gap: "12px",
+            }}
+          >
+            <AlertCircle style={{ width: 20, height: 20, color: "#6366F1" }} />
+            <div>
+              <p style={{ fontSize: "14px", fontWeight: 600, color: C.text }}>
+                Session ended
+              </p>
+              <p style={{ fontSize: "13px", color: C.muted, marginTop: "4px" }}>
+                This admin viewing session has ended. Redirecting you to
+                login...
               </p>
             </div>
           </div>

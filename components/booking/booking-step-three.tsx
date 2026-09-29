@@ -12,6 +12,8 @@ import {
   MapPin,
   User,
   Phone,
+  CreditCard,
+  ShieldCheck,
 } from "lucide-react";
 import {
   createReservation,
@@ -46,9 +48,36 @@ export function BookingStepThree({
 }: BookingStepThreeProps) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const [redirecting, setRedirecting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null);
   const recaptchaRef = useRef<ReCAPTCHA>(null);
+
+  const depositRequired = bookingSlot.requiresDeposit && (bookingSlot.depositAmount ?? 0) > 0;
+  const depositAmount = bookingSlot.depositAmount ?? 0;
+
+  /**
+   * Submits a hidden HTML form to the PayHere checkout page.
+   * This is the standard, secure way to redirect customers to PayHere
+   * without exposing any secrets — the backend generates the hash.
+   */
+  const submitPayHereForm = (checkoutUrl: string, formFields: Record<string, string>) => {
+    const form = document.createElement("form");
+    form.method = "POST";
+    form.action = checkoutUrl;
+    form.style.display = "none";
+
+    Object.entries(formFields).forEach(([key, value]) => {
+      const input = document.createElement("input");
+      input.type = "hidden";
+      input.name = key;
+      input.value = value;
+      form.appendChild(input);
+    });
+
+    document.body.appendChild(form);
+    form.submit();
+  };
 
   const handleConfirmBooking = async () => {
     if (!selectedTable) return;
@@ -77,9 +106,19 @@ export function BookingStepThree({
         reservationDate,
       });
 
-      // Redirect to success page with confirmation token
       if (result.success && result.data) {
-        router.push(`/book/success/${result.data.confirmationToken}`);
+        // If the slot requires a deposit, redirect to PayHere checkout
+        if (result.data.requiresPayment && result.data.checkoutData) {
+          setRedirecting(true);
+          const { checkoutUrl, formFields } = result.data.checkoutData;
+          // Short delay so user sees the "Redirecting..." message
+          setTimeout(() => {
+            submitPayHereForm(checkoutUrl, formFields);
+          }, 800);
+        } else {
+          // No payment needed — go straight to the success/confirmation page
+          router.push(`/book/success/${result.data.confirmationToken}`);
+        }
       }
     } catch (err: any) {
       setError(
@@ -89,7 +128,9 @@ export function BookingStepThree({
       recaptchaRef.current?.reset();
       setRecaptchaToken(null);
     } finally {
-      setLoading(false);
+      if (!redirecting) {
+        setLoading(false);
+      }
     }
   };
 
@@ -99,6 +140,24 @@ export function BookingStepThree({
     : bookingSlot.date
       ? new Date(bookingSlot.date)
       : null;
+
+  // Full-screen redirect state
+  if (redirecting) {
+    return (
+      <div className="flex flex-col items-center justify-center py-16 space-y-4">
+        <div className="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center">
+          <CreditCard className="w-8 h-8 text-yellow-600" />
+        </div>
+        <h2 className="text-xl font-playfair font-bold text-gray-900">
+          Redirecting to Payment
+        </h2>
+        <p className="text-gray-600 font-poppins text-sm text-center max-w-sm">
+          You are being redirected to the secure PayHere payment gateway. Please do not close this page.
+        </p>
+        <Loader2 className="w-6 h-6 animate-spin text-gray-500 mt-2" />
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
@@ -215,6 +274,23 @@ export function BookingStepThree({
             </div>
           </div>
         </div>
+
+        {/* Deposit Banner — only shown if a deposit is required */}
+        {depositRequired && (
+          <div className="bg-yellow-50 border-t-2 border-yellow-300 p-5 flex items-center gap-4">
+            <div className="w-10 h-10 bg-yellow-400 rounded-full flex items-center justify-center flex-shrink-0">
+              <CreditCard className="w-5 h-5 text-yellow-900" />
+            </div>
+            <div>
+              <p className="font-poppins font-bold text-yellow-900">
+                Deposit Required: LKR {depositAmount.toLocaleString()}
+              </p>
+              <p className="font-poppins text-sm text-yellow-800 mt-0.5">
+                You will be redirected to PayHere to complete the secure deposit payment. Your reservation will be held for 15 minutes.
+              </p>
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Error Message */}
@@ -230,12 +306,21 @@ export function BookingStepThree({
           Important Information
         </h3>
         <ul className="text-sm text-amber-800 font-poppins space-y-1 list-disc list-inside">
-          <li>
-            Your reservation will be pending until the restaurant confirms it
-          </li>
-          <li>The restaurant will contact you via phone to confirm</li>
-          <li>Please arrive on time once your reservation is confirmed</li>
-          <li>You can cancel your reservation using the confirmation link</li>
+          {depositRequired ? (
+            <>
+              <li>A deposit of LKR {depositAmount.toLocaleString()} is required to confirm your table</li>
+              <li>You will be redirected to PayHere for secure payment</li>
+              <li>Your table is held for 15 minutes — complete payment promptly</li>
+              <li>Deposits may be refunded if cancelled in advance — contact the restaurant</li>
+            </>
+          ) : (
+            <>
+              <li>Your reservation will be pending until the restaurant confirms it</li>
+              <li>The restaurant will contact you via phone to confirm</li>
+              <li>Please arrive on time once your reservation is confirmed</li>
+              <li>You can cancel your reservation using the confirmation link</li>
+            </>
+          )}
         </ul>
       </div>
 
@@ -262,14 +347,19 @@ export function BookingStepThree({
         </Button>
         <Button
           onClick={handleConfirmBooking}
-          className="px-8 font-poppins"
+          className="px-8 font-poppins gap-2"
           size="lg"
           disabled={loading || !recaptchaToken}
         >
           {loading ? (
             <>
-              <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-              Submitting...
+              <Loader2 className="w-4 h-4 animate-spin" />
+              {depositRequired ? "Processing..." : "Submitting..."}
+            </>
+          ) : depositRequired ? (
+            <>
+              <ShieldCheck className="w-4 h-4" />
+              Pay Deposit — LKR {depositAmount.toLocaleString()}
             </>
           ) : (
             "Submit Reservation"
