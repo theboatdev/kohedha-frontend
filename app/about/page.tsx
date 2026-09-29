@@ -1,177 +1,404 @@
-"use client"
+"use client";
 
-import { Users, Heart, MapPin, Star } from "lucide-react"
-import Link from "next/link"
-import { C } from "@/lib/brand-theme"
+import Link from "next/link";
+import { C } from "@/lib/brand-theme";
+
+const FAQS = [
+  {
+    q: "Do I need an account to browse venues?",
+    a: "No. You can explore the map, filter by vibe, and browse venues, events, and live deals without an account. You'll only need to sign in when you're ready to reserve a table or save a beacon.",
+  },
+  {
+    q: "Can I book a table on the website?",
+    a: "Yes — full booking is available right here on the web. Pick your venue, time, and table, and your QR token is generated instantly. The app adds push alerts and exclusive in-app deals on top.",
+  },
+  {
+    q: "How do menu ratings work?",
+    a: "After your visit you can rate individual dishes up or down. Venues see which items are loved and which to drop, so the menu keeps improving — your taste shapes what stays on it.",
+  },
+  {
+    q: "What cities is Kohedha available in?",
+    a: "We're live across Greater Colombo — including Colombo 1 through 7, Galle Face, and Battaramulla — and expanding to Kandy, Galle, and Negombo next. Set your radius and the map shows what's reachable from you.",
+  },
+  {
+    q: "Can I cancel or modify a reservation?",
+    a: "Absolutely. Head to Manage Your Bookings, open the reservation, and change the time, table size, or cancel — free of charge up to two hours before your slot.",
+  },
+];
 
 export default function AboutPage() {
   return (
-    <div className="font-dm-sans" style={{ background: C.bg, color: C.text, minHeight: "100vh" }}>
-
-      {/* ── HERO ── */}
-      <section
-        style={{
-          minHeight: "100vh",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          position: "relative",
-          overflow: "hidden",
-        }}
-      >
+    <div
+      className="font-grotesk"
+      style={{
+        background: C.bg,
+        color: C.text,
+        minHeight: "100vh",
+        fontFamily:
+          "var(--font-space-grotesk), 'Space Grotesk', system-ui, sans-serif",
+      }}
+    >
+      {/* Hero */}
+      <section style={{ background: "#0D0D0D", color: "#F6F6F4" }}>
         <div
+          className="om-pad"
           style={{
-            position: "absolute", inset: 0,
-            backgroundImage: `url('/cinematic-photo-of-sri-lankan-mountains-meeting-mo.png')`,
-            backgroundSize: "cover", backgroundPosition: "center",
+            maxWidth: "1240px",
+            margin: "0 auto",
+            paddingTop: "120px",
+            paddingBottom: "100px",
           }}
         >
-          <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to bottom, rgba(0,0,0,0.3), rgba(0,0,0,0.2), rgba(0,0,0,0.55))" }} />
-        </div>
-
-        <div style={{ position: "relative", zIndex: 1, textAlign: "center", color: "white", padding: "0 32px", maxWidth: "780px" }}>
-          <blockquote
-            className="font-display"
-            style={{ fontStyle: "italic", fontSize: "clamp(28px,4vw,52px)", lineHeight: 1.25, marginBottom: "32px" }}
+          <div
+            style={{
+              fontSize: "12px",
+              letterSpacing: "0.14em",
+              textTransform: "uppercase",
+              color: "rgba(246,246,244,0.5)",
+            }}
           >
-            "More than a guide — we're your local vibe compass."
-          </blockquote>
-          <div style={{ width: "64px", height: "2px", background: C.accent, margin: "0 auto 28px" }} />
-          <p className="font-dm-sans" style={{ fontSize: "18px", opacity: 0.88, maxWidth: "520px", margin: "0 auto", lineHeight: 1.7 }}>
-            Discover the soul of Sri Lanka through its flavors, celebrations, and hidden gems
+            About
+          </div>
+          <h1
+            className="om-hero-h1"
+            style={{ margin: "28px 0 0", maxWidth: "16ch", fontSize: "72px" }}
+          >
+            Every venue, perfectly matched to your mood.
+          </h1>
+          <p
+            style={{
+              margin: "28px 0 0",
+              maxWidth: "52ch",
+              fontSize: "17px",
+              lineHeight: 1.7,
+              fontWeight: 300,
+              color: "rgba(246,246,244,0.6)",
+            }}
+          >
+            Kohedha was built for Sri Lanka&apos;s dining culture — where the
+            vibe matters as much as the menu. We connect you to places that fit
+            how you&apos;re feeling right now.
           </p>
         </div>
       </section>
 
-      {/* ── STORY ── */}
-      <section style={{ padding: "100px 48px" }}>
-        <div style={{ maxWidth: "760px", margin: "0 auto" }}>
-          <p style={{ fontSize: "11px", fontWeight: 500, letterSpacing: "0.15em", textTransform: "uppercase", color: C.accent, marginBottom: "20px" }}>
-            Our story
-          </p>
-          <h1 className="font-display" style={{ fontSize: "42px", letterSpacing: "-0.02em", color: C.text, marginBottom: "48px" }}>
-            Born from a love of Sri Lanka's dining culture
-          </h1>
-          <div style={{ display: "flex", flexDirection: "column", gap: "24px", fontSize: "16px", lineHeight: 1.85, color: C.muted }}>
-            <p>
-              Born from a passion for Sri Lanka's incredible culinary landscape and vibrant cultural scene, Kohedha
-              emerged as more than just another discovery platform. We recognised that finding authentic experiences in
-              Sri Lanka shouldn't be left to chance or generic recommendations.
-            </p>
-            <p>
-              Our journey began with a simple observation: Sri Lanka's food and event scene is incredibly rich, but
-              navigating it can be overwhelming. From hidden street food gems in Pettah to exclusive rooftop dining in
-              Colombo 3, from traditional cultural performances to modern fusion experiences — the island offers endless
-              possibilities, but they're often scattered and hard to discover.
-            </p>
-            <p>
-              We built Kohedha to be your compass in this adventure. Not just pointing you toward destinations, but
-              helping you understand the vibe, the culture, and the stories behind each experience. Whether you're a
-              local looking to rediscover your city or a visitor seeking authentic Sri Lankan experiences, we curate
-              every recommendation with care.
-            </p>
-            <p>
-              Today, Kohedha connects food lovers and culture enthusiasts with Sri Lanka's most exciting venues and
-              events. We partner with local businesses, celebrate traditional flavors, and champion innovative culinary
-              artists who are shaping the future of Sri Lankan dining and entertainment.
-            </p>
+      {/* Story */}
+      <section style={{ borderTop: "1px solid rgba(13,13,13,0.08)" }}>
+        <div
+          className="om-pad om-sec"
+          style={{
+            maxWidth: "1240px",
+            margin: "0 auto",
+            paddingTop: "150px",
+            paddingBottom: "150px",
+          }}
+        >
+          <div className="om-2col">
+            <div>
+              <div
+                style={{
+                  fontSize: "12px",
+                  letterSpacing: "0.14em",
+                  textTransform: "uppercase",
+                  color: "rgba(13,13,13,0.5)",
+                }}
+              >
+                Our story
+              </div>
+              <h2 className="om-h2" style={{ margin: "28px 0 0", maxWidth: "14ch" }}>
+                Born from Sri Lanka&apos;s dining culture.
+              </h2>
+            </div>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                gap: "24px",
+                fontSize: "16px",
+                lineHeight: 1.75,
+                fontWeight: 300,
+                color: "rgba(13,13,13,0.62)",
+              }}
+            >
+              <p>
+                Born from a passion for Sri Lanka&apos;s incredible culinary
+                landscape and vibrant cultural scene, Kohedha emerged as more
+                than just another discovery platform. We recognised that finding
+                authentic experiences shouldn&apos;t be left to chance.
+              </p>
+              <p>
+                From hidden street food gems in Pettah to exclusive rooftop
+                dining in Colombo 3, from traditional cultural performances to
+                modern fusion experiences — the island offers endless
+                possibilities. We built Kohedha to be your compass in this
+                adventure.
+              </p>
+              <p>
+                Today, Kohedha connects food lovers and culture enthusiasts with
+                Sri Lanka&apos;s most exciting venues and events — matched to
+                your mood, not just your appetite.
+              </p>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* ── VALUES ── */}
-      <section style={{ background: "black", padding: "100px 48px" }}>
-        <div style={{ maxWidth: "1100px", margin: "0 auto" }}>
-          <p style={{ fontSize: "11px", fontWeight: 500, letterSpacing: "0.15em", textTransform: "uppercase", color: C.accent, marginBottom: "20px" }}>
-            What drives us
-          </p>
-          <h2 className="font-display" style={{ fontSize: "42px", letterSpacing: "-0.02em", color: "white", marginBottom: "56px", maxWidth: "480px" }}>
-            Three principles behind everything we do
-          </h2>
-
+      {/* Values */}
+      <section style={{ borderTop: "1px solid rgba(13,13,13,0.08)" }}>
+        <div
+          className="om-pad om-sec"
+          style={{
+            maxWidth: "1240px",
+            margin: "0 auto",
+            paddingTop: "150px",
+            paddingBottom: "150px",
+          }}
+        >
           <div
             style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
-              gap: "2px",
-              border: "1px solid rgba(13,13,13,0.1)",
-              borderRadius: "16px",
-              overflow: "hidden",
+              fontSize: "12px",
+              letterSpacing: "0.14em",
+              textTransform: "uppercase",
+              color: "rgba(13,13,13,0.5)",
+            }}
+          >
+            What drives us
+          </div>
+          <h2 className="om-h2" style={{ margin: "28px 0 0", maxWidth: "18ch" }}>
+            Three principles behind everything we do.
+          </h2>
+          <div
+            className="om-3col"
+            style={{
+              gap: "1px",
+              marginTop: "80px",
+              background: "rgba(13,13,13,0.08)",
             }}
           >
             {[
               {
-                Icon: Heart,
+                n: "01",
                 title: "Authentic experiences",
                 body: "We celebrate genuine Sri Lankan culture, from traditional recipes passed down through generations to innovative interpretations that honour our heritage.",
               },
               {
-                Icon: Users,
+                n: "02",
                 title: "Community first",
                 body: "We support local businesses, connect like-minded food enthusiasts, and build bridges between communities through shared culinary experiences.",
               },
               {
-                Icon: Star,
+                n: "03",
                 title: "Curated quality",
-                body: "Every venue and event on Kohedha is personally vetted. We don't just list places — we recommend experiences that we believe in and would enjoy ourselves.",
+                body: "Every venue and event on Kohedha is personally vetted. We don't just list places — we recommend experiences that we believe in.",
               },
-            ].map(({ Icon, title, body }) => (
+            ].map((v, i) => (
               <div
-                key={title}
-                style={{ background: C.cream, padding: "40px 36px", transition: "background 0.2s" }}
-                onMouseEnter={(e) => ((e.currentTarget as HTMLDivElement).style.background = "#EDE9E0")}
-                onMouseLeave={(e) => ((e.currentTarget as HTMLDivElement).style.background = C.cream)}
+                key={v.n}
+                style={{
+                  background: "#F6F6F4",
+                  padding:
+                    i === 0
+                      ? "40px 36px 44px 0"
+                      : i === 2
+                        ? "40px 0 44px 36px"
+                        : "40px 36px 44px 36px",
+                }}
+                className="om-feature-cell"
               >
-                <div style={{ width: "40px", height: "40px", borderRadius: "10px", background: "rgba(245,230,66,0.12)", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: "20px", color: C.accent }}>
-                  <Icon size={18} />
+                <div style={{ fontSize: "13px", color: "rgba(13,13,13,0.4)" }}>
+                  {v.n}
                 </div>
-                <div className="font-display" style={{ fontSize: "22px", color: C.text, marginBottom: "12px" }}>{title}</div>
-                <div style={{ fontSize: "14px", color: C.muted, lineHeight: 1.75 }}>{body}</div>
+                <h3
+                  style={{
+                    margin: "22px 0 0",
+                    fontSize: "26px",
+                    fontWeight: 400,
+                    letterSpacing: "-0.02em",
+                  }}
+                >
+                  {v.title}
+                </h3>
+                <p
+                  style={{
+                    margin: "16px 0 0",
+                    fontSize: "16px",
+                    lineHeight: 1.7,
+                    fontWeight: 300,
+                    color: "rgba(13,13,13,0.6)",
+                  }}
+                >
+                  {v.body}
+                </p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ── TEAM ── */}
-      <section style={{ padding: "100px 48px" }}>
-        <div style={{ maxWidth: "760px", margin: "0 auto" }}>
-          <p style={{ fontSize: "11px", fontWeight: 500, letterSpacing: "0.15em", textTransform: "uppercase", color: C.accent, marginBottom: "20px" }}>
-            The team
-          </p>
-          <h2 className="font-display" style={{ fontSize: "42px", letterSpacing: "-0.02em", color: C.text, marginBottom: "24px" }}>
-            Built by people who love Sri Lanka
-          </h2>
-          <p style={{ fontSize: "16px", color: C.muted, lineHeight: 1.8, marginBottom: "56px" }}>
-            Kohedha is built by a passionate team of food enthusiasts, cultural explorers, and technology innovators
-            who call Sri Lanka home. We combine deep local knowledge with modern technology to create experiences that matter.
-          </p>
-
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: "16px", marginBottom: "56px" }}>
-            {[
-              { Icon: Users, title: "Culinary experts", body: "Local food critics and chefs who understand the nuances of Sri Lankan cuisine" },
-              { Icon: MapPin, title: "Local explorers", body: "Community scouts who discover hidden gems and emerging trends across the island" },
-            ].map(({ Icon, title, body }) => (
-              <div key={title} style={{ background: C.cream, borderRadius: "16px", padding: "32px", border: "1px solid rgba(13,13,13,0.06)" }}>
-                <div style={{ width: "56px", height: "56px", borderRadius: "14px", background: C.bg2, display: "flex", alignItems: "center", justifyContent: "center", marginBottom: "20px" }}>
-                  <Icon size={24} style={{ color: C.muted }} />
-                </div>
-                <div className="font-display" style={{ fontSize: "20px", color: C.text, marginBottom: "10px" }}>{title}</div>
-                <div style={{ fontSize: "14px", color: C.muted, lineHeight: 1.7 }}>{body}</div>
+      {/* FAQ */}
+      <section style={{ borderTop: "1px solid rgba(13,13,13,0.08)" }}>
+        <div
+          className="om-pad om-sec"
+          style={{
+            maxWidth: "1240px",
+            margin: "0 auto",
+            paddingTop: "150px",
+            paddingBottom: "150px",
+          }}
+        >
+          <div className="om-2col" style={{ gridTemplateColumns: "1fr 1.4fr" }}>
+            <div>
+              <div
+                style={{
+                  fontSize: "12px",
+                  letterSpacing: "0.14em",
+                  textTransform: "uppercase",
+                  color: "rgba(13,13,13,0.5)",
+                }}
+              >
+                FAQ
               </div>
-            ))}
+              <h2
+                className="om-h2"
+                style={{ margin: "28px 0 0", fontSize: "44px", lineHeight: 1.08 }}
+              >
+                Frequently asked questions
+              </h2>
+              <p
+                style={{
+                  margin: "24px 0 0",
+                  fontSize: "16px",
+                  lineHeight: 1.7,
+                  fontWeight: 300,
+                  color: "rgba(13,13,13,0.6)",
+                }}
+              >
+                Everything you need to know before your first booking.
+              </p>
+            </div>
+            <div style={{ borderTop: "1px solid rgba(13,13,13,0.1)" }}>
+              {FAQS.map((faq) => (
+                <details
+                  key={faq.q}
+                  style={{ borderBottom: "1px solid rgba(13,13,13,0.1)" }}
+                >
+                  <summary
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                      gap: "24px",
+                      padding: "26px 4px",
+                      fontSize: "19px",
+                    }}
+                  >
+                    {faq.q}
+                    <span
+                      className="om-plus"
+                      style={{
+                        fontSize: "20px",
+                        fontWeight: 300,
+                        color: "rgba(13,13,13,0.45)",
+                        transition: "transform 0.2s",
+                        flexShrink: 0,
+                      }}
+                    >
+                      +
+                    </span>
+                  </summary>
+                  <p
+                    style={{
+                      margin: 0,
+                      padding: "0 40px 28px 4px",
+                      fontSize: "16px",
+                      lineHeight: 1.75,
+                      fontWeight: 300,
+                      color: "rgba(13,13,13,0.62)",
+                    }}
+                  >
+                    {faq.a}
+                  </p>
+                </details>
+              ))}
+            </div>
           </div>
+        </div>
+      </section>
 
-          <Link
-            href="/vendors"
-            style={{ display: "inline-block", background: C.accent, color: C.text, fontSize: "14px", fontWeight: 500, padding: "13px 32px", borderRadius: "40px", textDecoration: "none", transition: "background 0.2s" }}
-            onMouseEnter={(e) => (e.currentTarget.style.background = C.accent2)}
-            onMouseLeave={(e) => (e.currentTarget.style.background = C.accent)}
-          >
-            Join the community
-          </Link>
+      {/* CTA */}
+      <section style={{ borderTop: "1px solid rgba(13,13,13,0.08)" }}>
+        <div
+          className="om-pad"
+          style={{
+            maxWidth: "1240px",
+            margin: "0 auto",
+            paddingTop: "100px",
+            paddingBottom: "100px",
+          }}
+        >
+          <div className="om-2col" style={{ alignItems: "center" }}>
+            <h2 className="om-h2" style={{ margin: 0, maxWidth: "14ch" }}>
+              Ready to find your night?
+            </h2>
+            <div>
+              <p
+                style={{
+                  margin: 0,
+                  fontSize: "17px",
+                  fontWeight: 300,
+                  lineHeight: 1.7,
+                  color: "rgba(13,13,13,0.62)",
+                  maxWidth: "40ch",
+                }}
+              >
+                Start exploring venues near you — or list your own and join Sri
+                Lanka&apos;s dining network.
+              </p>
+              <div
+                style={{
+                  display: "flex",
+                  gap: "12px",
+                  marginTop: "28px",
+                  flexWrap: "wrap",
+                }}
+              >
+                <Link
+                  href="/"
+                  style={{
+                    display: "inline-flex",
+                    alignItems: "center",
+                    height: "48px",
+                    padding: "0 24px",
+                    borderRadius: "999px",
+                    background: "#F5E642",
+                    color: "#0D0D0D",
+                    fontSize: "15px",
+                    textDecoration: "none",
+                  }}
+                >
+                  Start exploring →
+                </Link>
+                <Link
+                  href="/vendors/register"
+                  style={{
+                    display: "inline-flex",
+                    alignItems: "center",
+                    height: "48px",
+                    padding: "0 24px",
+                    borderRadius: "999px",
+                    border: "1px solid rgba(13,13,13,0.22)",
+                    color: "#0D0D0D",
+                    fontSize: "15px",
+                    textDecoration: "none",
+                  }}
+                >
+                  List your venue
+                </Link>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
     </div>
-  )
+  );
 }
