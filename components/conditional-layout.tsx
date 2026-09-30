@@ -15,7 +15,13 @@ export function ConditionalLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className={isPublicBrand ? "public-brand" : undefined}>
       {showPublicChrome && <Navigation />}
-      {children}
+      {showPublicChrome ? (
+        <main id="main-content" tabIndex={-1} className="outline-none">
+          {children}
+        </main>
+      ) : (
+        children
+      )}
       {showPublicChrome && <Footer />}
     </div>
   );
