@@ -2,9 +2,10 @@
 
 import { motion, useScroll, useTransform } from "framer-motion";
 import Link from "next/link";
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { BeaconSimulator } from "./beacon-simulator";
-import { ArrowRight, EASE_OUT, Magnetic, Photo, SplitHeading } from "@/components/brand/primitives";
+import { HeroVideo } from "./hero-video";
+import { ArrowRight, EASE_OUT, Magnetic, SplitHeading } from "@/components/brand/primitives";
 
 const TRUST = ["Free for diners", "Your name stays private", "One offer, not a flood"];
 
@@ -14,6 +15,13 @@ export function Hero() {
   const imgY = useTransform(scrollYProgress, [0, 1], ["0%", "16%"]);
   const imgScale = useTransform(scrollYProgress, [0, 1], [1.06, 1.16]);
   const fade = useTransform(scrollYProgress, [0, 0.7], [1, 0.25]);
+
+  // One switch for everything that moves on its own here: the background video and the demo.
+  // Reduced-motion visitors start paused (poster + a still of the winning offer).
+  const [paused, setPaused] = useState(false);
+  useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) setPaused(true);
+  }, []);
 
   const rise = (delay: number) => ({
     initial: { opacity: 0, y: 18 },
@@ -28,12 +36,11 @@ export function Hero() {
       aria-labelledby="hero-title"
       className="kh-grain relative isolate -mt-[var(--nav-h)] overflow-hidden bg-kh-night text-kh-cream"
     >
-      <motion.div aria-hidden="true" className="absolute inset-0 -z-20" style={{ y: imgY, scale: imgScale }}>
-        <Photo name="rooftop" priority decorative sizes="100vw" className="h-full w-full object-cover object-[65%_center]" />
-      </motion.div>
+      <HeroVideo style={{ y: imgY, scale: imgScale }} paused={paused} />
+      {/* Heavier than a photo needs: the video has its own on-screen text, which must recede behind ours */}
       <div
         aria-hidden="true"
-        className="absolute inset-0 -z-10 bg-[linear-gradient(180deg,rgba(16,15,13,0.72)_0%,rgba(16,15,13,0.82)_100%)] lg:bg-[linear-gradient(90deg,rgba(16,15,13,0.95)_0%,rgba(16,15,13,0.82)_45%,rgba(16,15,13,0.5)_100%)]"
+        className="absolute inset-0 -z-10 bg-[linear-gradient(180deg,rgba(16,15,13,0.8)_0%,rgba(16,15,13,0.9)_100%)] lg:bg-[linear-gradient(90deg,rgba(16,15,13,0.96)_0%,rgba(16,15,13,0.88)_45%,rgba(16,15,13,0.66)_100%)]"
       />
       <div aria-hidden="true" className="absolute inset-x-0 bottom-0 -z-10 h-40 bg-gradient-to-t from-kh-night to-transparent" />
 
@@ -105,9 +112,21 @@ export function Hero() {
           transition={{ duration: 1.1, ease: EASE_OUT, delay: 0.35 }}
           className="flex justify-center lg:justify-end"
         >
-          <BeaconSimulator />
+          <BeaconSimulator paused={paused} />
         </motion.div>
       </motion.div>
+
+      <button
+        type="button"
+        onClick={() => setPaused((p) => !p)}
+        aria-label={paused ? "Play hero animation" : "Pause hero animation"}
+        title={paused ? "Play animation" : "Pause animation"}
+        className="kh-focus absolute bottom-6 right-4 z-10 flex h-10 w-10 items-center justify-center rounded-full border border-white/20 bg-black/30 text-kh-cream backdrop-blur-md transition-colors hover:bg-black/50 sm:right-8 lg:bottom-8 lg:right-12"
+      >
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          {paused ? <path d="M7 4.5v15l13-7.5z" /> : <path d="M6 4h4v16H6zM14 4h4v16h-4z" />}
+        </svg>
+      </button>
 
       <div aria-hidden="true" className="absolute bottom-7 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-3 lg:flex">
         <span className="text-[11px] uppercase tracking-[0.2em] text-kh-cream/45">Scroll</span>

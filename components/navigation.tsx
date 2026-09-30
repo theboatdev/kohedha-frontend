@@ -11,16 +11,18 @@ import {
 } from "framer-motion";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useState, type MouseEvent } from "react";
 import { ArrowRight, EASE_OUT, StoreBadges, Wordmark, cx } from "@/components/brand/primitives";
+import { scrollToSection, useScrollSpy } from "@/components/brand/section-nav";
 
-const NAV_LINKS = [
-  { label: "Discover", href: "/" },
-  { label: "Places", href: "/places" },
-  { label: "Deals", href: "/deals" },
-  { label: "Events", href: "/events" },
-  { label: "About", href: "/about" },
+// Sections of the homepage. Elsewhere on the site these link back to the homepage section.
+const SECTIONS = [
+  { id: "beacon", label: "How it works" },
+  { id: "explore", label: "Browse by vibe" },
+  { id: "features", label: "Features" },
+  { id: "faq", label: "FAQ" },
 ];
+const SECTION_IDS = SECTIONS.map((s) => s.id);
 
 export function Navigation() {
   const pathname = usePathname() ?? "/";
@@ -40,7 +42,36 @@ export function Navigation() {
 
   useEffect(() => setOpen(false), [pathname]);
 
-  const isActive = (href: string) => (href === "/" ? pathname === "/" : pathname.startsWith(href));
+  const onHome = pathname === "/";
+  const active = useScrollSpy(SECTION_IDS, onHome);
+
+  // Arriving from another page via "/#features" etc.: the route shows app/loading.tsx first, so the
+  // section isn't in the DOM yet and nothing scrolls to it. Wait for it to mount, then scroll.
+  useEffect(() => {
+    if (!onHome) return;
+    const id = window.location.hash.slice(1);
+    if (!id) return;
+    let tries = 0;
+    let timer = 0;
+    const attempt = () => {
+      const el = document.getElementById(id);
+      if (el) el.scrollIntoView();
+      else if (++tries < 50) timer = window.setTimeout(attempt, 100);
+    };
+    attempt();
+    return () => window.clearTimeout(timer);
+  }, [onHome]);
+
+  const hrefFor = (id: string) => (onHome ? `#${id}` : `/#${id}`);
+
+  // On the homepage, section links scroll in place; the menu locks scrolling, so close it first.
+  const jump = (e: MouseEvent<HTMLAnchorElement>, id: string) => {
+    const wasOpen = open;
+    setOpen(false);
+    if (!onHome) return;
+    e.preventDefault();
+    scrollToSection(id, { reduce: !!reduce, delay: wasOpen ? 450 : 0 });
+  };
 
   return (
     <MotionConfig reducedMotion="user">
@@ -64,26 +95,27 @@ export function Navigation() {
               : "border-white/30 bg-kh-cream/75 backdrop-blur-md",
           )}
         >
-          <Link href="/" aria-label="kohedha home" className="kh-focus rounded-lg">
+          <Link href="/" onClick={(e) => jump(e, "top")} aria-label="kohedha home" className="kh-focus rounded-lg">
             <Wordmark className="text-[26px]" dotClassName="kh-live" />
           </Link>
 
           <nav aria-label="Main" className="hidden lg:block">
             <ul className="m-0 flex list-none items-center gap-1 p-0" onPointerLeave={() => setHovered(null)}>
-              {NAV_LINKS.map((l) => {
-                const active = isActive(l.href);
+              {SECTIONS.map((l) => {
+                const current = active === l.id;
                 return (
-                  <li key={l.href}>
+                  <li key={l.id}>
                     <Link
-                      href={l.href}
-                      aria-current={active ? "page" : undefined}
-                      onPointerEnter={() => setHovered(l.href)}
+                      href={hrefFor(l.id)}
+                      onClick={(e) => jump(e, l.id)}
+                      aria-current={current ? "location" : undefined}
+                      onPointerEnter={() => setHovered(l.id)}
                       className={cx(
                         "kh-focus relative flex h-10 items-center rounded-full px-4 text-[15px] transition-colors",
-                        active ? "font-medium text-kh-ink" : "text-kh-body hover:text-kh-ink",
+                        current ? "font-medium text-kh-ink" : "text-kh-body hover:text-kh-ink",
                       )}
                     >
-                      {hovered === l.href && (
+                      {hovered === l.id && (
                         <motion.span
                           layoutId="nav-hover"
                           className="absolute inset-0 rounded-full bg-kh-ink/[0.06]"
@@ -91,8 +123,12 @@ export function Navigation() {
                         />
                       )}
                       <span className="relative">{l.label}</span>
-                      {active && (
-                        <span aria-hidden="true" className="absolute bottom-1 left-1/2 h-1 w-1 -translate-x-1/2 bg-kh-ember" />
+                      {current && (
+                        <motion.span
+                          layoutId="nav-current"
+                          aria-hidden="true"
+                          className="absolute bottom-1 left-1/2 h-1 w-1 -translate-x-1/2 bg-kh-ember"
+                        />
                       )}
                     </Link>
                   </li>
@@ -109,7 +145,8 @@ export function Navigation() {
               For venues
             </Link>
             <Link
-              href="/#app"
+              href={hrefFor("app")}
+              onClick={(e) => jump(e, "app")}
               className="kh-focus group hidden h-11 items-center gap-2 rounded-full bg-kh-ink pl-5 pr-4 text-[15px] font-medium text-kh-cream transition-colors hover:bg-black sm:flex"
             >
               Get the app
@@ -156,9 +193,13 @@ export function Navigation() {
 
                         <nav aria-label="Main" className="flex-1 px-8 pt-6 sm:px-11">
                           <ul className="m-0 flex list-none flex-col p-0">
-                            {[...NAV_LINKS, { label: "For venues", href: "/vendors" }].map((l, i) => (
+                            {[
+                              ...SECTIONS.map((s) => ({ ...s, href: hrefFor(s.id) })),
+                              { id: "app", label: "Get the app", href: hrefFor("app") },
+                              { id: "vendors", label: "For venues", href: "/vendors" },
+                            ].map((l, i) => (
                               <motion.li
-                                key={l.href}
+                                key={l.id}
                                 initial={{ opacity: 0, y: 30 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ duration: 0.6, ease: EASE_OUT, delay: 0.18 + i * 0.05 }}
@@ -166,15 +207,15 @@ export function Navigation() {
                               >
                                 <Link
                                   href={l.href}
-                                  onClick={() => setOpen(false)}
-                                  aria-current={isActive(l.href) ? "page" : undefined}
+                                  onClick={(e) => (l.id === "vendors" ? setOpen(false) : jump(e, l.id))}
+                                  aria-current={active === l.id ? "location" : undefined}
                                   className="kh-focus group flex items-center justify-between py-4 text-[clamp(2rem,9vw,3rem)] font-light tracking-[-0.03em]"
                                 >
                                   <span className="flex items-baseline gap-4">
                                     <span className="text-[13px] tabular-nums tracking-normal text-kh-mist">0{i + 1}</span>
                                     {l.label}
                                   </span>
-                                  {isActive(l.href) ? (
+                                  {active === l.id ? (
                                     <span aria-hidden="true" className="h-2.5 w-2.5 bg-kh-ember" />
                                   ) : (
                                     <ArrowRight className="h-6 w-6 text-kh-mist transition-transform group-hover:translate-x-1" />

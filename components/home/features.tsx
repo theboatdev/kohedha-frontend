@@ -210,8 +210,8 @@ function DishCard() {
     <Card labelledBy="f-dishes" delay={0.08} className="lg:col-span-3">
       <div className="absolute inset-0 -z-10 border border-kh-line bg-white [border-radius:inherit]" />
       <div className="relative flex items-start justify-between gap-4">
-        <CardTitle id="f-dishes" over="Dish ratings">
-          Rate the dish, not the place.
+        <CardTitle id="f-dishes" over="Menu Upvoting">
+          Upvote the dish, Let others know what's good
         </CardTitle>
         <span className="shrink-0 rounded-full bg-kh-sand px-3 py-1 text-[12px] text-kh-body">Try it</span>
       </div>

@@ -3,26 +3,10 @@
 import * as Dialog from "@radix-ui/react-dialog";
 import { AnimatePresence, motion, useMotionValueEvent, useReducedMotion, useScroll } from "framer-motion";
 import Link from "next/link";
-import { useEffect, useState, type MouseEvent } from "react";
+import { useState, type MouseEvent } from "react";
 import { ArrowRight, EASE_OUT, Wordmark, cx } from "@/components/brand/primitives";
+import { scrollToSection, useScrollSpy } from "@/components/brand/section-nav";
 import { SECTIONS } from "./data";
-
-/** Highlights the in-page section currently in the middle of the viewport. */
-function useScrollSpy(ids: string[]) {
-  const [active, setActive] = useState<string | null>(null);
-  useEffect(() => {
-    const els = ids.map((id) => document.getElementById(id)).filter(Boolean) as HTMLElement[];
-    const io = new IntersectionObserver(
-      (entries) => {
-        for (const e of entries) if (e.isIntersecting) setActive(e.target.id);
-      },
-      { rootMargin: "-45% 0px -50% 0px" },
-    );
-    els.forEach((el) => io.observe(el));
-    return () => io.disconnect();
-  }, [ids]);
-  return active;
-}
 
 const IDS = SECTIONS.map((s) => s.id);
 
@@ -46,12 +30,7 @@ export function VendorNav() {
     setOpen(false);
     if (!href.startsWith("#")) return;
     e.preventDefault();
-    const go = () => {
-      document.getElementById(href.slice(1))?.scrollIntoView({ behavior: reduce ? "auto" : "smooth" });
-      history.replaceState(null, "", href);
-    };
-    if (open) window.setTimeout(go, 450);
-    else go();
+    scrollToSection(href.slice(1), { reduce: !!reduce, delay: open ? 450 : 0 });
   };
 
   return (
