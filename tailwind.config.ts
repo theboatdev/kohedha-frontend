@@ -22,6 +22,8 @@ const config = {
       fontFamily: {
         sans: ["var(--font-space-grotesk)", "var(--font-league-spartan)", "system-ui", "sans-serif"],
         grotesk: ["var(--font-space-grotesk)", "system-ui", "sans-serif"],
+        kh: ["var(--font-poppins)", "Poppins", "system-ui", "sans-serif"],
+        "kh-serif": ["var(--font-dm-serif)", "DM Serif Display", "Georgia", "serif"],
       },
       colors: {
         border: "hsl(var(--border))",
@@ -56,6 +58,20 @@ const config = {
         card: {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
+        },
+        // Kohedha public brand
+        kh: {
+          ink: "#1A1A1A",
+          night: "#100F0D",
+          coal: "#262422",
+          cream: "#FAF8F5",
+          sand: "#EDEAE5",
+          line: "#D5CFC6",
+          ember: "#E8744D",
+          "ember-deep": "#B4532F",
+          body: "#4A4640",
+          muted: "#5C5750",
+          mist: "#B9B3AA",
         },
       },
       borderRadius: {

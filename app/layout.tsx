@@ -3,6 +3,7 @@ import type { Metadata, Viewport } from "next"
 import { League_Spartan, DM_Sans, DM_Serif_Display, Poppins, Space_Grotesk } from "next/font/google"
 import Script from "next/script"
 import "./globals.css"
+import "@/components/brand/brand.css" // brand effects shared by the public nav, footer, homepage and /vendors
 import StructuredData from "@/components/structured-data"
 import { ConditionalLayout } from "@/components/conditional-layout"
 import { Toaster } from "@/components/ui/toaster"
@@ -28,7 +29,7 @@ const dmSerifDisplay = DM_Serif_Display({
 const poppins = Poppins({
   subsets: ["latin"],
   variable: "--font-poppins",
-  weight: ["500", "600", "700", "800"],
+  weight: ["300", "400", "500", "600", "700", "800"],
 })
 
 const spaceGrotesk = Space_Grotesk({
@@ -131,7 +132,6 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
-  maximumScale: 1,
   colorScheme: 'light dark',
   themeColor: [
     { media: '(prefers-color-scheme: light)', color: '#ffffff' },
